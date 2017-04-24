@@ -6,6 +6,7 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -56,4 +57,21 @@ public class BlockDireCrafting extends BlockContainer {
         return EnumBlockRenderType.MODEL;
     }
 
+    @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+        TileEntity tile = worldIn.getTileEntity(pos);
+
+        if (tile instanceof TileEntityDireCrafting) {
+            for (int i = 1; i < ((TileEntityDireCrafting) tile).getSizeInventory(); i++) {
+                ItemStack stack = ((TileEntityDireCrafting) tile).getStackInSlot(i);
+                if (stack != null) {
+                    EntityItem item = new EntityItem(worldIn, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, stack);
+                    worldIn.spawnEntityInWorld(item);
+                    ((TileEntityDireCrafting) tile).setInventorySlotContents(i, null);
+                }
+            }
+        }
+
+        super.breakBlock(worldIn, pos, state);
+    }
 }

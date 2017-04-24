@@ -70,6 +70,7 @@ public class TileEntityDireCrafting extends TileLudicrous implements IInventory,
 
     @Override
     public ItemStack decrStackSize(int slot, int decrement){
+        markDirty();
 
         if(slot == 0){
             if(result != null){
@@ -82,8 +83,9 @@ public class TileEntityDireCrafting extends TileLudicrous implements IInventory,
                     return craft;
                 }
                 ItemStack split = result.splitStack(decrement);
-                if(result.stackSize <= 0)
+                if(result.stackSize <= 0){
                     result = null;
+                }
                 return split;
             }
             else
@@ -97,8 +99,9 @@ public class TileEntityDireCrafting extends TileLudicrous implements IInventory,
                     return ingredient;
                 }
                 ItemStack split = matrix[slot - 1].splitStack(decrement);
-                if(matrix[slot - 1].stackSize <= 0)
+                if(matrix[slot - 1].stackSize <= 0){
                     matrix[slot - 1] = null;
+                }
                 return split;
             }
         }
@@ -115,6 +118,7 @@ public class TileEntityDireCrafting extends TileLudicrous implements IInventory,
 
                 ItemStack craft = result;
                 result = null;
+                markDirty();
                 return craft;
 
             }
@@ -125,6 +129,7 @@ public class TileEntityDireCrafting extends TileLudicrous implements IInventory,
             if(matrix[slot - 1] != null){
                 ItemStack ingredient = matrix[slot - 1];
                 matrix[slot - 1] = null;
+                markDirty();
                 return ingredient;
             }
         }
@@ -161,6 +166,7 @@ public class TileEntityDireCrafting extends TileLudicrous implements IInventory,
         else if(slot <= matrix.length){
             matrix[slot - 1] = stack;
         }
+        markDirty();
     }
 
     @Override

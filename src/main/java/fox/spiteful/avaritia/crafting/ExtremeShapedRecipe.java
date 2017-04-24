@@ -3,7 +3,6 @@ package fox.spiteful.avaritia.crafting;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 
@@ -66,35 +65,40 @@ public class ExtremeShapedRecipe implements IRecipe
             {
                 int i1 = k - x;
                 int j1 = l - y;
-                ItemStack itemstack = null;
+                ItemStack targetStack = null;
 
                 if (i1 >= 0 && j1 >= 0 && i1 < this.recipeWidth && j1 < this.recipeHeight)
                 {
                     if (mirrored)
                     {
-                        itemstack = this.recipeItems[this.recipeWidth - i1 - 1 + j1 * this.recipeWidth];
+                        targetStack = this.recipeItems[this.recipeWidth - i1 - 1 + j1 * this.recipeWidth];
                     }
                     else
                     {
-                        itemstack = this.recipeItems[i1 + j1 * this.recipeWidth];
+                        targetStack = this.recipeItems[i1 + j1 * this.recipeWidth];
                     }
                 }
 
-                ItemStack itemstack1 = matrix.getStackInRowAndColumn(k, l);
+                ItemStack slotStack = matrix.getStackInRowAndColumn(k, l);
 
-                if (itemstack1 != null || itemstack != null)
+                if (slotStack != null || targetStack != null)
                 {
-                    if (itemstack1 == null && itemstack != null || itemstack1 != null && itemstack == null)
+                    if ((slotStack == null && targetStack != null) || (slotStack != null && targetStack == null))
                     {
                         return false;
                     }
 
-                    if (itemstack.getItem() != itemstack1.getItem())
+                    if (targetStack.getItem() != slotStack.getItem())
                     {
                         return false;
                     }
 
-                    if (itemstack.getItemDamage() != 32767 && itemstack.getItemDamage() != itemstack1.getItemDamage())
+                    if (targetStack.hasTagCompound() &&  !ItemStack.areItemStackTagsEqual(targetStack, slotStack))
+                    {
+                        return false;
+                    }
+
+                    if (targetStack.getItemDamage() != 32767 && targetStack.getItemDamage() != slotStack.getItemDamage())
                     {
                         return false;
                     }
