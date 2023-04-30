@@ -1,6 +1,6 @@
 package fox.spiteful.avaritia.compat.minetweaker;
 
-import java.util.List;
+import java.util.*;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -33,13 +33,54 @@ public class ExtremeCrafting {
         for (IIngredient[] row : ingredients) {
             if (width < row.length) width = row.length;
         }
+
+        String letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        int nextletter = 0;
+        // ExtremeShapedOreRecipe r = (ExtremeShapedOreRecipe)recipe;
+        HashMap<Character, Object> itemMap = new HashMap<>();
+        HashMap<Object, Character> reverseItemMap = new HashMap<>();
+
         Object[] input = new Object[width * height];
+        String[] shapes = new String[height];
         int x = 0;
+        int xx = 0;
         for (IIngredient[] row : ingredients) {
+            Object[] objects = toObjects(row);
+            StringBuilder shape = new StringBuilder();
+            for (Object o : objects) {
+                Object o2 = o;
+                if (o2 instanceof ItemStack) o2 = new ItemMetaNBTWrapper((ItemStack) o2);
+                Character chr = null;
+                if (o == null) chr = '-';
+                else if (reverseItemMap.containsKey(o2)) {
+                    chr = reverseItemMap.get(o2);
+                } else {
+                    chr = letters.charAt(nextletter);
+                    nextletter++;
+                    itemMap.put(chr, o);
+                    reverseItemMap.put(o2, chr);
+                }
+                shape.append(chr);
+            }
+            shapes[xx++] = shape.toString();
+
             for (IIngredient ingredient : row) {
                 input[x++] = toActualObject(ingredient);
             }
         }
+
+        List<Object> ready = new ArrayList<>(Arrays.asList(shapes));
+
+        for (Map.Entry<Character, Object> entry : itemMap.entrySet()) {
+            ready.add(entry.getKey());
+            ready.add(entry.getValue());
+        }
+
+        Tweak.info(
+                "ExtremeCraftingManager.getInstance().addExtremeShapedOreRecipe(" + Tweak.convertStack(toStack(output))
+                        + ", "
+                        + Tweak.convertArrayInLine(ready.toArray())
+                        + ");");
 
         MineTweakerAPI.apply(new Add(new ExtremeShapedOreRecipe(toStack(output), input, width, height)));
     }
@@ -61,6 +102,7 @@ public class ExtremeCrafting {
         public void apply() {
 
             ExtremeCraftingManager.getInstance().getRecipeList().add(recipe);
+
         }
 
         @Override
@@ -101,6 +143,8 @@ public class ExtremeCrafting {
 
         @Override
         public void apply() {
+
+            Tweak.info("AvaritiaHelper.removeExtremeCraftingRecipe(" + Tweak.convertStack(remove) + ");");
 
             for (Object obj : ExtremeCraftingManager.getInstance().getRecipeList()) {
                 if (obj instanceof IRecipe) {
