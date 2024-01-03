@@ -40,4 +40,6 @@ dependencies {
     compileOnly("curse.maven:witchery-69673:2234410") {
         transitive = false
     }
+
+    runtimeOnly("com.github.GTNewHorizons:GTNHLib:0.0.13:dev")
 }
