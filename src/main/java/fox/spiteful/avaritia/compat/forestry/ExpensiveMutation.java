@@ -3,7 +3,13 @@ package fox.spiteful.avaritia.compat.forestry;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import forestry.api.apiculture.*;
+import forestry.api.apiculture.BeeManager;
+import forestry.api.apiculture.IAlleleBeeSpecies;
+import forestry.api.apiculture.IBeeGenome;
+import forestry.api.apiculture.IBeeHousing;
+import forestry.api.apiculture.IBeeModifier;
+import forestry.api.apiculture.IBeeMutation;
+import forestry.api.apiculture.IBeeRoot;
 import forestry.api.genetics.IAllele;
 import forestry.api.genetics.IAlleleSpecies;
 

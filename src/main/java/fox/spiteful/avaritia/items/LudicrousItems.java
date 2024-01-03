@@ -12,7 +12,12 @@ import net.minecraftforge.common.util.EnumHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import fox.spiteful.avaritia.Avaritia;
 import fox.spiteful.avaritia.Config;
-import fox.spiteful.avaritia.items.tools.*;
+import fox.spiteful.avaritia.items.tools.ItemAxeInfinity;
+import fox.spiteful.avaritia.items.tools.ItemBowInfinity;
+import fox.spiteful.avaritia.items.tools.ItemPickaxeInfinity;
+import fox.spiteful.avaritia.items.tools.ItemShovelInfinity;
+import fox.spiteful.avaritia.items.tools.ItemSwordInfinity;
+import fox.spiteful.avaritia.items.tools.ItemSwordSkulls;
 
 public class LudicrousItems {
 

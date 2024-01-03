@@ -1,7 +1,6 @@
 package fox.spiteful.avaritia.compat.forestry;
 
-import java.awt.*;
-import java.util.*;
+import java.awt.Color;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
