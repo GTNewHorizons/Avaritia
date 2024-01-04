@@ -174,7 +174,7 @@ void main (void)
     col.rgb *= shade;
 
     // apply mask
-    col.a *= mask.r * opacity;
+    col.a *= mask.a * opacity;
 
 	col = clamp(col,0.0,1.0);
 

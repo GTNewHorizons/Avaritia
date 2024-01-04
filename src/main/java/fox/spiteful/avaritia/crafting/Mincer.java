@@ -1,6 +1,10 @@
 package fox.spiteful.avaritia.crafting;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Random;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
