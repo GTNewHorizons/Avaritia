@@ -77,16 +77,6 @@ public class Tonkers {
                 new ItemStack(TinkerTools.toolRod, 1, neutroniumId),
                 neutroniumId);
 
-        // register patterns
-        /*
-         * for (int m = 0; m < TinkerTools.patternOutputs.length; m++) { if (TinkerTools.patternOutputs[m] != null)
-         * TConstructRegistry.addPartMapping(TinkerTools.woodPattern, m + 1, neutroniumId, new
-         * ItemStack(TinkerTools.patternOutputs[m], 1, neutroniumId)); } for (int m = 0; m <
-         * TinkerWeaponry.patternOutputs.length; m++) { TConstructRegistry.addPartMapping(TinkerWeaponry.woodPattern, m,
-         * neutroniumId, new ItemStack(TinkerWeaponry.patternOutputs[m], 1, neutroniumId)); }
-         * TConstructRegistry.addPartMapping(TinkerTools.woodPattern, 25, neutroniumId, new
-         * ItemStack(TinkerWeaponry.arrowhead, 1, neutroniumId));
-         */
         TonkersEvents events = new TonkersEvents();
         MinecraftForge.EVENT_BUS.register(events);
         FMLCommonHandler.instance().bus().register(events);

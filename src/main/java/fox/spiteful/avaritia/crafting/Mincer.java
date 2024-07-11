@@ -85,7 +85,6 @@ public class Mincer {
 
         List<String> rawCrops = new ArrayList<String>();
         List<String> crops = new ArrayList<String>();
-        List<String> meatNames = new ArrayList<String>();
         List<String> rawMeats = new ArrayList<String>();
         List<String> meats = new ArrayList<String>();
 

@@ -120,18 +120,6 @@ public class TonkersEvents {
         }
     }
 
-    /*
-     * @SubscribeEvent public void onLivingUpdate(LivingUpdateEvent event) { ItemStack held =
-     * event.entityLiving.getHeldItem(); if (held != null && held.hasTagCompound() && held.getItem() instanceof
-     * ToolCore) { ToolCore tool = (ToolCore)held.getItem(); NBTTagCompound toolTag =
-     * held.getTagCompound().getCompoundTag("InfiTool"); int chance = 0; int per = 1; if (toolTag.getInteger("Head") ==
-     * Tonkers.infinityMetalId) { chance += per; } if (toolTag.getInteger("Handle") == Tonkers.infinityMetalId) { chance
-     * += per; } if (toolTag.getInteger("Accessory") == Tonkers.infinityMetalId) { chance += per; } if
-     * (toolTag.getInteger("Extra") == Tonkers.infinityMetalId) { chance += per; } if (randy.nextInt(60) < chance) {
-     * AbilityHelper.healTool(held, MathHelper.floor_float(tool.getDurabilityModifier()), event.entityLiving, true); } }
-     * }
-     */
-
     // bedrock SMASH!
     @SubscribeEvent
     public void onPlayerMine(PlayerInteractEvent event) {

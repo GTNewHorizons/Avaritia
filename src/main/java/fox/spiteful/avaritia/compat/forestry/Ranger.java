@@ -36,7 +36,6 @@ public class Ranger {
         comb = Compat.getItem("Forestry", "beeCombs");
         honey = Compat.getItem("Forestry", "honeyDrop");
         honeydew = Compat.getItem("Forestry", "honeydew");
-        Item panel = Compat.getItem("Forestry", "craftingMaterial");
 
         if (!Config.bees) return;
 
