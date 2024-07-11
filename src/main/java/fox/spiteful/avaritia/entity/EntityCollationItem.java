@@ -128,7 +128,7 @@ public class EntityCollationItem extends EntityItem {
                         EntityPlayer entityplayer1 = this.worldObj.getPlayerEntityByName(this.func_145800_j());
 
                         if (entityplayer1 != null && entityplayer1 != player) {
-                         // "Diamonds to you!" achievement
+                            // "Diamonds to you!" achievement
                             entityplayer1.triggerAchievement(AchievementList.field_150966_x);
                         }
                     }

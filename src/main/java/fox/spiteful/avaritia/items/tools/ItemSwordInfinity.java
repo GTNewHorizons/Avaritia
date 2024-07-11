@@ -1,7 +1,5 @@
 package fox.spiteful.avaritia.items.tools;
 
-import java.lang.reflect.Field;
-
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -14,14 +12,10 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.EnumHelper;
 
-import org.apache.logging.log4j.Level;
-
-import cpw.mods.fml.relauncher.ReflectionHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import fox.spiteful.avaritia.Avaritia;
 import fox.spiteful.avaritia.DamageSourceInfinitySword;
-import fox.spiteful.avaritia.Lumberjack;
 import fox.spiteful.avaritia.achievements.Achievements;
 import fox.spiteful.avaritia.compat.Belmont;
 import fox.spiteful.avaritia.entity.EntityImmortalItem;
@@ -34,17 +28,6 @@ public class ItemSwordInfinity extends ItemSword implements ICosmicRenderItem {
             .addToolMaterial("INFINITY_SWORD", 32, 9999, 9999F, -3.0F, 200);
     private IIcon cosmicMask;
     private IIcon pommel;
-
-    public static Field stupidMojangProtectedVariable;
-
-    static {
-        try {
-            stupidMojangProtectedVariable = ReflectionHelper
-                    .findField(EntityLivingBase.class, "recentlyHit", "field_70718_bc");
-        } catch (Exception e) {
-            Lumberjack.log(Level.ERROR, e);
-        }
-    }
 
     public ItemSwordInfinity() {
         super(opSword);
@@ -70,11 +53,7 @@ public class ItemSwordInfinity extends ItemSword implements ICosmicRenderItem {
                 return true;
         }
 
-        try {
-            stupidMojangProtectedVariable.setInt(victim, 60);
-        } catch (Exception e) {
-            Lumberjack.log(Level.ERROR, e, "The sword isn't reflecting right! Polish it!");
-        }
+        victim.recentlyHit = 60;
         victim.func_110142_aN() // getCombatTracker
                 .func_94547_a(new DamageSourceInfinitySword(player), victim.getHealth(), victim.getHealth());
         victim.setHealth(0);

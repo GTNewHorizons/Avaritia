@@ -1,25 +1,16 @@
 package fox.spiteful.avaritia.render;
 
-import java.lang.reflect.Field;
-
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.world.World;
 
-import org.apache.logging.log4j.Level;
 import org.lwjgl.opengl.ARBShaderObjects;
-
-import cpw.mods.fml.relauncher.ReflectionHelper;
-import fox.spiteful.avaritia.Lumberjack;
 
 public class CosmicRenderShenanigans {
 
     public static final ShaderCallback shaderCallback;
 
     public static float[] lightlevel = new float[3];
-
-    public static String[] lightmapobf = new String[] { "lightmapColors", "field_78504_Q", "U" };
     public static boolean inventoryRender = false;
     public static float cosmicOpacity = 1.0f;
 
@@ -76,8 +67,6 @@ public class CosmicRenderShenanigans {
         ShaderHelper.releaseShader();
     }
 
-    private static Field mapfield = ReflectionHelper.findField(EntityRenderer.class, lightmapobf);
-
     public static void setLightFromLocation(World world, int x, int y, int z) {
         if (world == null) {
             setLightLevel(1.0f);
@@ -86,12 +75,7 @@ public class CosmicRenderShenanigans {
 
         int coord = world.getLightBrightnessForSkyBlocks(x, y, z, 0);
 
-        int[] map = null;
-        try {
-            map = (int[]) mapfield.get(Minecraft.getMinecraft().entityRenderer);
-        } catch (Exception e) {
-            Lumberjack.log(Level.ERROR, e, "Failure to get light map");
-        }
+        int[] map = Minecraft.getMinecraft().entityRenderer.lightmapColors;
         if (map == null) {
             setLightLevel(1.0f);
             return;

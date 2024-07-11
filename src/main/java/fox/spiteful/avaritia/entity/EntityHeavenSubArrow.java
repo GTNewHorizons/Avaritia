@@ -30,7 +30,7 @@ public class EntityHeavenSubArrow extends EntityArrow {
         this.rotationYaw = 0;
         super.onUpdate();
 
-        if (EntityHeavenArrow.getInGround(this) && EntityHeavenArrow.getTicksInGround(this) >= 20) {
+        if (this.inGround && this.ticksInGround >= 20) {
             this.setDead();
         }
     }
