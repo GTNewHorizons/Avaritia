@@ -110,6 +110,7 @@ public class ItemArmorInfinity extends ItemArmor implements ICosmicRenderItem, I
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemstack, int armorSlot) {
         ModelArmorInfinity model = armorSlot == 2 ? ModelArmorInfinity.legModel : ModelArmorInfinity.armorModel;
 
