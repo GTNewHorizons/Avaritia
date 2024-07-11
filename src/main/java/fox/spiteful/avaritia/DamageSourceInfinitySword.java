@@ -21,9 +21,7 @@ public class DamageSourceInfinitySword extends EntityDamageSource {
         String s = "death.attack.infinity";
         int rando = randy.nextInt(5);
         if (rando != 0) s = s + "." + rando;
-        return new ChatComponentTranslation(
-                s,
-                p_151519_1_.func_145748_c_(), this.damageSourceEntity.func_145748_c_());
+        return new ChatComponentTranslation(s, p_151519_1_.func_145748_c_(), this.damageSourceEntity.func_145748_c_());
     }
 
     @Override

@@ -38,7 +38,8 @@ public class InfiniteFoxes {
     public static void grabReflections() {
         try {
             @SuppressWarnings("rawtypes")
-            Class<? extends Enum> c_PartType = (Class<? extends Enum>) Class.forName("kihira.tails.common.PartsData$PartType");
+            Class<? extends Enum> c_PartType = (Class<? extends Enum>) Class
+                    .forName("kihira.tails.common.PartsData$PartType");
             Class<?> c_PartInfo = Class.forName("kihira.tails.common.PartInfo");
 
             // Setup Info

@@ -60,8 +60,8 @@ public class Compat {
         am2 = Loader.isModLoaded("arsmagica2") && Config.am2;
         forestry = Loader.isModLoaded("Forestry") && Config.forestry;
         te = Loader.isModLoaded("ThermalExpansion") && Config.te;
-        
-        if(thaumic) {
+
+        if (thaumic) {
             Lucrum.initTermination();
         }
     }

@@ -156,7 +156,8 @@ public class EntityGapingVoid extends Entity {
                 this.posX + nomrange,
                 this.posY + nomrange,
                 this.posZ + nomrange);
-        List<EntityLivingBase> nommed = this.worldObj.selectEntitiesWithinAABB(EntityLivingBase.class, nomzone, nomlector);
+        List<EntityLivingBase> nommed = this.worldObj
+                .selectEntitiesWithinAABB(EntityLivingBase.class, nomzone, nomlector);
 
         for (EntityLivingBase nommee : nommed) {
             double dx = this.posX - nommee.posX;

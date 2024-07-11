@@ -29,7 +29,7 @@ public class Lucrum {
 
     public static WandRod WAND_ROD_NEUTRONIUM;
     public static WandCap WAND_CAP_CRYSTAL;
-    
+
     public static void initTermination() {
         ULTRA_DEATH = new Aspect(
                 "terminus",
