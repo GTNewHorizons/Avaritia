@@ -37,7 +37,6 @@ public class ItemSingularity extends Item implements IHaloRenderItem {
         this.setCreativeTab(Avaritia.tab);
     }
 
-    @SideOnly(Side.CLIENT)
     @Override
     public int getColorFromItemStack(ItemStack itemstack, int renderpass) {
         // System.out.println(foreground);
@@ -52,10 +51,8 @@ public class ItemSingularity extends Item implements IHaloRenderItem {
         return "item.singularity_" + types[i];
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    @SideOnly(Side.CLIENT)
     @Override
-    public void getSubItems(Item item, CreativeTabs tab, List list) {
+    public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
         for (int j = 0; j < types.length; ++j) {
             list.add(new ItemStack(item, 1, j));
         }
@@ -76,7 +73,6 @@ public class ItemSingularity extends Item implements IHaloRenderItem {
         return foreground;
     }
 
-    @SideOnly(Side.CLIENT)
     @Override
     public boolean requiresMultipleRenderPasses() {
         return true;
@@ -88,9 +84,8 @@ public class ItemSingularity extends Item implements IHaloRenderItem {
         return EnumRarity.uncommon;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public void addInformation(ItemStack item, EntityPlayer player, List tooltip, boolean wut) {
+    public void addInformation(ItemStack item, EntityPlayer player, List<String> tooltip, boolean wut) {
 
         int meta = item.getItemDamage();
         if (meta == 11) {
@@ -101,32 +96,27 @@ public class ItemSingularity extends Item implements IHaloRenderItem {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public boolean drawHalo(ItemStack stack) {
         return true;
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public IIcon getHaloTexture(ItemStack stack) {
         return ((ItemResource) LudicrousItems.resource).halo[0];
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public int getHaloSize(ItemStack stack) {
         if (stack.getItemDamage() == 10) return 8;
         return 4;
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public boolean drawPulseEffect(ItemStack stack) {
         return false;
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public int getHaloColour(ItemStack stack) {
         return 0xFF000000;
     }

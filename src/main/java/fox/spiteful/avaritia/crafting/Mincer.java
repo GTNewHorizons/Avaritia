@@ -330,6 +330,7 @@ public class Mincer {
             this.count = count;
         }
 
+        @Override
         public String toString() {
             return this.orename + ": " + this.count;
         }

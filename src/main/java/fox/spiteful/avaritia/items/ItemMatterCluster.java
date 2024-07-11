@@ -49,6 +49,7 @@ public class ItemMatterCluster extends Item implements ICosmicRenderItem {
         this.setTextureName("avaritia:mattercluster");
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister ir) {
         super.registerIcons(ir);
@@ -64,9 +65,8 @@ public class ItemMatterCluster extends Item implements ICosmicRenderItem {
         return LudicrousItems.cosmic;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, List tooltip, boolean debug) {
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean debug) {
         if (!stack.hasTagCompound() || !stack.getTagCompound().hasKey(MAINTAG)) {
             return;
         }
@@ -267,7 +267,6 @@ public class ItemMatterCluster extends Item implements ICosmicRenderItem {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public IIcon getMaskTexture(ItemStack stack, EntityPlayer player) {
         int count = getClusterSize(stack);
         if (count == capacity) {
@@ -277,7 +276,6 @@ public class ItemMatterCluster extends Item implements ICosmicRenderItem {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public float getMaskMultiplier(ItemStack stack, EntityPlayer player) {
         int count = getClusterSize(stack);
         return count / (float) capacity;
@@ -293,7 +291,6 @@ public class ItemMatterCluster extends Item implements ICosmicRenderItem {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public IIcon getIconIndex(ItemStack stack) {
         return this.getIcon(stack, 0);
     }

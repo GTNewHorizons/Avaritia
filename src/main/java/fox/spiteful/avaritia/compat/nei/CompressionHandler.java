@@ -128,7 +128,7 @@ public class CompressionHandler extends TemplateRecipeHandler {
 
     private boolean safeOre(CompressorRecipe recipe) {
         if (!(recipe instanceof CompressOreRecipe)) return true;
-        return !((ArrayList) recipe.getIngredient()).isEmpty();
+        return !((ArrayList<?>) recipe.getIngredient()).isEmpty();
     }
 
     @Override
@@ -136,7 +136,6 @@ public class CompressionHandler extends TemplateRecipeHandler {
         return "avaritia:textures/gui/compressor.png";
     }
 
-    @SideOnly(Side.CLIENT)
     @Override
     public void drawForeground(int recipe) {
         super.drawForeground(recipe);

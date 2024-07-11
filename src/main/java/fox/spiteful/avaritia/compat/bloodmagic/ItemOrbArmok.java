@@ -46,7 +46,7 @@ public class ItemOrbArmok extends Item implements IBloodOrb, IBindable {
     }
 
     @Override
-    public void addInformation(ItemStack item, EntityPlayer player, List tooltip, boolean wut) {
+    public void addInformation(ItemStack item, EntityPlayer player, List<String> tooltip, boolean wut) {
         tooltip.add(StatCollector.translateToLocal("tooltip.armok.desc"));
         if (item.getTagCompound() != null) {
             tooltip.add(

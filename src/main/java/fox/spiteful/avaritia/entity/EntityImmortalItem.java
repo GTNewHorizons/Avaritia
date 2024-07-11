@@ -130,14 +130,12 @@ public class EntityImmortalItem extends EntityItem {
         }
     }
 
-    // GODDAMNIT MOJANG
-    @SuppressWarnings("rawtypes")
     private void searchForOtherItemsNearby2() {
-        Iterator iterator = this.worldObj
+        Iterator<EntityItem> iterator = this.worldObj
                 .getEntitiesWithinAABB(EntityItem.class, this.boundingBox.expand(0.5D, 0.0D, 0.5D)).iterator();
 
         while (iterator.hasNext()) {
-            EntityItem entityitem = (EntityItem) iterator.next();
+            EntityItem entityitem = iterator.next();
             this.combineItems(entityitem);
         }
     }

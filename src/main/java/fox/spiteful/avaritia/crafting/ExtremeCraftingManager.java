@@ -3,6 +3,7 @@ package fox.spiteful.avaritia.crafting;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.minecraft.block.Block;
 import net.minecraft.inventory.InventoryCrafting;
@@ -19,7 +20,7 @@ public class ExtremeCraftingManager {
     /** The static instance of this class */
     private static final ExtremeCraftingManager instance = new ExtremeCraftingManager();
     /** A list of all the recipes added */
-    private List recipes = new ArrayList();
+    private List<IRecipe> recipes = new ArrayList<>();
 
     /**
      * Returns the static instance of this class
@@ -53,18 +54,18 @@ public class ExtremeCraftingManager {
             }
         }
 
-        HashMap hashmap;
+        Map<Character, ItemStack> hashmap;
 
-        for (hashmap = new HashMap(); i < recipe.length; i += 2) {
+        for (hashmap = new HashMap<>(); i < recipe.length; i += 2) {
             Character character = (Character) recipe[i];
             ItemStack itemstack1 = null;
 
-            if (recipe[i + 1] instanceof Item) {
-                itemstack1 = new ItemStack((Item) recipe[i + 1]);
-            } else if (recipe[i + 1] instanceof Block) {
-                itemstack1 = new ItemStack((Block) recipe[i + 1], 1, 32767);
-            } else if (recipe[i + 1] instanceof ItemStack) {
-                itemstack1 = (ItemStack) recipe[i + 1];
+            if (recipe[i + 1] instanceof Item item) {
+                itemstack1 = new ItemStack(item);
+            } else if (recipe[i + 1] instanceof Block block) {
+                itemstack1 = new ItemStack(block, 1, 32767);
+            } else if (recipe[i + 1] instanceof ItemStack stack) {
+                itemstack1 = stack;
             }
 
             hashmap.put(character, itemstack1);
@@ -76,7 +77,7 @@ public class ExtremeCraftingManager {
             char c0 = s.charAt(i1);
 
             if (hashmap.containsKey(Character.valueOf(c0))) {
-                ingredients[i1] = ((ItemStack) hashmap.get(Character.valueOf(c0))).copy();
+                ingredients[i1] = hashmap.get(Character.valueOf(c0)).copy();
             } else {
                 ingredients[i1] = null;
             }
@@ -131,23 +132,23 @@ public class ExtremeCraftingManager {
     }
 
     public ExtremeShapelessRecipe addShapelessRecipe(ItemStack result, Object... ingredients) {
-        ArrayList arraylist = new ArrayList();
+        List<ItemStack> arraylist = new ArrayList<>();
         Object[] aobject = ingredients;
         int i = ingredients.length;
 
         for (int j = 0; j < i; ++j) {
             Object object1 = aobject[j];
 
-            if (object1 instanceof ItemStack) {
-                arraylist.add(((ItemStack) object1).copy());
-            } else if (object1 instanceof Item) {
-                arraylist.add(new ItemStack((Item) object1));
+            if (object1 instanceof ItemStack stack) {
+                arraylist.add(stack.copy());
+            } else if (object1 instanceof Item item) {
+                arraylist.add(new ItemStack(item));
             } else {
-                if (!(object1 instanceof Block)) {
+                if (!(object1 instanceof Block block)) {
                     throw new RuntimeException("Invalid shapeless recipy!");
                 }
 
-                arraylist.add(new ItemStack((Block) object1));
+                arraylist.add(new ItemStack(block));
             }
         }
 
@@ -201,7 +202,7 @@ public class ExtremeCraftingManager {
             return new ItemStack(itemstack.getItem(), 1, i1);
         } else {
             for (j = 0; j < this.recipes.size(); ++j) {
-                IRecipe irecipe = (IRecipe) this.recipes.get(j);
+                IRecipe irecipe = this.recipes.get(j);
 
                 if (irecipe.matches(matrix, world)) {
                     return irecipe.getCraftingResult(matrix);
@@ -215,7 +216,7 @@ public class ExtremeCraftingManager {
     /**
      * returns the List<> of all recipes
      */
-    public List getRecipeList() {
+    public List<IRecipe> getRecipeList() {
         return this.recipes;
     }
 }

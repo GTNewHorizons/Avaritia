@@ -34,20 +34,22 @@ public class BlockResource extends Block {
         setCreativeTab(Avaritia.tab);
     }
 
-    @SideOnly(Side.CLIENT)
+    @Override
     public IIcon getIcon(int side, int metadata) {
         return this.icons[metadata % types.length];
     }
 
+    @Override
     public int damageDropped(int metadata) {
         return metadata;
     }
 
-    @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item item, CreativeTabs tab, List list) {
+    @Override
+    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
         for (int x = 0; x < types.length; x++) list.add(new ItemStack(item, 1, x));
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister iconRegister) {
         this.icons = new IIcon[types.length];

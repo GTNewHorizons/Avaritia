@@ -19,7 +19,6 @@ public class TileInfinitato extends TileLudicrous {
     public String name = "";
     public int nextDoIt = 0;
 
-    @SuppressWarnings("unchecked")
     public void interact() {
         jump();
         if (name.equalsIgnoreCase("shia labeouf") && !worldObj.isRemote && nextDoIt == 0) {

@@ -56,6 +56,7 @@ public class ItemShovelInfinity extends ItemSpade {
         return Math.max(func_150893_a(stack, block), 1.0F);
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister ir) {
 
@@ -73,7 +74,6 @@ public class ItemShovelInfinity extends ItemSpade {
         return itemIcon;
     }
 
-    @SideOnly(Side.CLIENT)
     @Override
     public IIcon getIconIndex(ItemStack stack) {
         return getIcon(stack, 0);
@@ -152,7 +152,6 @@ public class ItemShovelInfinity extends ItemSpade {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public boolean hasEffect(ItemStack par1ItemStack, int pass) {
         return false;
     }

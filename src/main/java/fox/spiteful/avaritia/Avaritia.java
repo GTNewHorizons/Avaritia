@@ -13,8 +13,6 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import fox.spiteful.avaritia.achievements.Achievements;
 import fox.spiteful.avaritia.blocks.LudicrousBlocks;
 import fox.spiteful.avaritia.compat.Compat;
@@ -44,13 +42,11 @@ public class Avaritia {
     public static CreativeTabs tab = new CreativeTabs("avaritia") {
 
         @Override
-        @SideOnly(Side.CLIENT)
         public Item getTabIconItem() {
             return LudicrousItems.resource;
         }
 
         @Override
-        @SideOnly(Side.CLIENT)
         public int func_151243_f() {
             return 5;
         }

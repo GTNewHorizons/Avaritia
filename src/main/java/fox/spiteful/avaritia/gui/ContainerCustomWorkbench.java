@@ -20,6 +20,7 @@ public class ContainerCustomWorkbench extends ContainerWorkbench {
         worldObj = world;
     }
 
+    @Override
     public boolean canInteractWith(EntityPlayer player) {
         return this.worldObj.isAirBlock(this.posX, this.posY, this.posZ) ? false
                 : player.getDistanceSq((double) this.posX + 0.5D, (double) this.posY + 0.5D, (double) this.posZ + 0.5D)

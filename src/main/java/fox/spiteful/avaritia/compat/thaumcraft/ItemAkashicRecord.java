@@ -10,8 +10,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import fox.spiteful.avaritia.Avaritia;
 import fox.spiteful.avaritia.compat.Compat;
 import thaumcraft.api.aspects.Aspect;
@@ -49,10 +47,8 @@ public class ItemAkashicRecord extends Item {
         return stack;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    @SideOnly(Side.CLIENT)
     @Override
-    public void getSubItems(Item item, CreativeTabs tab, List list) {
+    public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
         super.getSubItems(item, tab, list);
         try {
             Item wand = Compat.getItem("Thaumcraft", "WandCasting");

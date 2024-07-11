@@ -31,6 +31,7 @@ public class ContainerCompressor extends Container {
         }
     }
 
+    @Override
     public boolean canInteractWith(EntityPlayer player) {
         return this.compressor.isUseableByPlayer(player);
     }
@@ -38,6 +39,7 @@ public class ContainerCompressor extends Container {
     /**
      * Called when a player shift-clicks on a slot. You must override this or you will crash when someone does that.
      */
+    @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int slotNumber) {
         ItemStack itemstack = null;
         Slot slot = (Slot) this.inventorySlots.get(slotNumber);

@@ -27,9 +27,7 @@ public class ItemResource extends Item implements IHaloRenderItem {
             "neutron_nugget", "neutronium_ingot", "infinity_catalyst", "infinity_ingot", "record_fragment", "starfuel",
             "neutronium_gear" };
 
-    @SideOnly(Side.CLIENT)
     public IIcon[] icons;
-    @SideOnly(Side.CLIENT)
     public IIcon[] halo;
 
     public ItemResource() {
@@ -39,6 +37,7 @@ public class ItemResource extends Item implements IHaloRenderItem {
         this.setCreativeTab(Avaritia.tab);
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister ir) {
         icons = new IIcon[types.length];
@@ -52,9 +51,8 @@ public class ItemResource extends Item implements IHaloRenderItem {
         halo[1] = ir.registerIcon("avaritia:halonoise");
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public void addInformation(ItemStack item, EntityPlayer player, List tooltip, boolean wut) {
+    public void addInformation(ItemStack item, EntityPlayer player, List<String> tooltip, boolean wut) {
 
         int meta = item.getItemDamage();
         if (meta != 0 && meta < 8) {
@@ -65,7 +63,7 @@ public class ItemResource extends Item implements IHaloRenderItem {
         }
     }
 
-    @SideOnly(Side.CLIENT)
+    @Override
     public IIcon getIconFromDamage(int dam) {
         return this.icons[dam % icons.length];
     }
@@ -76,10 +74,8 @@ public class ItemResource extends Item implements IHaloRenderItem {
         return super.getUnlocalizedName() + "." + types[i];
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    @SideOnly(Side.CLIENT)
     @Override
-    public void getSubItems(Item item, CreativeTabs tab, List list) {
+    public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
         for (int j = 0; j < types.length; ++j) {
             list.add(new ItemStack(item, 1, j));
         }
@@ -107,14 +103,12 @@ public class ItemResource extends Item implements IHaloRenderItem {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public boolean drawHalo(ItemStack stack) {
         int meta = stack.getItemDamage();
         return (meta >= 2 && meta <= 6) || meta >= 8;
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public IIcon getHaloTexture(ItemStack stack) {
         int meta = stack.getItemDamage();
         if (meta == 2 || meta == 3 || meta == 4 || meta == 9) {
@@ -124,7 +118,6 @@ public class ItemResource extends Item implements IHaloRenderItem {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public int getHaloSize(ItemStack stack) {
         int meta = stack.getItemDamage();
         switch (meta) {
@@ -136,14 +129,12 @@ public class ItemResource extends Item implements IHaloRenderItem {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public boolean drawPulseEffect(ItemStack stack) {
         int meta = stack.getItemDamage();
         return meta == 5 || meta == 6;
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public int getHaloColour(ItemStack stack) {
         int meta = stack.getItemDamage();
         if (meta == 2) {
