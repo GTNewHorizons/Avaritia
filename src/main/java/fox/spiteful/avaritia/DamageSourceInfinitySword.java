@@ -17,10 +17,11 @@ public class DamageSourceInfinitySword extends EntityDamageSource {
     }
 
     @Override
-    public IChatComponent func_151519_b(EntityLivingBase p_151519_1_) {
+    public IChatComponent func_151519_b(EntityLivingBase p_151519_1_) { // getDeathMessage
         String s = "death.attack.infinity";
         int rando = randy.nextInt(5);
         if (rando != 0) s = s + "." + rando;
+        // func_145748_c_ = getFormattedCommandSenderName
         return new ChatComponentTranslation(s, p_151519_1_.func_145748_c_(), this.damageSourceEntity.func_145748_c_());
     }
 

@@ -71,7 +71,7 @@ public class ItemPickaxeInfinity extends ItemPickaxe {
         if (ForgeHooks.isToolEffective(stack, block, meta)) {
             return efficiencyOnProperMaterial;
         }
-        return Math.max(func_150893_a(stack, block), 6.0F);
+        return Math.max(func_150893_a(stack, block), 6.0F); // getStrVsBlock
     }
 
     @Override

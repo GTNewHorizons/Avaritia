@@ -75,7 +75,7 @@ public class ItemSwordInfinity extends ItemSword implements ICosmicRenderItem {
         } catch (Exception e) {
             Lumberjack.log(Level.ERROR, e, "The sword isn't reflecting right! Polish it!");
         }
-        victim.func_110142_aN()
+        victim.func_110142_aN() // getCombatTracker
                 .func_94547_a(new DamageSourceInfinitySword(player), victim.getHealth(), victim.getHealth());
         victim.setHealth(0);
         if (Belmont.isVampire(victim)) victim.onDeath(new EntityDamageSource("infinity", player).setFireDamage());
@@ -90,7 +90,7 @@ public class ItemSwordInfinity extends ItemSword implements ICosmicRenderItem {
             if (victim.capabilities.isCreativeMode && !victim.isDead
                     && victim.getHealth() > 0
                     && !LudicrousItems.isInfinite(victim)) {
-                victim.func_110142_aN()
+                victim.func_110142_aN() // getCombatTracker
                         .func_94547_a(new DamageSourceInfinitySword(player), victim.getHealth(), victim.getHealth());
                 victim.setHealth(0);
                 victim.onDeath(new EntityDamageSource("infinity", player));

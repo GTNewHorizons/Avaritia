@@ -217,7 +217,7 @@ public class FracturedOreRenderer implements IItemRenderer {
             Item oreitem = orestack.getItem();
             if (oreitem instanceof ItemBlock) {
                 ItemBlock ib = (ItemBlock) oreitem;
-                Block b = ib.field_150939_a;
+                Block b = ib.field_150939_a; // blockInstance
 
                 if (b instanceof ITileEntityProvider) {
                     unknown = true;

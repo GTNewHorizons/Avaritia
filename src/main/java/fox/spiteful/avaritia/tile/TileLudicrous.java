@@ -34,7 +34,7 @@ public class TileLudicrous extends TileEntity {
     @Override
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {
         super.onDataPacket(net, packet);
-        readCustomNBT(packet.func_148857_g());
+        readCustomNBT(packet.func_148857_g()); // getNbtCompound
     }
 
 }

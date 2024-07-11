@@ -106,7 +106,7 @@ public class BlockDireCrafting extends BlockContainer {
                     }
                 }
 
-                world.func_147453_f(x, y, z, block);
+                world.func_147453_f(x, y, z, block); // updateNeighborsAboutBlockChange
             }
         }
 

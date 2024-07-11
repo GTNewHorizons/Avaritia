@@ -47,7 +47,7 @@ public class Avaritia {
         }
 
         @Override
-        public int func_151243_f() {
+        public int func_151243_f() { // getIconItemDamage
             return 5;
         }
     };

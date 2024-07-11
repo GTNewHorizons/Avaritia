@@ -142,7 +142,7 @@ public class ItemFracturedOre extends Item {
 
                 ItemStack smeltingResult = FurnaceRecipes.smelting().getSmeltingResult(orestack);
                 if (smeltingResult != null) {
-                    float exp = FurnaceRecipes.smelting().func_151398_b(orestack);
+                    float exp = FurnaceRecipes.smelting().func_151398_b(orestack); // getSmeltingExperience
                     // Lumberjack.info("Registering "+stack+" to smelt to "+smeltingResult+" for "+exp+" experience");
                     GameRegistry.addSmelting(stack, smeltingResult, exp);
                 }
