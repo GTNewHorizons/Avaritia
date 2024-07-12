@@ -52,7 +52,6 @@ public enum GreedyBeeSpecies implements IAlleleBeeSpecies, IIconProvider {
     private String authority;
     private EnumTemperature temperature = EnumTemperature.NORMAL;
     private EnumHumidity humidity = EnumHumidity.NORMAL;
-    private boolean hasEffect;
     private boolean isSecret;
     private boolean isCounted = true;
     private boolean fancy;

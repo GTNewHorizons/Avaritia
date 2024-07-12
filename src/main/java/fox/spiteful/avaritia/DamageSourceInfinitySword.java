@@ -4,7 +4,6 @@ import java.util.Random;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.IChatComponent;
@@ -17,16 +16,13 @@ public class DamageSourceInfinitySword extends EntityDamageSource {
         super("infinity", source);
     }
 
-    public IChatComponent func_151519_b(EntityLivingBase p_151519_1_) {
-        ItemStack itemstack = this.damageSourceEntity instanceof EntityLivingBase
-                ? ((EntityLivingBase) this.damageSourceEntity).getHeldItem()
-                : null;
+    @Override
+    public IChatComponent func_151519_b(EntityLivingBase p_151519_1_) { // getDeathMessage
         String s = "death.attack.infinity";
         int rando = randy.nextInt(5);
         if (rando != 0) s = s + "." + rando;
-        return new ChatComponentTranslation(
-                s,
-                new Object[] { p_151519_1_.func_145748_c_(), this.damageSourceEntity.func_145748_c_() });
+        // func_145748_c_ = getFormattedCommandSenderName
+        return new ChatComponentTranslation(s, p_151519_1_.func_145748_c_(), this.damageSourceEntity.func_145748_c_());
     }
 
     @Override

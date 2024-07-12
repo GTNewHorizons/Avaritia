@@ -12,11 +12,6 @@ import fox.spiteful.avaritia.items.LudicrousItems;
 
 public class AchievementTrigger {
 
-    /*
-     * @SubscribeEvent public void onItemPickedUp(PlayerEvent.ItemPickupEvent event) { ItemStack stack =
-     * event.pickedUp.getEntityItem(); }
-     */
-
     @SubscribeEvent
     public void onItemCrafted(PlayerEvent.ItemCraftedEvent event) {
         if (event.crafting != null) {

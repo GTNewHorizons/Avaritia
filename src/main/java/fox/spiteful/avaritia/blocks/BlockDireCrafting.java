@@ -43,7 +43,6 @@ public class BlockDireCrafting extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int metadata) {
         if (side == 0) return bottom;
         if (side == 1) return top;
@@ -66,6 +65,7 @@ public class BlockDireCrafting extends BlockContainer {
         return new TileEntityDireCrafting();
     }
 
+    @Override
     public void breakBlock(World world, int x, int y, int z, Block block, int wut) {
         TileEntityDireCrafting craft = (TileEntityDireCrafting) world.getTileEntity(x, y, z);
 
@@ -106,7 +106,7 @@ public class BlockDireCrafting extends BlockContainer {
                     }
                 }
 
-                world.func_147453_f(x, y, z, block);
+                world.func_147453_f(x, y, z, block); // updateNeighborsAboutBlockChange
             }
         }
 

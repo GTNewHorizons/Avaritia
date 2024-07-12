@@ -75,6 +75,7 @@ public class ExtremeShapelessRecipeHandler extends ShapelessRecipeHandler {
         public PositionedStack result;
     }
 
+    @Override
     public String getRecipeName() {
         return StatCollector.translateToLocal("crafting.extreme.shapeless");
     }

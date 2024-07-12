@@ -60,6 +60,7 @@ public class ContainerExtremeCrafting extends Container {
     /**
      * Callback for when the crafting matrix is changed.
      */
+    @Override
     public void onCraftMatrixChanged(IInventory matrix) {
         this.craftResult.setInventorySlotContents(
                 0,
@@ -69,11 +70,13 @@ public class ContainerExtremeCrafting extends Container {
     /**
      * Called when the container is closed.
      */
+    @Override
     public void onContainerClosed(EntityPlayer player) {
         super.onContainerClosed(player);
 
     }
 
+    @Override
     public boolean canInteractWith(EntityPlayer player) {
         return this.worldObj.getBlock(this.posX, this.posY, this.posZ) == LudicrousBlocks.dire_crafting
                 && player.getDistanceSq((double) this.posX + 0.5D, (double) this.posY + 0.5D, (double) this.posZ + 0.5D)
@@ -83,6 +86,7 @@ public class ContainerExtremeCrafting extends Container {
     /**
      * Called when a player shift-clicks on a slot. You must override this or you will crash when someone does that.
      */
+    @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int slotNumber) {
         ItemStack itemstack = null;
         Slot slot = (Slot) this.inventorySlots.get(slotNumber);

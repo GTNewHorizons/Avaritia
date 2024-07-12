@@ -13,6 +13,7 @@ public class ItemBlockWithMetadataUnderp extends ItemBlockWithMetadata {
     @Override
     public String getUnlocalizedName(ItemStack stack) {
         int meta = stack.getItemDamage();
+        // field_150939_a = blockInstance
         return this.field_150939_a.getUnlocalizedName() + meta;
     }
 }

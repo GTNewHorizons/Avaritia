@@ -14,9 +14,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 public class EntityGapingVoid extends Entity {
 
     private static Random randy = new Random();
@@ -76,7 +73,6 @@ public class EntityGapingVoid extends Entity {
         dataWatcher.setObjectWatched(12);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void onUpdate() {
         super.onUpdate();
@@ -160,20 +156,19 @@ public class EntityGapingVoid extends Entity {
                 this.posX + nomrange,
                 this.posY + nomrange,
                 this.posZ + nomrange);
-        List<Entity> nommed = this.worldObj.selectEntitiesWithinAABB(EntityLivingBase.class, nomzone, nomlector);
+        List<EntityLivingBase> nommed = this.worldObj
+                .selectEntitiesWithinAABB(EntityLivingBase.class, nomzone, nomlector);
 
-        for (Entity nommee : nommed) {
-            if (nommee != this) {
-                double dx = this.posX - nommee.posX;
-                double dy = this.posY - nommee.posY;
-                double dz = this.posZ - nommee.posZ;
+        for (EntityLivingBase nommee : nommed) {
+            double dx = this.posX - nommee.posX;
+            double dy = this.posY - nommee.posY;
+            double dz = this.posZ - nommee.posZ;
 
-                double lensquared = dx * dx + dy * dy + dz * dz;
-                double len = Math.sqrt(lensquared);
+            double lensquared = dx * dx + dy * dy + dz * dz;
+            double len = Math.sqrt(lensquared);
 
-                if (len <= nomrange) {
-                    nommee.attackEntityFrom(DamageSource.outOfWorld, 3.0f);
-                }
+            if (len <= nomrange) {
+                nommee.attackEntityFrom(DamageSource.outOfWorld, 3.0f);
             }
         }
 
@@ -257,7 +252,6 @@ public class EntityGapingVoid extends Entity {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public float getShadowSize() {
         return 0.0F;
     }

@@ -69,6 +69,7 @@ public class EntityImmortalItem extends EntityItem {
             this.prevPosY = this.posY;
             this.prevPosZ = this.posZ;
             this.motionY -= 0.03999999910593033D;
+            // func_145771_j = pushOutOfBlocks
             this.noClip = this
                     .func_145771_j(this.posX, (this.boundingBox.minY + this.boundingBox.maxY) / 2.0D, this.posZ);
             this.moveEntity(this.motionX, this.motionY, this.motionZ);
@@ -130,14 +131,12 @@ public class EntityImmortalItem extends EntityItem {
         }
     }
 
-    // GODDAMNIT MOJANG
-    @SuppressWarnings("rawtypes")
     private void searchForOtherItemsNearby2() {
-        Iterator iterator = this.worldObj
+        Iterator<EntityItem> iterator = this.worldObj
                 .getEntitiesWithinAABB(EntityItem.class, this.boundingBox.expand(0.5D, 0.0D, 0.5D)).iterator();
 
         while (iterator.hasNext()) {
-            EntityItem entityitem = (EntityItem) iterator.next();
+            EntityItem entityitem = iterator.next();
             this.combineItems(entityitem);
         }
     }

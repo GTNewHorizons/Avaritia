@@ -20,12 +20,9 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import fox.spiteful.avaritia.items.ItemArmorInfinity;
 import fox.spiteful.avaritia.items.LudicrousItems;
 
-@SideOnly(Side.CLIENT)
 public class ModelArmorInfinity extends ModelBiped {
 
     public static final ModelArmorInfinity armorModel = new ModelArmorInfinity(1.0f);
@@ -95,12 +92,11 @@ public class ModelArmorInfinity extends ModelBiped {
         return this;
     }
 
-    @SuppressWarnings("rawtypes")
     public void rebuildWings() {
 
         // remove the old items from the list so that the new ones don't just stack up
         if (this.bipedBody.childModels == null) {
-            this.bipedBody.childModels = new ArrayList();
+            this.bipedBody.childModels = new ArrayList<>();
         }
         if (this.bipedLeftWing != null) {
             this.bipedBody.childModels.remove(this.bipedLeftWing);
@@ -423,7 +419,6 @@ public class ModelArmorInfinity extends ModelBiped {
             this.expand = expand;
         }
 
-        @SuppressWarnings("rawtypes")
         public void rebuild(IIcon icon, IIcon wingicon) {
             int ox = MathHelper.floor_float(icon.getMinU() * itempagewidth);
             int oy = MathHelper.floor_float(icon.getMinV() * itempageheight);
@@ -467,7 +462,7 @@ public class ModelArmorInfinity extends ModelBiped {
                 int oyw = MathHelper.floor_float(wingicon.getMinV() * itempageheight);
 
                 if (this.bipedBody.childModels == null) {
-                    this.bipedBody.childModels = new ArrayList();
+                    this.bipedBody.childModels = new ArrayList<>();
                 }
                 if (this.bipedLeftWing != null) {
                     this.bipedBody.childModels.remove(this.bipedLeftWing);

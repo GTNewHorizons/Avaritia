@@ -90,7 +90,7 @@ public class EntityCollationItem extends EntityItem {
                 return;
             }
 
-            String owner = this.func_145798_i();
+            String owner = this.func_145798_i(); // getOwner
 
             ItemStack basestack = this.getEntityItem();
             NBTTagList list = basestack.getTagCompound().getTagList(ITEMTAG, 10);
@@ -123,10 +123,12 @@ public class EntityCollationItem extends EntityItem {
                         player.triggerAchievement(AchievementList.blazeRod);
                     }
 
+                    // func_145800_j = getThrower
                     if (itemstack.getItem() == Items.diamond && this.func_145800_j() != null) {
                         EntityPlayer entityplayer1 = this.worldObj.getPlayerEntityByName(this.func_145800_j());
 
                         if (entityplayer1 != null && entityplayer1 != player) {
+                            // "Diamonds to you!" achievement
                             entityplayer1.triggerAchievement(AchievementList.field_150966_x);
                         }
                     }

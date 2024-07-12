@@ -1,6 +1,7 @@
 package fox.spiteful.avaritia.compat.forestry;
 
 import java.awt.Color;
+import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -19,7 +20,6 @@ public class ItemComb extends Item {
     private static final int[] mainColors = new int[] { 0xB6B6B6, 0xEF57FF };
     private static final int[] otherColors = new int[] { 0x757575, 0x06005C };
 
-    @SideOnly(Side.CLIENT)
     private IIcon secondIcon;
 
     public ItemComb() {
@@ -29,15 +29,14 @@ public class ItemComb extends Item {
         setUnlocalizedName("avaritia.comb");
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    @SideOnly(Side.CLIENT)
     @Override
-    public void getSubItems(Item item, CreativeTabs tab, java.util.List list) {
+    public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
         for (int j = 0; j < types.length; ++j) {
             list.add(new ItemStack(item, 1, j));
         }
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister par1IconRegister) {
         this.itemIcon = par1IconRegister.registerIcon("forestry:beeCombs.0");
@@ -50,7 +49,6 @@ public class ItemComb extends Item {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public boolean requiresMultipleRenderPasses() {
         return true;
     }
@@ -61,7 +59,6 @@ public class ItemComb extends Item {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public int getColorFromItemStack(ItemStack stack, int pass) {
 
         if (pass == 0) {

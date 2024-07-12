@@ -25,9 +25,8 @@ public class ItemSwordSkulls extends ItemSword {
         return EnumRarity.epic;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public void addInformation(ItemStack item, EntityPlayer player, List tooltip, boolean wut) {
+    public void addInformation(ItemStack item, EntityPlayer player, List<String> tooltip, boolean wut) {
         tooltip.add(
                 EnumChatFormatting.DARK_GRAY + ""
                         + EnumChatFormatting.ITALIC

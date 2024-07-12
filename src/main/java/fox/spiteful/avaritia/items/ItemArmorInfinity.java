@@ -9,6 +9,7 @@ import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemArmor;
@@ -78,7 +79,6 @@ public class ItemArmorInfinity extends ItemArmor implements ICosmicRenderItem, I
         super.setDamage(stack, 0);
     }
 
-    @SuppressWarnings("rawtypes")
     @Override
     public void onArmorTick(World world, EntityPlayer player, ItemStack itemStack) {
         if (armorType == 0) {
@@ -86,15 +86,12 @@ public class ItemArmorInfinity extends ItemArmor implements ICosmicRenderItem, I
             player.getFoodStats().addStats(20, 20F);
         } else if (armorType == 1) {
             // player.capabilities.allowFlying = true;
-            Collection effects = player.getActivePotionEffects();
+            Collection<PotionEffect> effects = player.getActivePotionEffects();
             if (effects.size() > 0) {
                 ArrayList<Potion> bad = new ArrayList<Potion>();
-                for (Object effect : effects) {
-                    if (effect instanceof PotionEffect) {
-                        PotionEffect potion = (PotionEffect) effect;
-                        if (PotionHelper.badPotion(Potion.potionTypes[potion.getPotionID()]))
-                            bad.add(Potion.potionTypes[potion.getPotionID()]);
-                    }
+                for (PotionEffect potion : effects) {
+                    if (PotionHelper.badPotion(Potion.potionTypes[potion.getPotionID()]))
+                        bad.add(Potion.potionTypes[potion.getPotionID()]);
                 }
                 if (bad.size() > 0) {
                     for (Potion potion : bad) {
@@ -122,10 +119,9 @@ public class ItemArmorInfinity extends ItemArmor implements ICosmicRenderItem, I
         return model;
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
-    public Multimap getAttributeModifiers(ItemStack stack) {
-        Multimap multimap = super.getAttributeModifiers(stack);
+    public Multimap<String, AttributeModifier> getAttributeModifiers(ItemStack stack) {
+        Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(stack);
         // if(armorType == 3)
         // multimap.put(SharedMonsterAttributes.movementSpeed.getAttributeUnlocalizedName(), new
         // AttributeModifier(field_111210_e, "Armor modifier", 0.7, 1));
@@ -152,8 +148,8 @@ public class ItemArmorInfinity extends ItemArmor implements ICosmicRenderItem, I
         return 20;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
+    @Override
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean par4) {
         if (Compat.thaumic) list.add(
                 EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal("tc.visdiscount")
                         + ": "
@@ -213,13 +209,11 @@ public class ItemArmorInfinity extends ItemArmor implements ICosmicRenderItem, I
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public IIcon getMaskTexture(ItemStack stack, EntityPlayer player) {
         return this.cosmicMask;
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public float getMaskMultiplier(ItemStack stack, EntityPlayer player) {
         return 1.0f;
     }
@@ -235,7 +229,6 @@ public class ItemArmorInfinity extends ItemArmor implements ICosmicRenderItem, I
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public boolean hasEffect(ItemStack par1ItemStack, int pass) {
         return false;
     }

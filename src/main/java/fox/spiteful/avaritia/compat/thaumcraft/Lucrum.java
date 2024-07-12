@@ -6,6 +6,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.oredict.OreDictionary;
 
+import org.lwjgl.opengl.GL11;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import fox.spiteful.avaritia.blocks.LudicrousBlocks;
 import fox.spiteful.avaritia.compat.Compat;
@@ -24,17 +26,20 @@ import thaumcraft.common.items.wands.ItemWandCasting;
 public class Lucrum {
 
     public static Aspect ULTRA_DEATH;
+
     public static WandRod WAND_ROD_NEUTRONIUM;
     public static WandCap WAND_CAP_CRYSTAL;
 
-    public static void abracadabra() throws Compat.ItemNotFoundException {
+    public static void initTermination() {
         ULTRA_DEATH = new Aspect(
                 "terminus",
                 0xb90000,
                 new Aspect[] { Aspect.GREED, Aspect.ELDRITCH },
                 new ResourceLocation("avaritia", "textures/misc/terminus.png"),
-                771);
+                GL11.GL_ONE_MINUS_SRC_ALPHA);
+    }
 
+    public static void abracadabra() throws Compat.ItemNotFoundException {
         LudicrousItems.akashic_record = new ItemAkashicRecord();
         GameRegistry.registerItem(LudicrousItems.akashic_record, "Akashic_Record");
         LudicrousItems.bigPearl = new ItemBigPearl();

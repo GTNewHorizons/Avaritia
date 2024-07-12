@@ -30,8 +30,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import fox.spiteful.avaritia.Avaritia;
 import fox.spiteful.avaritia.entity.EntityImmortalItem;
 import fox.spiteful.avaritia.items.LudicrousItems;
@@ -40,7 +38,7 @@ public class ItemAxeInfinity extends ItemAxe {
 
     private static final ToolMaterial opAxe = EnumHelper
             .addToolMaterial("INFINITY_PICKAXE", 32, 9999, 9999F, 20.0F, 200);
-    private static Map<Integer, List<BlockSwapper>> blockSwappers = new HashMap();
+    private static Map<Integer, List<BlockSwapper>> blockSwappers = new HashMap<>();
 
     public ItemAxeInfinity() {
         super(opAxe);
@@ -65,7 +63,7 @@ public class ItemAxeInfinity extends ItemAxe {
         if (ForgeHooks.isToolEffective(stack, block, meta) || block.getMaterial() == Material.leaves) {
             return efficiencyOnProperMaterial;
         }
-        return Math.max(func_150893_a(stack, block), 6.0F);
+        return Math.max(func_150893_a(stack, block), 6.0F); // getStrVsBlock
     }
 
     @Override
@@ -112,7 +110,7 @@ public class ItemAxeInfinity extends ItemAxe {
             int originZ, int side) {
         if (player.isSneaking()) return;
         ChunkCoordinates coords = new ChunkCoordinates(x, y, z);
-        addBlockSwapper(player.worldObj, player, stack, coords, coords, 32, false, true, new ArrayList());
+        addBlockSwapper(player.worldObj, player, stack, coords, coords, 32, false, true, new ArrayList<>());
     }
 
     @Override
@@ -126,7 +124,6 @@ public class ItemAxeInfinity extends ItemAxe {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public boolean hasEffect(ItemStack par1ItemStack, int pass) {
         return false;
     }
@@ -137,7 +134,7 @@ public class ItemAxeInfinity extends ItemAxe {
             int dim = event.world.provider.dimensionId;
             if (blockSwappers.containsKey(dim)) {
                 List<BlockSwapper> swappers = blockSwappers.get(dim);
-                List<BlockSwapper> swappersSafe = new ArrayList(swappers);
+                List<BlockSwapper> swappersSafe = new ArrayList<>(swappers);
                 swappers.clear();
                 for (BlockSwapper s : swappersSafe) if (s != null) s.tick();
             }
@@ -158,7 +155,7 @@ public class ItemAxeInfinity extends ItemAxe {
                 force,
                 posChecked);
         int dim = world.provider.dimensionId;
-        if (!blockSwappers.containsKey(dim)) blockSwappers.put(dim, new ArrayList());
+        if (!blockSwappers.containsKey(dim)) blockSwappers.put(dim, new ArrayList<>());
         blockSwappers.get(dim).add(swapper);
         return swapper;
     }

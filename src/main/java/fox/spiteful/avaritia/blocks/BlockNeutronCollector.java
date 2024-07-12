@@ -45,7 +45,6 @@ public class BlockNeutronCollector extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
         if (side == 1) return top;
         int facing = 2;
@@ -56,7 +55,6 @@ public class BlockNeutronCollector extends BlockContainer {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int metadata) {
         if (side == 1) return top;
         if (side == 3) return front;
@@ -79,6 +77,7 @@ public class BlockNeutronCollector extends BlockContainer {
         return new TileEntityNeutron();
     }
 
+    @Override
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack item) {
         TileEntity tile = world.getTileEntity(x, y, z);
         if (tile instanceof TileEntityNeutron) {
@@ -96,6 +95,7 @@ public class BlockNeutronCollector extends BlockContainer {
 
     }
 
+    @Override
     public void breakBlock(World world, int x, int y, int z, Block block, int wut) {
         TileEntityNeutron collector = (TileEntityNeutron) world.getTileEntity(x, y, z);
 
@@ -134,7 +134,7 @@ public class BlockNeutronCollector extends BlockContainer {
                 }
             }
 
-            world.func_147453_f(x, y, z, block);
+            world.func_147453_f(x, y, z, block); // updateNeighborsAboutBlockChange
         }
 
         super.breakBlock(world, x, y, z, block, wut);

@@ -1,6 +1,5 @@
 package fox.spiteful.avaritia.entity;
 
-import java.lang.reflect.Field;
 import java.util.Random;
 
 import net.minecraft.entity.EntityLivingBase;
@@ -8,23 +7,7 @@ import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
-import org.apache.logging.log4j.Level;
-
-import cpw.mods.fml.relauncher.ReflectionHelper;
-import fox.spiteful.avaritia.Lumberjack;
-
 public class EntityHeavenArrow extends EntityArrow {
-
-    public static Field inGroundField;
-    public static Field ticksInGroundField;
-    static {
-        try {
-            inGroundField = ReflectionHelper.findField(EntityArrow.class, "inGround", "field_70254_i");
-            ticksInGroundField = ReflectionHelper.findField(EntityArrow.class, "ticksInGround", "field_70252_j");
-        } catch (Exception e) {
-            Lumberjack.log(Level.ERROR, e);
-        }
-    }
 
     public boolean impacted = false;
     public Random randy = new Random();
@@ -53,12 +36,8 @@ public class EntityHeavenArrow extends EntityArrow {
         this.rotationYaw = 0;
         super.onUpdate();
         if (!this.impacted) {
-            try {
-                if (inGroundField.getBoolean(this)) {
-                    this.impacted = true;
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+            if (this.inGround) {
+                this.impacted = true;
             }
 
             if (this.impacted) {
@@ -68,7 +47,7 @@ public class EntityHeavenArrow extends EntityArrow {
             }
         }
 
-        if (getInGround(this) && getTicksInGround(this) >= 100) {
+        if (this.inGround && this.ticksInGround >= 100) {
             this.setDead();
         }
     }
@@ -82,25 +61,10 @@ public class EntityHeavenArrow extends EntityArrow {
     /**
      * (abstract) Protected helper method to read subclass entity data from NBT.
      */
+    @Override
     public void readEntityFromNBT(NBTTagCompound tag) {
         super.readEntityFromNBT(tag);
         this.impacted = tag.getBoolean("impacted");
-    }
-
-    public static boolean getInGround(EntityArrow arrow) {
-        try {
-            return inGroundField.getBoolean(arrow);
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    public static int getTicksInGround(EntityArrow arrow) {
-        try {
-            return ticksInGroundField.getInt(arrow);
-        } catch (Exception e) {
-            return 0;
-        }
     }
 
     public void barrage() {

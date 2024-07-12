@@ -7,8 +7,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import fox.spiteful.avaritia.Avaritia;
 import fox.spiteful.avaritia.entity.EntityEndestPearl;
 import fox.spiteful.avaritia.render.IHaloRenderItem;
@@ -43,31 +41,26 @@ public class ItemEndestPearl extends ItemEnderPearl implements IHaloRenderItem {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public boolean drawHalo(ItemStack stack) {
         return true;
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public IIcon getHaloTexture(ItemStack stack) {
         return ((ItemResource) LudicrousItems.resource).halo[0];
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public int getHaloSize(ItemStack stack) {
         return 4;
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public boolean drawPulseEffect(ItemStack stack) {
         return true;
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public int getHaloColour(ItemStack stack) {
         return 0xFF000000;
     }

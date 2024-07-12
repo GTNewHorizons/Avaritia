@@ -51,9 +51,8 @@ public class ItemPickaxeInfinity extends ItemPickaxe {
         super.setDamage(stack, 0);
     }
 
-    @SideOnly(Side.CLIENT)
     @Override
-    public void getSubItems(Item item, CreativeTabs tab, List list) {
+    public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
         ItemStack pick = new ItemStack(this);
         pick.addEnchantment(Enchantment.fortune, 10);
         list.add(pick);
@@ -72,9 +71,10 @@ public class ItemPickaxeInfinity extends ItemPickaxe {
         if (ForgeHooks.isToolEffective(stack, block, meta)) {
             return efficiencyOnProperMaterial;
         }
-        return Math.max(func_150893_a(stack, block), 6.0F);
+        return Math.max(func_150893_a(stack, block), 6.0F); // getStrVsBlock
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister ir) {
 
@@ -92,7 +92,6 @@ public class ItemPickaxeInfinity extends ItemPickaxe {
         return itemIcon;
     }
 
-    @SideOnly(Side.CLIENT)
     @Override
     public IIcon getIconIndex(ItemStack stack) {
         return getIcon(stack, 0);
@@ -191,7 +190,6 @@ public class ItemPickaxeInfinity extends ItemPickaxe {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public boolean hasEffect(ItemStack par1ItemStack, int pass) {
         return false;
     }

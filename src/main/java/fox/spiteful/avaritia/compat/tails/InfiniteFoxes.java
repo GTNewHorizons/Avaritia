@@ -17,21 +17,14 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class InfiniteFoxes {
 
-    @SideOnly(Side.CLIENT)
     private static FakeTailEntity fakeEntity;
-    @SideOnly(Side.CLIENT)
     private static Object tailPartInfo;
-    @SideOnly(Side.CLIENT)
     private static Object earPartInfo;
-    @SideOnly(Side.CLIENT)
     private static Object foxTailRender;
-    @SideOnly(Side.CLIENT)
     private static Object foxEarsRender;
-    @SideOnly(Side.CLIENT)
     private static Method m_RenderPart_render;
 
     public static void floof() {
@@ -41,15 +34,16 @@ public class InfiniteFoxes {
         }
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    @SideOnly(Side.CLIENT)
+    @SuppressWarnings("unchecked")
     public static void grabReflections() {
         try {
-            Class c_PartType = Class.forName("kihira.tails.common.PartsData$PartType");
-            Class c_PartInfo = Class.forName("kihira.tails.common.PartInfo");
+            @SuppressWarnings("rawtypes")
+            Class<? extends Enum> c_PartType = (Class<? extends Enum>) Class
+                    .forName("kihira.tails.common.PartsData$PartType");
+            Class<?> c_PartInfo = Class.forName("kihira.tails.common.PartInfo");
 
             // Setup Info
-            Constructor constr = c_PartInfo.getConstructor(
+            Constructor<?> constr = c_PartInfo.getConstructor(
                     boolean.class,
                     int.class,
                     int.class,
@@ -75,8 +69,8 @@ public class InfiniteFoxes {
                     null);
 
             // Grab renderparts + render method
-            Class c_RenderPart = Class.forName("kihira.tails.client.render.RenderPart");
-            Class c_PartRegistry = Class.forName("kihira.tails.client.PartRegistry");
+            Class<?> c_RenderPart = Class.forName("kihira.tails.client.render.RenderPart");
+            Class<?> c_PartRegistry = Class.forName("kihira.tails.client.PartRegistry");
             Method m_getRenderPart = c_PartRegistry.getMethod("getRenderPart", c_PartType, int.class);
             foxTailRender = m_getRenderPart.invoke(null, Enum.valueOf(c_PartType, "TAIL"), 0);
             foxEarsRender = m_getRenderPart.invoke(null, Enum.valueOf(c_PartType, "EARS"), 0);
@@ -94,7 +88,6 @@ public class InfiniteFoxes {
         }
     }
 
-    @SideOnly(Side.CLIENT)
     public static void renderInfinitatoFluff(float partialTicks) {
         if (fakeEntity == null) {
             fakeEntity = new FakeTailEntity(Minecraft.getMinecraft().theWorld);
@@ -113,7 +106,6 @@ public class InfiniteFoxes {
     }
 
     @SubscribeEvent
-    @SideOnly(Side.CLIENT)
     public void onWorldUnload(WorldEvent.Unload e) {
         if (fakeEntity != null) {
             fakeEntity.setDead();
@@ -121,7 +113,6 @@ public class InfiniteFoxes {
         }
     }
 
-    @SideOnly(Side.CLIENT)
     public static class FakeTailEntity extends EntityLiving {
 
         public FakeTailEntity(World world) {

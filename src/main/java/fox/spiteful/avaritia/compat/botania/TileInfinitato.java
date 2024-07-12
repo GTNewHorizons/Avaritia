@@ -19,7 +19,6 @@ public class TileInfinitato extends TileLudicrous {
     public String name = "";
     public int nextDoIt = 0;
 
-    @SuppressWarnings("unchecked")
     public void interact() {
         jump();
         if (name.equalsIgnoreCase("shia labeouf") && !worldObj.isRemote && nextDoIt == 0) {
@@ -56,7 +55,7 @@ public class TileInfinitato extends TileLudicrous {
                 ent.addPotionEffect(new PotionEffect(Potion.fireResistance.id, time, 0));
                 ent.addPotionEffect(new PotionEffect(Potion.waterBreathing.id, time, 0));
                 ent.addPotionEffect(new PotionEffect(Potion.nightVision.id, time, 0));
-                ent.addPotionEffect(new PotionEffect(Potion.field_76444_x.id, time, 4)); // absorb
+                ent.addPotionEffect(new PotionEffect(Potion.field_76444_x.id, time, 4)); // absorption
                 ent.addPotionEffect(new PotionEffect(Potion.field_76443_y.id, time, 4)); // saturation
             }
         }

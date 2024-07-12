@@ -60,6 +60,10 @@ public class Compat {
         am2 = Loader.isModLoaded("arsmagica2") && Config.am2;
         forestry = Loader.isModLoaded("Forestry") && Config.forestry;
         te = Loader.isModLoaded("ThermalExpansion") && Config.te;
+
+        if (thaumic) {
+            Lucrum.initTermination();
+        }
     }
 
     public static void compatify() {
@@ -286,6 +290,8 @@ public class Compat {
     }
 
     public static class ItemNotFoundException extends Exception {
+
+        private static final long serialVersionUID = -1225515573911036286L;
 
         public ItemNotFoundException(String mod, String item) {
             super("Unable to find " + item + " in mod " + mod + "! Are you using the correct version of the mod?");

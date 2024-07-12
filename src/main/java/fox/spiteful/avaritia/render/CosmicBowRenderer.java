@@ -8,12 +8,7 @@ import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.relauncher.ReflectionHelper;
-
 public class CosmicBowRenderer extends CosmicItemRenderer implements IItemRenderer {
-
-    private static String[] iiuObf = new String[] { "itemInUse", "field_71074_e", "f" };
-    private static String[] iiucObf = new String[] { "itemInUseCount", "field_71072_f", "g" };
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack stack, Object... data) {
@@ -28,12 +23,11 @@ public class CosmicBowRenderer extends CosmicItemRenderer implements IItemRender
     }
 
     public static int getBowFrame(EntityPlayer player) {
-        ItemStack inuse = ReflectionHelper.getPrivateValue(EntityPlayer.class, player, iiuObf);
-        int time = ReflectionHelper.getPrivateValue(EntityPlayer.class, player, iiucObf);
+        ItemStack inuse = player.getItemInUse();
 
         if (inuse != null) {
             int max = inuse.getMaxItemUseDuration();
-            double pull = (max - time) / (double) max;
+            double pull = (max - player.getItemInUseCount()) / (double) max;
             return Math.max(0, (int) Math.ceil(pull * 3.0) - 1);
         }
         return 0;
@@ -43,11 +37,14 @@ public class CosmicBowRenderer extends CosmicItemRenderer implements IItemRender
     public IIcon getStackIcon(ItemStack stack, int pass, EntityPlayer player) {
         Item item = stack.getItem();
         ItemStack inuse;
-        if (player != null) inuse = ReflectionHelper.getPrivateValue(EntityPlayer.class, player, iiuObf);
-        else inuse = stack;
         int time;
-        if (player != null) time = ReflectionHelper.getPrivateValue(EntityPlayer.class, player, iiucObf);
-        else time = 0;
+        if (player != null) {
+            inuse = player.getItemInUse();
+            time = player.getItemInUseCount();
+        } else {
+            inuse = stack;
+            time = 0;
+        }
 
         return item.getIcon(stack, pass, player, inuse, time);
     }

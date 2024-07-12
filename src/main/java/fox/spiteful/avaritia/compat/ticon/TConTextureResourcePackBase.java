@@ -91,7 +91,6 @@ public abstract class TConTextureResourcePackBase implements IResourcePack, IRes
         return stream;
     }
 
-    @SuppressWarnings("unchecked")
     public List<IResourcePack> getPacks() {
         if (resourcePackz == null) {
             resourcePackz = new ArrayList<IResourcePack>();
@@ -171,9 +170,8 @@ public abstract class TConTextureResourcePackBase implements IResourcePack, IRes
 
     }
 
-    @SuppressWarnings("rawtypes")
     @Override
-    public Set getResourceDomains() {
+    public Set<String> getResourceDomains() {
         return delegate.getResourceDomains();
     }
 

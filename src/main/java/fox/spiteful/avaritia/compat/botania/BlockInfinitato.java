@@ -89,10 +89,9 @@ public class BlockInfinitato extends BlockContainer implements ILexiconable {
         if (!par6EntityPlayer.capabilities.isCreativeMode) dropBlockAsItem(par1World, par2, par3, par4, par5, 0);
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
-        ArrayList<ItemStack> list = new ArrayList();
+        ArrayList<ItemStack> list = new ArrayList<>();
         TileEntity tile = world.getTileEntity(x, y, z);
 
         if (tile != null) {
