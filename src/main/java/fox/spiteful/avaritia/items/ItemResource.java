@@ -55,7 +55,7 @@ public class ItemResource extends Item implements IHaloRenderItem {
     public void addInformation(ItemStack item, EntityPlayer player, List<String> tooltip, boolean wut) {
 
         int meta = item.getItemDamage();
-        if (meta != 0 && meta < 8) {
+        if (meta != 0 && meta < 9) {
             tooltip.add(
                     EnumChatFormatting.DARK_GRAY + ""
                             + EnumChatFormatting.ITALIC
