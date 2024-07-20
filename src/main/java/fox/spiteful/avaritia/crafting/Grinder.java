@@ -136,16 +136,6 @@ public class Grinder {
                 "C",
                 'C',
                 new ItemStack(LudicrousBlocks.resource_block, 1, 1));
-
-        GameRegistry.addShapedRecipe(
-                new ItemStack(LudicrousItems.resource, 13, 8),
-                "CCC",
-                "CIC",
-                "CCC",
-                'C',
-                new ItemStack(Blocks.coal_block, 1),
-                'I',
-                new ItemStack(LudicrousItems.resource, 1, 1));
         GameRegistry.addShapedRecipe(
                 new ItemStack(LudicrousItems.resource, 1, 9),
                 " I ",
