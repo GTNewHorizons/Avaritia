@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Level;
 
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
+import fox.spiteful.avaritia.Avaritia;
 import fox.spiteful.avaritia.Config;
 import fox.spiteful.avaritia.Lumberjack;
 import fox.spiteful.avaritia.blocks.LudicrousBlocks;
@@ -239,7 +240,7 @@ public class Compat {
                 te = false;
             }
         }
-        if (!Loader.isModLoaded("dreamcraft")) {
+        if (!Avaritia.isDreamCraftLoaded) {
             if (Loader.isModLoaded("witchery") && Config.witch) {
                 try {
                     Block egg = getBlock("witchery", "infinityegg");

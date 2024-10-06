@@ -38,6 +38,7 @@ public class Avaritia {
     public static CommonProxy proxy;
 
     public static final boolean isHodgepodgeLoaded = Loader.isModLoaded("hodgepodge");
+    public static final boolean isDreamCraftLoaded = Loader.isModLoaded("dreamcraft");
 
     public static CreativeTabs tab = new CreativeTabs("avaritia") {
 

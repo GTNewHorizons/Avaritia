@@ -6,7 +6,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.MinecraftForge;
 
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Loader;
+import fox.spiteful.avaritia.Avaritia;
 import fox.spiteful.avaritia.crafting.ExtremeCraftingManager;
 import fox.spiteful.avaritia.items.LudicrousItems;
 import tconstruct.library.TConstructRegistry;
@@ -95,7 +95,7 @@ public class Tonkers {
                     }
                 });
 
-        if (Loader.isModLoaded("dreamcraft")) return;
+        if (Avaritia.isDreamCraftLoaded) return;
 
         // recipes
         ItemStack ingot = new ItemStack(LudicrousItems.resource, 1, 6);
