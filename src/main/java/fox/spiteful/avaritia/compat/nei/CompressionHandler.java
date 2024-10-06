@@ -34,40 +34,40 @@ public class CompressionHandler extends TemplateRecipeHandler {
 
     public class CachedCompression extends CachedRecipe {
 
+        private PositionedStack ingred;
+        private PositionedStack result;
+        private int cost;
+
         public CachedCompression(CompressorRecipe recipe) {
-            this.ingred = new PositionedStack(recipe.getIngredient(), 51, 16);
-            this.result = new PositionedStack(recipe.getOutput(), 111, 16);
-            this.cost = recipe.getCost();
+            this(recipe.getOutput(), recipe.getCost(), recipe.getIngredient());
         }
 
-        public CachedCompression(ItemStack output, int price, ItemStack ingredient) {
+        public CachedCompression(ItemStack output, int price, Object ingredient) {
             this.ingred = new PositionedStack(ingredient, 51, 16);
             this.result = new PositionedStack(output, 111, 16);
-            cost = price;
+            this.cost = price;
         }
 
         @Override
         public List<PositionedStack> getIngredients() {
-            return getCycledIngredients(cycleticks / 48, Arrays.asList(ingred));
+            return getCycledIngredients(cycleticks / 48, Arrays.asList(this.ingred));
         }
 
         @Override
         public PositionedStack getResult() {
-            return result;
+            return this.result;
         }
 
         public void computeVisuals() {
-            ingred.generatePermutations();
+            for (ItemStack item : this.ingred.items) item.stackSize = this.cost;
+            this.ingred.item.stackSize = this.cost;
+            this.ingred.generatePermutations();
         }
 
         public int getCost() {
             return cost;
         }
 
-        private int cost;
-
-        PositionedStack ingred;
-        PositionedStack result;
     }
 
     @Override
@@ -111,9 +111,11 @@ public class CompressionHandler extends TemplateRecipeHandler {
 
     @Override
     public void loadUsageRecipes(String inputId, Object... ingredients) {
-        if (inputId.equals("extreme_compression") && getClass() == CompressionHandler.class)
+        if (inputId.equals("extreme_compression") && getClass() == CompressionHandler.class) {
             loadCraftingRecipes("extreme_compression");
-        else super.loadUsageRecipes(inputId, ingredients);
+        } else {
+            super.loadUsageRecipes(inputId, ingredients);
+        }
     }
 
     @Override
@@ -121,6 +123,7 @@ public class CompressionHandler extends TemplateRecipeHandler {
         for (CompressorRecipe recipe : CompressorManager.getRecipes()) {
             if (safeOre(recipe) && recipe.validInput(ingredient)) {
                 CachedCompression r = new CachedCompression(recipe.getOutput(), recipe.getCost(), ingredient);
+                r.computeVisuals();
                 arecipes.add(r);
             }
         }
@@ -134,12 +137,6 @@ public class CompressionHandler extends TemplateRecipeHandler {
     @Override
     public String getGuiTexture() {
         return "avaritia:textures/gui/compressor.png";
-    }
-
-    @Override
-    public void drawForeground(int recipe) {
-        super.drawForeground(recipe);
-        fontRender.drawString(((CachedCompression) arecipes.get(recipe)).getCost() + "", 50, 38, 4210752);
     }
 
     @Override
