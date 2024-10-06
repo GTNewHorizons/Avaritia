@@ -1,30 +1,30 @@
 // Add your dependencies here
 
 dependencies {
-    devOnlyNonPublishable("com.github.GTNewHorizons:NotEnoughItems:2.6.38-GTNH:dev")
+    devOnlyNonPublishable("com.github.GTNewHorizons:NotEnoughItems:2.6.42-GTNH:dev")
 
-    compileOnly("com.github.GTNewHorizons:ForestryMC:4.9.7:api") {
+    compileOnly("com.github.GTNewHorizons:ForestryMC:4.9.16:api") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:Botania:1.11.3-GTNH:dev") {
+    compileOnly("com.github.GTNewHorizons:Botania:1.11.5-GTNH:dev") {
         transitive = false
     }
     compileOnly("com.github.GTNewHorizons:Mantle:0.4.1:dev") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:TinkersConstruct:1.12.5-GTNH:dev") {
+    compileOnly("com.github.GTNewHorizons:TinkersConstruct:1.12.10-GTNH:dev") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:BloodMagic:1.6.2:dev") {
+    compileOnly("com.github.GTNewHorizons:BloodMagic:1.6.6:dev") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:CraftTweaker:3.3.1:dev") {
+    compileOnly("com.github.GTNewHorizons:CraftTweaker:3.4.0:dev") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:Hodgepodge:2.5.36:dev") {
+    compileOnly("com.github.GTNewHorizons:Hodgepodge:2.5.71:dev") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:GT5-Unofficial:5.09.49.56:dev") {
+    compileOnly("com.github.GTNewHorizons:GT5-Unofficial:5.09.50.33:dev") {
         transitive = false
     }
 
@@ -41,5 +41,5 @@ dependencies {
         transitive = false
     }
 
-    runtimeOnly("com.github.GTNewHorizons:GTNHLib:0.3.2:dev")
+    runtimeOnly("com.github.GTNewHorizons:GTNHLib:0.5.13:dev")
 }
