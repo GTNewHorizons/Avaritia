@@ -181,8 +181,8 @@ public class ToolHelper {
     }
 
     public static List<ItemStack> collateMatterClusterContents(Map<ItemStackWrapper, Integer> input) {
-        List<ItemStack> collated = new ArrayList<ItemStack>();
-
+        List<ItemStack> collated = new ArrayList<>();
+        if (input == null) return collated;
         for (Entry<ItemStackWrapper, Integer> e : input.entrySet()) {
             int count = e.getValue();
             ItemStackWrapper wrap = e.getKey();
@@ -208,7 +208,7 @@ public class ToolHelper {
     }
 
     public static Map<ItemStackWrapper, Integer> collateMatterCluster(List<ItemStack> input) {
-        Map<ItemStackWrapper, Integer> counts = new HashMap<ItemStackWrapper, Integer>();
+        Map<ItemStackWrapper, Integer> counts = new HashMap<>();
 
         if (input != null) {
             for (ItemStack stack : input) {
