@@ -29,8 +29,6 @@ import fox.spiteful.avaritia.render.ICosmicRenderItem;
 
 public class ItemMatterCluster extends Item implements ICosmicRenderItem {
 
-    protected static Random randy = new Random();
-
     public static final String MAINTAG = "clusteritems";
     public static final String LISTTAG = "items";
     public static final String ITEMTAG = "item";

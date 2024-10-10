@@ -1,7 +1,6 @@
 package fox.spiteful.avaritia.entity;
 
 import java.util.List;
-import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.command.IEntitySelector;
@@ -16,7 +15,6 @@ import net.minecraft.world.World;
 
 public class EntityGapingVoid extends Entity {
 
-    private static Random randy = new Random();
     public static final int maxLifetime = 186;
     public static double collapse = .95;
     public static double suckrange = 20.0;
@@ -96,8 +94,8 @@ public class EntityGapingVoid extends Entity {
         double size = getVoidScale(age) * 0.5 - 0.2;
         for (int i = 0; i < 50; i++) {
             Vec3 pootdir = Vec3.createVectorHelper(0, 0, size);
-            pootdir.rotateAroundY(randy.nextFloat() * 180f);
-            pootdir.rotateAroundX(randy.nextFloat() * 360f);
+            pootdir.rotateAroundY(rand.nextFloat() * 180f);
+            pootdir.rotateAroundX(rand.nextFloat() * 360f);
 
             Vec3 pootspeed = pootdir.normalize();
             pootspeed.xCoord *= particlespeed;

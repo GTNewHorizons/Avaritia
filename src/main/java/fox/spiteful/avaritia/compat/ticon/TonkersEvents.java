@@ -1,7 +1,5 @@
 package fox.spiteful.avaritia.compat.ticon;
 
-import java.util.Random;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -23,8 +21,6 @@ import tconstruct.library.tools.AbilityHelper;
 import tconstruct.library.tools.ToolCore;
 
 public class TonkersEvents {
-
-    private Random randy = new Random();
 
     @SubscribeEvent
     public void craftTool(ToolCraftEvent.NormalTool event) {
@@ -142,7 +138,7 @@ public class TonkersEvents {
 
             if (toolTag != null && toolTag.getInteger("Head") == Tonkers.infinityMetalId
                     && tool.canHarvestBlock(Blocks.stone, held)) {
-                if (block.quantityDropped(randy) == 0) {
+                if (block.quantityDropped(event.world.rand) == 0) {
                     ItemStack drop = block.getPickBlock(
                             ToolHelper.raytraceFromEntity(event.world, event.entityPlayer, true, 10),
                             event.world,

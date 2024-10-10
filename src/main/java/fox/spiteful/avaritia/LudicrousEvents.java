@@ -5,7 +5,6 @@ import static net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -39,7 +38,6 @@ import fox.spiteful.avaritia.items.tools.ToolHelper;
 
 public class LudicrousEvents {
 
-    private static Random randy = new Random();
     static final String[] trash = new String[] { "dirt", "sand", "gravel", "cobblestone", "netherrack" };
 
     @SubscribeEvent
@@ -66,7 +64,7 @@ public class LudicrousEvents {
                         event.entityPlayer);
             } else {
 
-                if (block.quantityDropped(randy) == 0) {
+                if (block.quantityDropped(event.world.rand) == 0) {
                     ItemStack drop = block.getPickBlock(
                             ToolHelper.raytraceFromEntity(event.world, event.entityPlayer, true, 10),
                             event.world,
@@ -168,9 +166,9 @@ public class LudicrousEvents {
 
     public static void dropItem(ItemStack drop, World world, int x, int y, int z) {
         float f = 0.7F;
-        double d0 = (double) (randy.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
-        double d1 = (double) (randy.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
-        double d2 = (double) (randy.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
+        double d0 = (double) (world.rand.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
+        double d1 = (double) (world.rand.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
+        double d2 = (double) (world.rand.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
         EntityItem entityitem = new EntityItem(world, (double) x + d0, (double) y + d1, (double) z + d2, drop);
         entityitem.delayBeforeCanPickup = 10;
         world.spawnEntityInWorld(entityitem);
