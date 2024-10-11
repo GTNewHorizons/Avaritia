@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Random;
 
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -28,8 +27,6 @@ import fox.spiteful.avaritia.items.tools.ToolHelper;
 import fox.spiteful.avaritia.render.ICosmicRenderItem;
 
 public class ItemMatterCluster extends Item implements ICosmicRenderItem {
-
-    protected static Random randy = new Random();
 
     public static final String MAINTAG = "clusteritems";
     public static final String LISTTAG = "items";
@@ -85,12 +82,15 @@ public class ItemMatterCluster extends Item implements ICosmicRenderItem {
                 NBTTagCompound tag = list.getCompoundTagAt(i);
                 ItemStack countstack = ItemStack.loadItemStackFromNBT(tag.getCompoundTag(ITEMTAG));
                 int count = tag.getInteger(COUNTTAG);
-
-                tooltip.add(
-                        countstack.getItem().getRarity(countstack).rarityColor + countstack.getDisplayName()
-                                + EnumChatFormatting.GRAY
-                                + " x "
-                                + count);
+                if (countstack != null) {
+                    tooltip.add(
+                            countstack.getItem().getRarity(countstack).rarityColor + countstack.getDisplayName()
+                                    + EnumChatFormatting.GRAY
+                                    + " x "
+                                    + count);
+                } else {
+                    tooltip.add(EnumChatFormatting.RED + "DELETED" + EnumChatFormatting.GRAY + " x " + count);
+                }
             }
         } else {
             tooltip.add(EnumChatFormatting.DARK_GRAY + StatCollector.translateToLocal("tooltip.matter_cluster.desc"));
@@ -102,12 +102,11 @@ public class ItemMatterCluster extends Item implements ICosmicRenderItem {
 
     public static List<ItemStack> makeClusters(List<ItemStack> input) {
         Map<ItemStackWrapper, Integer> items = ToolHelper.collateMatterCluster(input);
-        List<ItemStack> clusters = new ArrayList<ItemStack>();
-        List<Entry<ItemStackWrapper, Integer>> itemlist = new ArrayList<Entry<ItemStackWrapper, Integer>>();
-        itemlist.addAll(items.entrySet());
+        List<ItemStack> clusters = new ArrayList<>();
+        List<Entry<ItemStackWrapper, Integer>> itemlist = new ArrayList<>(items.entrySet());
 
         int currentTotal = 0;
-        Map<ItemStackWrapper, Integer> currentItems = new HashMap<ItemStackWrapper, Integer>();
+        Map<ItemStackWrapper, Integer> currentItems = new HashMap<>();
 
         while (!itemlist.isEmpty()) {
             Entry<ItemStackWrapper, Integer> e = itemlist.get(0);
@@ -134,7 +133,7 @@ public class ItemMatterCluster extends Item implements ICosmicRenderItem {
                 clusters.add(cluster);
 
                 currentTotal = 0;
-                currentItems = new HashMap<ItemStackWrapper, Integer>();
+                currentItems = new HashMap<>();
             }
         }
 
@@ -159,15 +158,21 @@ public class ItemMatterCluster extends Item implements ICosmicRenderItem {
 
     public static Map<ItemStackWrapper, Integer> getClusterData(ItemStack cluster) {
         if (!cluster.hasTagCompound() || !cluster.getTagCompound().hasKey(MAINTAG)) {
-            return null;
+            return new HashMap<>();
         }
         NBTTagCompound tag = cluster.getTagCompound().getCompoundTag(MAINTAG);
         NBTTagList list = tag.getTagList(LISTTAG, 10);
-        Map<ItemStackWrapper, Integer> data = new HashMap<ItemStackWrapper, Integer>();
+        Map<ItemStackWrapper, Integer> data = new HashMap<>();
 
         for (int i = 0; i < list.tagCount(); i++) {
             NBTTagCompound entry = list.getCompoundTagAt(i);
-            ItemStackWrapper wrap = new ItemStackWrapper(ItemStack.loadItemStackFromNBT(entry.getCompoundTag(ITEMTAG)));
+            final ItemStack stack = ItemStack.loadItemStackFromNBT(entry.getCompoundTag(ITEMTAG));
+            if (stack == null) {
+                // item might be null if the cluster contains items that don't exist
+                // anymore by removing a mod for example
+                continue;
+            }
+            ItemStackWrapper wrap = new ItemStackWrapper(stack);
             int count = entry.getInteger(COUNTTAG);
             data.put(wrap, count);
         }
@@ -211,8 +216,7 @@ public class ItemMatterCluster extends Item implements ICosmicRenderItem {
 
         Map<ItemStackWrapper, Integer> donordata = getClusterData(donor);
         Map<ItemStackWrapper, Integer> recipientdata = getClusterData(recipient);
-        List<Entry<ItemStackWrapper, Integer>> datalist = new ArrayList<Entry<ItemStackWrapper, Integer>>();
-        datalist.addAll(donordata.entrySet());
+        List<Entry<ItemStackWrapper, Integer>> datalist = new ArrayList<>(donordata.entrySet());
 
         while (recipientcount < capacity && donorcount > 0) {
             Entry<ItemStackWrapper, Integer> e = datalist.get(0);

@@ -13,7 +13,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Random;
 import java.util.Set;
 import java.util.WeakHashMap;
 
@@ -42,10 +41,8 @@ public class ToolHelper {
     public static Material[] materialsAxe = new Material[] { Material.coral, Material.leaves, Material.plants,
             Material.wood, Material.vine };
 
-    private static Random randy = new Random();
-
-    public static Set<EntityPlayer> hammering = new HashSet<EntityPlayer>();
-    public static Map<EntityPlayer, List<ItemStack>> hammerdrops = new WeakHashMap<EntityPlayer, List<ItemStack>>();
+    public static Set<EntityPlayer> hammering = new HashSet<>();
+    public static Map<EntityPlayer, List<ItemStack>> hammerdrops = new WeakHashMap<>();
 
     public static void removeBlocksInIteration(EntityPlayer player, ItemStack stack, World world, int x, int y, int z,
             int xs, int ys, int zs, int xe, int ye, int ze, Block block, Material[] materialsListing, boolean silk,
@@ -53,7 +50,7 @@ public class ToolHelper {
         float blockHardness = block == null ? 1F : block.getBlockHardness(world, x, y, z);
 
         if (!hammerdrops.containsKey(player) || hammerdrops.get(player) == null) {
-            hammerdrops.put(player, new ArrayList<ItemStack>());
+            hammerdrops.put(player, new ArrayList<>());
         }
 
         if (!hammering.contains(player)) {
@@ -129,7 +126,7 @@ public class ToolHelper {
 
                     if (!dispose) {
                         if (blk.getPlayerRelativeBlockHardness(player, world, x, y, z) < 0
-                                && blk.quantityDropped(randy) == 0) {
+                                && blk.quantityDropped(world.rand) == 0) {
                             ItemStack drop = blk
                                     .getPickBlock(raytraceFromEntity(world, player, true, 10), world, x, y, z, player);
                             if (drop == null) drop = new ItemStack(blk, 1, meta);
@@ -171,9 +168,9 @@ public class ToolHelper {
 
     public static void dropItem(ItemStack drop, World world, int x, int y, int z) {
         float f = 0.7F;
-        double d0 = (double) (randy.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
-        double d1 = (double) (randy.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
-        double d2 = (double) (randy.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
+        double d0 = (double) (world.rand.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
+        double d1 = (double) (world.rand.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
+        double d2 = (double) (world.rand.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
         EntityItem entityitem = new EntityItem(world, (double) x + d0, (double) y + d1, (double) z + d2, drop);
         entityitem.delayBeforeCanPickup = 10;
         world.spawnEntityInWorld(entityitem);
@@ -184,8 +181,8 @@ public class ToolHelper {
     }
 
     public static List<ItemStack> collateMatterClusterContents(Map<ItemStackWrapper, Integer> input) {
-        List<ItemStack> collated = new ArrayList<ItemStack>();
-
+        List<ItemStack> collated = new ArrayList<>();
+        if (input == null) return collated;
         for (Entry<ItemStackWrapper, Integer> e : input.entrySet()) {
             int count = e.getValue();
             ItemStackWrapper wrap = e.getKey();
@@ -211,7 +208,7 @@ public class ToolHelper {
     }
 
     public static Map<ItemStackWrapper, Integer> collateMatterCluster(List<ItemStack> input) {
-        Map<ItemStackWrapper, Integer> counts = new HashMap<ItemStackWrapper, Integer>();
+        Map<ItemStackWrapper, Integer> counts = new HashMap<>();
 
         if (input != null) {
             for (ItemStack stack : input) {
