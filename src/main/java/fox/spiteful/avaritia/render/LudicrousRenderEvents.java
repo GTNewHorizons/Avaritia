@@ -64,7 +64,8 @@ public class LudicrousRenderEvents {
     public void pushTheCosmicFancinessToTheLimit(RenderTickEvent event) {
         if (event.phase == Phase.START) {
             for (IIcon icon : cosmicIcons) {
-                if (Avaritia.isHodgepodgeLoaded && icon instanceof IPatchedTextureAtlasSprite patchedTextureAtlasSprite) {
+                if (Avaritia.isHodgepodgeLoaded
+                        && icon instanceof IPatchedTextureAtlasSprite patchedTextureAtlasSprite) {
                     patchedTextureAtlasSprite.markNeedsAnimationUpdate();
                 }
                 cosmicUVs.put(icon.getMinU());
