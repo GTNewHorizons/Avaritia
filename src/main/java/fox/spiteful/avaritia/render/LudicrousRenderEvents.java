@@ -19,7 +19,7 @@ import fox.spiteful.avaritia.Avaritia;
 public class LudicrousRenderEvents {
 
     private static final int cosmicCount = 10;
-    public static String[] cosmicTextures = new String[cosmicCount];
+    public static final String[] cosmicTextures = new String[cosmicCount];
 
     static {
         for (int i = 0; i < cosmicCount; i++) {
@@ -27,8 +27,8 @@ public class LudicrousRenderEvents {
         }
     }
 
-    public static FloatBuffer cosmicUVs = BufferUtils.createFloatBuffer(4 * cosmicTextures.length);
-    public static IIcon[] cosmicIcons = new IIcon[cosmicTextures.length];
+    public static final FloatBuffer cosmicUVs = BufferUtils.createFloatBuffer(4 * cosmicTextures.length);
+    public static final IIcon[] cosmicIcons = new IIcon[cosmicTextures.length];
 
     @SubscribeEvent
     public void letsMakeAQuilt(TextureStitchEvent.Pre event) {
@@ -63,10 +63,10 @@ public class LudicrousRenderEvents {
     @SubscribeEvent
     public void pushTheCosmicFancinessToTheLimit(RenderTickEvent event) {
         if (event.phase == Phase.START) {
-            cosmicUVs = BufferUtils.createFloatBuffer(4 * cosmicIcons.length);
             for (IIcon icon : cosmicIcons) {
-                if (Avaritia.isHodgepodgeLoaded && icon instanceof IPatchedTextureAtlasSprite) {
-                    ((IPatchedTextureAtlasSprite) icon).markNeedsAnimationUpdate();
+                if (Avaritia.isHodgepodgeLoaded
+                        && icon instanceof IPatchedTextureAtlasSprite patchedTextureAtlasSprite) {
+                    patchedTextureAtlasSprite.markNeedsAnimationUpdate();
                 }
                 cosmicUVs.put(icon.getMinU());
                 cosmicUVs.put(icon.getMinV());
