@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import fox.spiteful.avaritia.Avaritia;
 import fox.spiteful.avaritia.blocks.LudicrousBlocks;
 import fox.spiteful.avaritia.compat.Compat;
 import fox.spiteful.avaritia.crafting.ExtremeCraftingManager;
@@ -29,14 +30,17 @@ public class Tsundere {
 
         SubTileCheaty.lexicon = new LudicrousLexicon("asgardandelion", BotaniaAPI.categoryGenerationFlowers);
         SubTileCheaty.lexicon.addPage(BotaniaAPI.internalHandler.textPage("avaritia.lexicon.asgardandelion.0"));
-        SubTileCheaty.lexicon.setIcon(cheaty);
+        if (!Avaritia.isDreamCraftLoaded) {
+            SubTileCheaty.lexicon.setIcon(cheaty);
 
-        ExtremeCraftingManager.getInstance().addRecipe(
-                cheaty,
-                new Object[] { "   III   ", "  IIIII  ", "  IIXII  ", "  IIIII  ", "   III   ", " nn N nn ",
-                        "nnnnNnnnn", " nn N nn ", "    N    ", 'I', new ItemStack(LudicrousItems.resource, 1, 6), 'X',
-                        new ItemStack(LudicrousItems.resource, 1, 5), 'N', new ItemStack(LudicrousItems.resource, 1, 4),
-                        'n', new ItemStack(LudicrousItems.resource, 1, 3), });
+            ExtremeCraftingManager.getInstance().addRecipe(
+                    cheaty,
+                    new Object[] { "   III   ", "  IIIII  ", "  IIXII  ", "  IIIII  ", "   III   ", " nn N nn ",
+                            "nnnnNnnnn", " nn N nn ", "    N    ", 'I', new ItemStack(LudicrousItems.resource, 1, 6),
+                            'X', new ItemStack(LudicrousItems.resource, 1, 5), 'N',
+                            new ItemStack(LudicrousItems.resource, 1, 4), 'n',
+                            new ItemStack(LudicrousItems.resource, 1, 3), });
+        }
 
         BotaniaAPI.registerSubTile("soarleander", SubTileChicken.class);
         BotaniaAPI.registerSubTileSignature(SubTileChicken.class, new Signature("soarleander"));
