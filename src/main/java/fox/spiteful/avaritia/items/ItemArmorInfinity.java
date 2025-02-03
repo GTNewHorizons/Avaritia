@@ -320,9 +320,7 @@ public class ItemArmorInfinity extends ItemArmor implements ICosmicRenderItem, I
                             boolean sneaking = player.isSneaking();
                             player.stepHeight = sneaking ? 0.5f : 1.0f;
 
-                            float speed = 0.15f * (flying ? 1.1f : 1.0f)
-                            // * (swimming ? 1.2f : 1.0f)
-                                    * (sneaking ? 0.1f : 1.0f);
+                            float speed = 0.15f * (flying ? 1.1f : 1.0f) * (sneaking ? 0.1f : 1.0f);
 
                             if (player.moveForward > 0f) {
                                 player.moveFlying(0f, 1f, speed);
@@ -332,6 +330,15 @@ public class ItemArmorInfinity extends ItemArmor implements ICosmicRenderItem, I
 
                             if (player.moveStrafing != 0f) {
                                 player.moveFlying(1f, 0f, speed * 0.5f * Math.signum(player.moveStrafing));
+                            }
+
+                            // +50% speed up and down when flying
+                            if (flying) {
+                                if (player.motionY > 0 && player.motionY < 2) {
+                                    player.motionY *= 1.5f;
+                                } else if (player.motionY < 0 && player.motionY > -2) {
+                                    player.motionY *= 1.5f;
+                                }
                             }
                         }
                     } else {
