@@ -333,10 +333,12 @@ public class ItemArmorInfinity extends ItemArmor implements ICosmicRenderItem, I
                             }
 
                             // +50% speed up and down when flying
+                            if(flying){
                             if (player.motionY > 0 && player.motionY < 2) {
                                 player.motionY *= 1.5f;
                             } else if (player.motionY < 0 && player.motionY > -2) {
                                 player.motionY *= 1.5f;
+                            }
                             }
                         }
                     } else {
