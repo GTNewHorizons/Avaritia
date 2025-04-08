@@ -39,6 +39,8 @@ import fox.spiteful.avaritia.compat.Compat;
 import fox.spiteful.avaritia.entity.EntityImmortalItem;
 import fox.spiteful.avaritia.render.ICosmicRenderItem;
 import fox.spiteful.avaritia.render.ModelArmorInfinity;
+import gregtech.api.hazards.Hazard;
+import gregtech.api.hazards.IHazardProtector;
 import thaumcraft.api.IGoggles;
 import thaumcraft.api.IVisDiscountGear;
 import thaumcraft.api.aspects.Aspect;
@@ -52,9 +54,10 @@ import vazkii.botania.api.mana.IManaDiscountArmor;
         @Optional.Interface(iface = "thaumcraft.api.IVisDiscountGear", modid = "Thaumcraft"),
         @Optional.Interface(iface = "vazkii.botania.api.item.IPhantomInkable", modid = "Botania"),
         @Optional.Interface(iface = "vazkii.botania.api.mana.IManaDiscountArmor", modid = "Botania"),
-        @Optional.Interface(iface = "vazkii.botania.api.item.IManaProficiencyArmor", modid = "Botania") })
+        @Optional.Interface(iface = "vazkii.botania.api.item.IManaProficiencyArmor", modid = "Botania"),
+        @Optional.Interface(iface = "gregtech.api.hazards.IHazardProtector", modid = "gregtech") })
 public class ItemArmorInfinity extends ItemArmor implements ICosmicRenderItem, IGoggles, IRevealer, IVisDiscountGear,
-        IPhantomInkable, IManaDiscountArmor, IManaProficiencyArmor {
+        IPhantomInkable, IManaDiscountArmor, IManaProficiencyArmor, IHazardProtector {
 
     public static final ArmorMaterial infinite_armor = EnumHelper
             .addArmorMaterial("infinity", 9999, new int[] { 6, 16, 12, 6 }, 1000);
@@ -361,5 +364,12 @@ public class ItemArmorInfinity extends ItemArmor implements ICosmicRenderItem, I
                 }
             }
         }
+    }
+
+    /// GT5 Hazmat protection
+    @Optional.Method(modid = "gregtech")
+    @Override
+    public boolean protectsAgainst(ItemStack itemStack, Hazard hazard) {
+        return true;
     }
 }
