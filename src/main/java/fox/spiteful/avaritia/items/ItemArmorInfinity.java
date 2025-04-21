@@ -55,7 +55,7 @@ import vazkii.botania.api.mana.IManaDiscountArmor;
         @Optional.Interface(iface = "vazkii.botania.api.item.IPhantomInkable", modid = "Botania"),
         @Optional.Interface(iface = "vazkii.botania.api.mana.IManaDiscountArmor", modid = "Botania"),
         @Optional.Interface(iface = "vazkii.botania.api.item.IManaProficiencyArmor", modid = "Botania"),
-        @Optional.Interface(iface = "gregtech.api.hazards.IHazardProtector", modid = "gregtech") })
+        @Optional.Interface(iface = "gregtech.api.hazards.IHazardProtector", modid = "dreamcraft") })
 public class ItemArmorInfinity extends ItemArmor implements ICosmicRenderItem, IGoggles, IRevealer, IVisDiscountGear,
         IPhantomInkable, IManaDiscountArmor, IManaProficiencyArmor, IHazardProtector {
 
@@ -367,7 +367,7 @@ public class ItemArmorInfinity extends ItemArmor implements ICosmicRenderItem, I
     }
 
     /// GT5 Hazmat protection
-    @Optional.Method(modid = "gregtech")
+    @Optional.Method(modid = "dreamcraft")
     @Override
     public boolean protectsAgainst(ItemStack itemStack, Hazard hazard) {
         return true;
