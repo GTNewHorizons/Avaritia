@@ -69,7 +69,7 @@ public class BlockResource extends Block {
     }
 
     @Override
-    @Optional.Method(modid = "gregtechNH")
+    @Optional.Method(modid = "gregtech_nh")
     public void onBlockAdded(World aWorld, int aX, int aY, int aZ) {
         if (GregTechAPI.isMachineBlock(this, aWorld.getBlockMetadata(aX, aY, aZ))) {
             GregTechAPI.causeMachineUpdate(aWorld, aX, aY, aZ);
@@ -77,7 +77,7 @@ public class BlockResource extends Block {
     }
 
     @Override
-    @Optional.Method(modid = "gregtechNH")
+    @Optional.Method(modid = "gregtech_nh")
     public void breakBlock(World aWorld, int aX, int aY, int aZ, Block aBlock, int aMetaData) {
         if (GregTechAPI.isMachineBlock(this, aMetaData)) {
             GregTechAPI.causeMachineUpdate(aWorld, aX, aY, aZ);
