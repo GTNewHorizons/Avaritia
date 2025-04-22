@@ -53,7 +53,7 @@ public class Compat {
         ic2 = Loader.isModLoaded("IC2") && Config.ic2;
         // NOTE: This will only work with gt5 unless you add ` && !Loader.isModLoaded("gregapi")`.
         // This doesn't cause errors with gt6 now, but it might if anyone plans on using it specifically as a *gt5* check
-        // Also if you want a GTNH *specific* feature to have compat, use new modid gregtechNH.
+        // Also if you want a GTNH *specific* feature to have compat, use new modid gregtech_nh.
         gt = Loader.isModLoaded("gregtech") && Config.gt;
         botan = Loader.isModLoaded("Botania") && Config.botan;
         blood = Loader.isModLoaded("AWWayofTime") && Config.blood;
