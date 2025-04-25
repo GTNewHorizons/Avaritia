@@ -57,7 +57,7 @@ public class ItemOrbArmok extends Item implements IBloodOrb, IBindable {
 
     @Override
     public int getMaxEssence() {
-        return 1000000000;
+        return 2147483647;
     }
 
     @Override
