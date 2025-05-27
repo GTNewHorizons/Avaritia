@@ -41,7 +41,8 @@ public class ItemOrbArmok extends Item implements IBloodOrb, IBindable {
             NBTTagCompound itemTag = stack.stackTagCompound;
             if (itemTag == null || itemTag.getString("ownerName").equals("")) return;
 
-            SoulNetworkHandler.setCurrentEssence(itemTag.getString("ownerName"), getMaxEssence());
+            SoulNetworkHandler
+                    .addCurrentEssenceToMaximum(itemTag.getString("ownerName"), Integer.MAX_VALUE, getMaxEssence());
         }
     }
 
@@ -63,6 +64,11 @@ public class ItemOrbArmok extends Item implements IBloodOrb, IBindable {
     @Override
     public int getOrbLevel() {
         return 6;
+    }
+
+    @Override
+    public boolean isFilledForFree() {
+        return true;
     }
 
     @Override
