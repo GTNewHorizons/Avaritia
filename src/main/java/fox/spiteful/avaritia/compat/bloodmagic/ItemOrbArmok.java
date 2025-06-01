@@ -49,11 +49,9 @@ public class ItemOrbArmok extends Item implements IBloodOrb, IBindable {
     @Override
     public void addInformation(ItemStack item, EntityPlayer player, List<String> tooltip, boolean wut) {
         tooltip.add(StatCollector.translateToLocal("tooltip.armok.desc"));
-        if (item.getTagCompound() != null) {
-            tooltip.add(
-                    StatCollector.translateToLocal("tooltip.owner.currentowner") + " "
-                            + item.getTagCompound().getString("ownerName"));
-        }
+        tooltip.add(StatCollector.translateToLocal("tooltip.armok.desc2"));
+        tooltip.add(StatCollector.translateToLocalFormatted("tooltip.energybattery.capacity", getMaxEssence()));
+        addBindingInformation(item, tooltip);
     }
 
     @Override
