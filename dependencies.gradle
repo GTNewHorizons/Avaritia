@@ -6,16 +6,16 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:ForestryMC:4.10.10:api") {transitive = false}
     compileOnly("com.github.GTNewHorizons:Botania:1.12.10-GTNH:dev") {transitive = false}
     compileOnly("com.github.GTNewHorizons:Mantle:0.5.0:dev") {transitive = false}
-    compileOnly("com.github.GTNewHorizons:TinkersConstruct:1.13.28-GTNH:dev") {transitive = false}
-    compileOnly("com.github.GTNewHorizons:BloodMagic:1.7.32") {transitive = false}
+    compileOnly("com.github.GTNewHorizons:TinkersConstruct:1.13.31-GTNH:dev") {transitive = false}
+    compileOnly("com.github.GTNewHorizons:BloodMagic:1.7.36") {transitive = false}
     compileOnly("com.github.GTNewHorizons:CraftTweaker:3.4.2:dev") {transitive = false}
-    compileOnly("com.github.GTNewHorizons:Hodgepodge:2.6.66:dev") {transitive = false}
-    compileOnly("com.github.GTNewHorizons:GT5-Unofficial:5.09.51.314:dev") {transitive = false}
+    compileOnly("com.github.GTNewHorizons:Hodgepodge:2.6.69:dev") {transitive = false}
+    compileOnly("com.github.GTNewHorizons:GT5-Unofficial:5.09.51.328:dev") {transitive = false}
 
     compileOnly("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev") {transitive = false}
     compileOnly("curse.maven:cofh-lib-220333:2388748") {transitive = false}
     compileOnly("curse.maven:cofh-core-69162:2388751") {transitive = false}
     compileOnly("curse.maven:witchery-69673:2234410") {transitive = false}
 
-    runtimeOnly("com.github.GTNewHorizons:GTNHLib:0.6.25:dev")
+    runtimeOnly("com.github.GTNewHorizons:GTNHLib:0.6.26:dev")
 }
