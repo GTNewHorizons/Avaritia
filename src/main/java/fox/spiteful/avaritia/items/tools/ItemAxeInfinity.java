@@ -45,7 +45,7 @@ public class ItemAxeInfinity extends ItemAxe {
         setUnlocalizedName("infinity_axe");
         setTextureName("avaritia:infinity_axe");
         setCreativeTab(Avaritia.tab);
-        FMLCommonHandler.instance().bus().register(this);
+        FMLCommonHandler.instance().bus().register(new EventHandler());
     }
 
     @Override
@@ -126,19 +126,6 @@ public class ItemAxeInfinity extends ItemAxe {
     @Override
     public boolean hasEffect(ItemStack par1ItemStack, int pass) {
         return false;
-    }
-
-    @SubscribeEvent
-    public void onTickEnd(TickEvent.WorldTickEvent event) {
-        if (event.phase == TickEvent.Phase.END) {
-            int dim = event.world.provider.dimensionId;
-            if (blockSwappers.containsKey(dim)) {
-                List<BlockSwapper> swappers = blockSwappers.get(dim);
-                List<BlockSwapper> swappersSafe = new ArrayList<>(swappers);
-                swappers.clear();
-                for (BlockSwapper s : swappersSafe) if (s != null) s.tick();
-            }
-        }
     }
 
     private static BlockSwapper addBlockSwapper(World world, EntityPlayer player, ItemStack stack,
@@ -234,4 +221,19 @@ public class ItemAxeInfinity extends ItemAxe {
         }
     }
 
+    public static class EventHandler {
+
+        @SubscribeEvent
+        public void onTickEnd(TickEvent.WorldTickEvent event) {
+            if (event.phase == TickEvent.Phase.END) {
+                int dim = event.world.provider.dimensionId;
+                if (blockSwappers.containsKey(dim)) {
+                    List<BlockSwapper> swappers = blockSwappers.get(dim);
+                    List<BlockSwapper> swappersSafe = new ArrayList<>(swappers);
+                    swappers.clear();
+                    for (BlockSwapper s : swappersSafe) if (s != null) s.tick();
+                }
+            }
+        }
+    }
 }
