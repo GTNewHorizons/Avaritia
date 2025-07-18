@@ -203,8 +203,8 @@ public class FracturedOreRenderer implements IItemRenderer {
         f2 = icon.getMinV();
         f3 = icon.getMaxV();
 
-        ItemRenderer
-                .renderItemIn2D(Tessellator.instance, f1, f2, f, f3, icon.getIconWidth(), icon.getIconHeight(), scale);
+        final Tessellator tess = Tessellator.instance;
+        ItemRenderer.renderItemIn2D(tess, f1, f2, f, f3, icon.getIconWidth(), icon.getIconHeight(), scale);
 
         boolean unknown = false;
 
@@ -232,15 +232,8 @@ public class FracturedOreRenderer implements IItemRenderer {
                 float maxv = oreicon.getMaxV();
 
                 GL11.glDepthFunc(GL11.GL_EQUAL);
-                ItemRenderer.renderItemIn2D(
-                        Tessellator.instance,
-                        maxu,
-                        minv,
-                        minu,
-                        maxv,
-                        icon.getIconWidth(),
-                        icon.getIconHeight(),
-                        scale);
+                ItemRenderer
+                        .renderItemIn2D(tess, maxu, minv, minu, maxv, icon.getIconWidth(), icon.getIconHeight(), scale);
                 GL11.glDepthFunc(GL11.GL_LEQUAL);
 
                 mc.renderEngine.bindTexture(TextureMap.locationItemsTexture);
@@ -261,30 +254,14 @@ public class FracturedOreRenderer implements IItemRenderer {
         float minv = fracicon.getMinV();
         float maxv = fracicon.getMaxV();
 
-        ItemRenderer.renderItemIn2D(
-                Tessellator.instance,
-                maxu,
-                minv,
-                minu,
-                maxv,
-                icon.getIconWidth(),
-                icon.getIconHeight(),
-                scale);
+        ItemRenderer.renderItemIn2D(tess, maxu, minv, minu, maxv, icon.getIconWidth(), icon.getIconHeight(), scale);
 
         GL11.glEnable(GL11.GL_ALPHA_TEST);
         GL11.glBlendFunc(GL11.GL_DST_COLOR, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColor4d(1, 1, 1, 1);
         mc.entityRenderer.disableLightmap(0.0);
 
-        ItemRenderer.renderItemIn2D(
-                Tessellator.instance,
-                maxu,
-                minv,
-                minu,
-                maxv,
-                icon.getIconWidth(),
-                icon.getIconHeight(),
-                scale);
+        ItemRenderer.renderItemIn2D(tess, maxu, minv, minu, maxv, icon.getIconWidth(), icon.getIconHeight(), scale);
 
         GL11.glDisable(GL11.GL_BLEND);
 
@@ -301,15 +278,8 @@ public class FracturedOreRenderer implements IItemRenderer {
             minv = uicon.getMinV();
             maxv = uicon.getMaxV();
 
-            ItemRenderer.renderItemIn2D(
-                    Tessellator.instance,
-                    maxu,
-                    minv,
-                    minu,
-                    maxv,
-                    uicon.getIconWidth(),
-                    uicon.getIconHeight(),
-                    scale);
+            ItemRenderer
+                    .renderItemIn2D(tess, maxu, minv, minu, maxv, uicon.getIconWidth(), uicon.getIconHeight(), scale);
         }
 
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);

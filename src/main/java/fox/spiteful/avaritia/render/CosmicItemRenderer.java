@@ -138,6 +138,7 @@ public class CosmicItemRenderer implements IItemRenderer {
 
         // Lumberjack.log(Level.INFO, "passes: "+passes);
 
+        final Tessellator tess = Tessellator.instance;
         for (int i = 0; i < passes; i++) {
             icon = this.getStackIcon(item, i, player);
 
@@ -153,15 +154,7 @@ public class CosmicItemRenderer implements IItemRenderer {
             g = (float) (colour >> 8 & 255) / 255.0F;
             b = (float) (colour & 255) / 255.0F;
             GL11.glColor4f(r, g, b, 1.0F);
-            ItemRenderer.renderItemIn2D(
-                    Tessellator.instance,
-                    f1,
-                    f2,
-                    f,
-                    f3,
-                    icon.getIconWidth(),
-                    icon.getIconHeight(),
-                    scale);
+            ItemRenderer.renderItemIn2D(tess, f1, f2, f, f3, icon.getIconWidth(), icon.getIconHeight(), scale);
         }
 
         if (item.getItem() instanceof ICosmicRenderItem) {
@@ -178,7 +171,7 @@ public class CosmicItemRenderer implements IItemRenderer {
             float minv = cosmicicon.getMinV();
             float maxv = cosmicicon.getMaxV();
             ItemRenderer.renderItemIn2D(
-                    Tessellator.instance,
+                    tess,
                     maxu,
                     minv,
                     minu,
