@@ -22,7 +22,6 @@ import net.minecraft.world.World;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import fox.spiteful.avaritia.Lumberjack;
 import fox.spiteful.avaritia.items.tools.ToolHelper;
 import fox.spiteful.avaritia.render.ICosmicRenderItem;
 
@@ -209,7 +208,6 @@ public class ItemMatterCluster extends Item implements ICosmicRenderItem {
         int donorcount = getClusterSize(donor);
         int recipientcount = getClusterSize(recipient);
 
-        Lumberjack.info(donorcount + ", " + recipientcount);
         if (donorcount == 0 || donorcount == capacity || recipientcount == capacity) {
             return;
         }
