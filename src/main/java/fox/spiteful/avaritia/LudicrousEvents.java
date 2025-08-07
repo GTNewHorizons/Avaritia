@@ -311,16 +311,17 @@ public class LudicrousEvents {
 
     @SubscribeEvent
     public void clusterClustererererer(EntityItemPickupEvent event) {
-        if (event.entityPlayer != null && event.item.getEntityItem().getItem() == LudicrousItems.matter_cluster) {
-            ItemStack stack = event.item.getEntityItem();
-            EntityPlayer player = event.entityPlayer;
-
-            for (int i = 0; i < player.inventory.mainInventory.length; i++) {
+        final ItemStack stack = event.item.getEntityItem();
+        if (stack.getItem() == LudicrousItems.matter_cluster) {
+            if (ItemMatterCluster.isClusterFull(stack)) {
+                return;
+            }
+            final ItemStack[] inventory = event.entityPlayer.inventory.mainInventory;
+            for (ItemStack slot : inventory) {
                 if (stack.stackSize == 0) {
                     break;
                 }
-                ItemStack slot = player.inventory.mainInventory[i];
-                if (slot != null && slot.getItem() != null && slot.getItem() == LudicrousItems.matter_cluster) {
+                if (slot != null && slot.getItem() == LudicrousItems.matter_cluster) {
                     ItemMatterCluster.mergeClusters(stack, slot);
                 }
             }
