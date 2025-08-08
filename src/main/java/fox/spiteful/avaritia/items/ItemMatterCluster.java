@@ -22,7 +22,6 @@ import net.minecraft.world.World;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import fox.spiteful.avaritia.Lumberjack;
 import fox.spiteful.avaritia.items.tools.ToolHelper;
 import fox.spiteful.avaritia.render.ICosmicRenderItem;
 
@@ -34,7 +33,7 @@ public class ItemMatterCluster extends Item implements ICosmicRenderItem {
     public static final String COUNTTAG = "count";
     public static final String MAINCOUNTTAG = "total";
 
-    public static int capacity = 64 * 256;
+    public static final int MAX_CAPACITY = 64 * 256;
 
     public IIcon iconFull;
     public IIcon cosmicIcon;
@@ -71,7 +70,7 @@ public class ItemMatterCluster extends Item implements ICosmicRenderItem {
 
         tooltip.add(
                 clustertag.getInteger(MAINCOUNTTAG) + "/"
-                        + capacity
+                        + MAX_CAPACITY
                         + " "
                         + StatCollector.translateToLocal("tooltip.matter_cluster.counter"));
         tooltip.add("");
@@ -113,7 +112,7 @@ public class ItemMatterCluster extends Item implements ICosmicRenderItem {
             ItemStackWrapper wrap = e.getKey();
             int wrapcount = e.getValue();
 
-            int count = Math.min(capacity - currentTotal, wrapcount);
+            int count = Math.min(MAX_CAPACITY - currentTotal, wrapcount);
 
             if (!currentItems.containsKey(e.getKey())) {
                 currentItems.put(wrap, count);
@@ -127,7 +126,7 @@ public class ItemMatterCluster extends Item implements ICosmicRenderItem {
                 itemlist.remove(0);
             }
 
-            if (currentTotal == capacity) {
+            if (currentTotal == MAX_CAPACITY) {
                 ItemStack cluster = makeCluster(currentItems);
 
                 clusters.add(cluster);
@@ -186,6 +185,10 @@ public class ItemMatterCluster extends Item implements ICosmicRenderItem {
         return cluster.getTagCompound().getCompoundTag(MAINTAG).getInteger(MAINCOUNTTAG);
     }
 
+    public static boolean isClusterFull(ItemStack cluster) {
+        return getClusterSize(cluster) == MAX_CAPACITY;
+    }
+
     public static void setClusterData(ItemStack stack, Map<ItemStackWrapper, Integer> data, int count) {
         if (!stack.hasTagCompound()) {
             stack.setTagCompound(new NBTTagCompound());
@@ -209,8 +212,7 @@ public class ItemMatterCluster extends Item implements ICosmicRenderItem {
         int donorcount = getClusterSize(donor);
         int recipientcount = getClusterSize(recipient);
 
-        Lumberjack.info(donorcount + ", " + recipientcount);
-        if (donorcount == 0 || donorcount == capacity || recipientcount == capacity) {
+        if (donorcount == 0 || donorcount == MAX_CAPACITY || recipientcount == MAX_CAPACITY) {
             return;
         }
 
@@ -218,12 +220,12 @@ public class ItemMatterCluster extends Item implements ICosmicRenderItem {
         Map<ItemStackWrapper, Integer> recipientdata = getClusterData(recipient);
         List<Entry<ItemStackWrapper, Integer>> datalist = new ArrayList<>(donordata.entrySet());
 
-        while (recipientcount < capacity && donorcount > 0) {
+        while (recipientcount < MAX_CAPACITY && donorcount > 0) {
             Entry<ItemStackWrapper, Integer> e = datalist.get(0);
             ItemStackWrapper wrap = e.getKey();
             int wrapcount = e.getValue();
 
-            int count = Math.min(capacity - recipientcount, wrapcount);
+            int count = Math.min(MAX_CAPACITY - recipientcount, wrapcount);
 
             if (!recipientdata.containsKey(wrap)) {
                 recipientdata.put(wrap, count);
@@ -273,7 +275,7 @@ public class ItemMatterCluster extends Item implements ICosmicRenderItem {
     @Override
     public IIcon getMaskTexture(ItemStack stack, EntityPlayer player) {
         int count = getClusterSize(stack);
-        if (count == capacity) {
+        if (count == MAX_CAPACITY) {
             return cosmicIconFull;
         }
         return cosmicIcon;
@@ -282,13 +284,13 @@ public class ItemMatterCluster extends Item implements ICosmicRenderItem {
     @Override
     public float getMaskMultiplier(ItemStack stack, EntityPlayer player) {
         int count = getClusterSize(stack);
-        return count / (float) capacity;
+        return count / (float) MAX_CAPACITY;
     }
 
     @Override
     public IIcon getIcon(ItemStack stack, int pass) {
         int count = getClusterSize(stack);
-        if (count == capacity) {
+        if (count == MAX_CAPACITY) {
             return iconFull;
         }
         return super.getIcon(stack, pass);
@@ -302,7 +304,7 @@ public class ItemMatterCluster extends Item implements ICosmicRenderItem {
     @Override
     public String getUnlocalizedName(ItemStack stack) {
         int count = getClusterSize(stack);
-        if (count == capacity) {
+        if (count == MAX_CAPACITY) {
             return super.getUnlocalizedName(stack) + ".full";
         }
         return super.getUnlocalizedName(stack);
