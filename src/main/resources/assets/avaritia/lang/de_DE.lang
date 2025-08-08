@@ -63,7 +63,7 @@ tile.block_infinity.name=Unendlichkeitsblock
 tile.block_gaia.name=Gaia-Block
 tile.dire_crafting.name=Schreckliche Werkbank
 tile.neutron_collector.name=Neutronenkollektor
-tile.neutronium_compressor.name=NeutronenKompressor
+tile.neutronium_compressor.name=Neutronenkompressor
 tile.infinitato.name=Unendlichkeitstoffel
 tile.alfheim_deadrock0.name=Totstein
 tile.alfheim_deadrock1.name=Totstein-Ziegel
@@ -118,7 +118,7 @@ container.neutron_collector=Neutronenkollektor
 container.neutronium_compressor=Neutronenkompressor
 tc.aspect.terminus=Spielende, Apokalypse, Erlösung
 crafting.extreme=Xtreme geformte Herstellung
-crafting.extreme.shapeless=Xtreme formlose Herstellun
+crafting.extreme.shapeless=Xtreme formlose Herstellung
 crafting.extreme_compression=Neutronenkompressor
 tip.infinity=Unendlichkeit
 death.attack.infinity=%1$s wurde von %2$s ausgelöscht
@@ -141,7 +141,7 @@ avaritia.flower.soarleander.name=Soarleander
 tile.botania:flower.soarleander.name=Soarleander
 tile.avaritia.flower.soarleander.lore=Direkt in meine Blutbahn!
 avaritia.lexicon.soarleander=Soarleander
-avaritia.lexicon.soarleander.0=Wenn du zu viele Hühner oder Hühner-Abgaben hast, such nicht weiter!<BR>Der Soarleander wird alles in der Nähe, was mit Hühnern zu tun hat, verschliengen (auch Hühner selbst), ohne sich auch nur ein bisschen für etwas Anderes zu interessieren.
+avaritia.lexicon.soarleander.0=Wenn du zu viele Hühner oder Hühner-Abgaben hast, such nicht weiter!<BR>Der Soarleander wird alles in der Nähe, was mit Hühnern zu tun hat, verschlingen (auch Hühner selbst), ohne sich auch nur ein bisschen für etwas Anderes zu interessieren.
 avaritia.lexicon.soarleander.1=&oFür Kisten und Nebenwirkungen lesen sie die Packungsbeilage.&r
 #
 # Thaumcraft
@@ -171,11 +171,11 @@ avaritia.bee.infinite=Unendliche
 avaritia.bee.infinite.desc=
 
 classification.balanced=Gebalanced
-classification.balanced.desc=Diese Bienen langweilen sich und sterben auf der Stelle sobald sie fertig sind mit was auch immer sie machen. Sie nehmen die längsten, verwinkelsten Routen um sich irgendwie zu bespaßen.
+classification.balanced.desc=Diese Bienen langweilen sich und sterben auf der Stelle, sobald sie fertig sind mit was auch immer sie machen. Sie nehmen die längsten, verwinkelsten Routen um sich irgendwie zu bespaßen.
 classification.infinite=Unendlich
 classification.infinite.desc=Sie sammeln pranische Energie aus den unsichtbaren Fäden und Strängen des Universums selbst.
 
-avaritia.allele.speedNerfed=Gernerft
+avaritia.allele.speedNerfed=Generft
 avaritia.allele.lifespanArtificial=Künstlich
 #
 # Research
@@ -184,4 +184,4 @@ avaritia.research_text.BIG_PEARL=Denn du kannst immer mehr haben
 avaritia.research_page.BIG_PEARL.1=Klar, die Primordialperle hat viel drauf, aber du denkst es könnte NOCH mehr.<BR><BR>Indem du mehrere Primordialperlen in einer Infusion zusammengeklatscht hast, hast du ein noch potenteres Artefakt erstellt: Die Perle des extremen Ursprungs.<BR><BR>Es ist garantiert noch primordialer als die Primordialperle!
 avaritia.research_name.AKASHIC=Aufzeichnungen der Akasha
 avaritia.research_text.AKASHIC=Mehr Wissen als du jemals brauchen wirst
-avaritia.research_page.AKASHIC.1=Du hast genug geforscht um die Struktur der Wirklichkeit aufzubrechen und die Outer Realms zu betreten, aber sicher ist da draußen NOCH mehr Forschung zu finden, oder?<BR><BR>Die Aufzeichnungen der Akasha werden die alle Forschungspunkte der Welt geben... Und noch ein wenig mehr.
+avaritia.research_page.AKASHIC.1=Du hast genug geforscht, um die Struktur der Wirklichkeit aufzubrechen und die Outer Realms zu betreten, aber sicher ist, da draußen NOCH mehr Forschung zu finden, oder?<BR><BR>Die Aufzeichnungen der Akasha werden die alle Forschungspunkte der Welt geben... Und noch ein wenig mehr.
