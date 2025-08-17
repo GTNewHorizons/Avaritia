@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
@@ -337,9 +338,14 @@ public class ItemArmorInfinity extends ItemArmor implements ICosmicRenderItem, I
 
                             // +50% speed up and down when flying
                             if (flying) {
-                                if (player.motionY > 0 && player.motionY < 2) {
+                                Minecraft mc = Minecraft.getMinecraft();
+
+                                boolean up = mc.gameSettings.keyBindJump.getIsKeyPressed();
+                                boolean down = mc.gameSettings.keyBindSneak.getIsKeyPressed();
+
+                                if (up && player.motionY > 0 && player.motionY < 2) {
                                     player.motionY *= 1.5f;
-                                } else if (player.motionY < 0 && player.motionY > -2) {
+                                } else if (down && player.motionY < 0 && player.motionY > -2) {
                                     player.motionY *= 1.5f;
                                 }
                             }
