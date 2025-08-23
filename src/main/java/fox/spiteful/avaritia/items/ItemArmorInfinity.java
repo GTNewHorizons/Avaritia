@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.List;
 
 import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
@@ -38,6 +37,7 @@ import fox.spiteful.avaritia.LudicrousText;
 import fox.spiteful.avaritia.PotionHelper;
 import fox.spiteful.avaritia.compat.Compat;
 import fox.spiteful.avaritia.entity.EntityImmortalItem;
+import fox.spiteful.avaritia.mixins.early.minecraft.EntityLivingBaseAccessor;
 import fox.spiteful.avaritia.render.ICosmicRenderItem;
 import fox.spiteful.avaritia.render.ModelArmorInfinity;
 import gregtech.api.hazards.Hazard;
@@ -338,14 +338,10 @@ public class ItemArmorInfinity extends ItemArmor implements ICosmicRenderItem, I
 
                             // +50% speed up and down when flying
                             if (flying) {
-                                Minecraft mc = Minecraft.getMinecraft();
-
-                                boolean up = mc.gameSettings.keyBindJump.getIsKeyPressed();
-                                boolean down = mc.gameSettings.keyBindSneak.getIsKeyPressed();
-
-                                if (up && player.motionY > 0 && player.motionY < 2) {
+                                boolean jumping = ((EntityLivingBaseAccessor) player).getIsJumping();
+                                if (jumping && player.motionY > 0 && player.motionY < 2) {
                                     player.motionY *= 1.5f;
-                                } else if (down && player.motionY < 0 && player.motionY > -2) {
+                                } else if (sneaking && player.motionY < 0 && player.motionY > -2) {
                                     player.motionY *= 1.5f;
                                 }
                             }
