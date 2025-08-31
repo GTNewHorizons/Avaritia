@@ -84,7 +84,7 @@ public class CosmicRenderShenanigans {
         int mx = (coord % 65536) / 16;
         int my = (coord / 65536) / 16;
 
-        int lightcolour = map[my * 16 + mx];
+        int lightcolour = map[Math.max(0, Math.min(map.length - 1, my * 16 + mx))];
 
         setLightLevel(
                 ((lightcolour >> 16) & 0xFF) / 256.0f,
