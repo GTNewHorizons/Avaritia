@@ -1,4 +1,4 @@
-package fox.spiteful.avaritia;
+package fox.spiteful.avaritia.core;
 
 import java.util.Collections;
 import java.util.List;

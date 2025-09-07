@@ -1,7 +1,8 @@
 {
   "required": true,
   "minVersion": "0.8.5-GTNH",
-  "refmap": "mixins.avaritia.refmap.json",
+  "package": "fox.spiteful.avaritia.mixins",
+  "refmap": "mixins.Avaritia.refmap.json",
   "target": "@env(DEFAULT)",
   "compatibilityLevel": "JAVA_8",
   "mixins": []
