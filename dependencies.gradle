@@ -1,16 +1,16 @@
 // Add your dependencies here
 
 dependencies {
-    devOnlyNonPublishable("com.github.GTNewHorizons:NotEnoughItems:2.7.78-GTNH:dev")
+    devOnlyNonPublishable("com.github.GTNewHorizons:NotEnoughItems:2.7.80-GTNH:dev")
 
     compileOnly("com.github.GTNewHorizons:ForestryMC:4.10.17:api") {transitive = false}
-    compileOnly("com.github.GTNewHorizons:Botania:1.12.23-GTNH:dev") {transitive = false}
+    compileOnly("com.github.GTNewHorizons:Botania:1.12.24-GTNH:dev") {transitive = false}
     compileOnly("com.github.GTNewHorizons:Mantle:0.5.1:dev") {transitive = false}
     compileOnly("com.github.GTNewHorizons:TinkersConstruct:1.13.51-GTNH:dev") {transitive = false}
     compileOnly("com.github.GTNewHorizons:BloodMagic:1.7.49") {transitive = false}
     compileOnly("com.github.GTNewHorizons:CraftTweaker:3.4.2:dev") {transitive = false}
     compileOnly("com.github.GTNewHorizons:Hodgepodge:2.6.102:dev") {transitive = false}
-    compileOnly("com.github.GTNewHorizons:GT5-Unofficial:5.09.51.437:dev") {transitive = false}
+    compileOnly("com.github.GTNewHorizons:GT5-Unofficial:5.09.51.446:dev") {transitive = false}
 
     compileOnly("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev") {transitive = false}
     compileOnly("curse.maven:cofh-lib-220333:2388748") {transitive = false}
