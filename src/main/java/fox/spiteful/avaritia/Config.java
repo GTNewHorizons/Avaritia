@@ -14,6 +14,7 @@ public class Config {
     public static boolean boringFood = false;
     public static boolean fractured = false;
     public static boolean fast = true;
+    public static boolean stepUp = true;
 
     public static boolean thaumic = true;
     public static boolean sc2 = true;
@@ -92,6 +93,9 @@ public class Config {
                     "Gotta Go Fast",
                     fast,
                     "Disable if the Infinity Boots' speed boost is too ridiculous").getBoolean(true);
+            stepUp = conf
+                    .get("general", "Boots step up", stepUp, "Disable if the Infinity Boots' step assist is annoying")
+                    .getBoolean(true);
 
             conf.addCustomCategoryComment(
                     "compatibility",
