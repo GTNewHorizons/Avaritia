@@ -2,7 +2,9 @@ package fox.spiteful.avaritia.items;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.client.model.ModelBiped;
@@ -239,10 +241,10 @@ public class ItemArmorInfinity extends ItemArmor implements ICosmicRenderItem, I
 
     public static class abilityHandler {
 
-        public static List<String> playersWithHat = new ArrayList<String>();
-        public static List<String> playersWithChest = new ArrayList<String>();
-        public static List<String> playersWithLeg = new ArrayList<String>();
-        public static List<String> playersWithFoot = new ArrayList<String>();
+        public static Set<String> playersWithHat = new HashSet<>();
+        public static Set<String> playersWithChest = new HashSet<>();
+        public static Set<String> playersWithLeg = new HashSet<>();
+        public static Set<String> playersWithFoot = new HashSet<>();
 
         public static boolean playerHasHat(EntityPlayer player) {
             ItemStack armour = player.getCurrentArmor(3);
@@ -270,12 +272,11 @@ public class ItemArmorInfinity extends ItemArmor implements ICosmicRenderItem, I
 
         @SubscribeEvent
         public void updatePlayerAbilityStatus(LivingUpdateEvent event) {
-            if (event.entityLiving instanceof EntityPlayer) {
-                EntityPlayer player = (EntityPlayer) event.entityLiving;
+            if (event.entityLiving instanceof EntityPlayer player) {
                 String key = playerKey(player);
 
                 // hat
-                Boolean hasHat = playerHasHat(player);
+                boolean hasHat = playerHasHat(player);
                 if (playersWithHat.contains(key)) {
                     if (hasHat) {
 
@@ -287,7 +288,7 @@ public class ItemArmorInfinity extends ItemArmor implements ICosmicRenderItem, I
                 }
 
                 // chest
-                Boolean hasChest = playerHasChest(player);
+                boolean hasChest = playerHasChest(player);
                 if (playersWithChest.contains(key)) {
                     if (hasChest) {
                         player.capabilities.allowFlying = true;
@@ -303,7 +304,7 @@ public class ItemArmorInfinity extends ItemArmor implements ICosmicRenderItem, I
                 }
 
                 // legs
-                Boolean hasLeg = playerHasLeg(player);
+                boolean hasLeg = playerHasLeg(player);
                 if (playersWithLeg.contains(key)) {
                     if (hasLeg) {
 
@@ -315,7 +316,7 @@ public class ItemArmorInfinity extends ItemArmor implements ICosmicRenderItem, I
                 }
 
                 // shoes
-                Boolean hasFoot = playerHasFoot(player) && Config.fast;
+                boolean hasFoot = playerHasFoot(player) && Config.fast;
                 if (playersWithFoot.contains(key)) {
                     if (hasFoot) {
                         boolean flying = player.capabilities.isFlying;
