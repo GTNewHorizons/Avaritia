@@ -322,7 +322,7 @@ public class ItemArmorInfinity extends ItemArmor implements ICosmicRenderItem, I
                         boolean swimming = player.isInsideOfMaterial(Material.water) || player.isInWater();
                         if (player.onGround || flying || swimming) {
                             boolean sneaking = player.isSneaking();
-                            player.stepHeight = sneaking ? 0.5f : 1.0f;
+                            player.stepHeight = sneaking ? 0.501f : 1.001f;
 
                             float speed = 0.15f * (flying ? 1.1f : 1.0f) * (sneaking ? 0.1f : 1.0f);
 
@@ -348,6 +348,7 @@ public class ItemArmorInfinity extends ItemArmor implements ICosmicRenderItem, I
                         }
                     } else {
                         playersWithFoot.remove(key);
+                        player.stepHeight = 0.5f;
                     }
                 } else if (hasFoot) {
                     playersWithFoot.add(key);
@@ -357,8 +358,7 @@ public class ItemArmorInfinity extends ItemArmor implements ICosmicRenderItem, I
 
         @SubscribeEvent
         public void jumpBoost(LivingJumpEvent event) {
-            if (event.entityLiving instanceof EntityPlayer) {
-                EntityPlayer player = (EntityPlayer) event.entityLiving;
+            if (event.entityLiving instanceof EntityPlayer player) {
                 String key = playerKey(player);
 
                 if (playersWithFoot.contains(key)) {
