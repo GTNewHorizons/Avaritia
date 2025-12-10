@@ -1,6 +1,7 @@
 // Add your dependencies here
 
 dependencies {
+    api("com.github.GTNewHorizons:GTNHLib:0.8.25:dev")
     devOnlyNonPublishable("com.github.GTNewHorizons:NotEnoughItems:2.8.31-GTNH:dev")
 
     compileOnly("com.github.GTNewHorizons:ForestryMC:4.11.2:api") {transitive = false}
