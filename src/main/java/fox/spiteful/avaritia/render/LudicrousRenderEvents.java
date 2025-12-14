@@ -1,6 +1,5 @@
 package fox.spiteful.avaritia.render;
 
-import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 
 import org.lwjgl.opengl.GL11;
@@ -32,15 +31,5 @@ public class LudicrousRenderEvents {
 
         ModelArmorInfinity.armorModel.rebuildOverlay();
         ModelArmorInfinity.legModel.rebuildOverlay();
-    }
-
-    @SubscribeEvent
-    public void makeCosmicStuffLessDumbInGUIs(GuiScreenEvent.DrawScreenEvent.Pre event) {
-        CosmicRenderShenanigans.inventoryRender = true;
-    }
-
-    @SubscribeEvent
-    public void finishMakingCosmicStuffLessDumbInGUIs(GuiScreenEvent.DrawScreenEvent.Post event) {
-        CosmicRenderShenanigans.inventoryRender = false;
     }
 }
