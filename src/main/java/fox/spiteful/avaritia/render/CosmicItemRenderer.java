@@ -6,7 +6,6 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -39,7 +38,6 @@ public class CosmicItemRenderer implements IItemRenderer {
                 if (item.isOnItemFrame()) GL11.glTranslatef(0F, -0.3F, 0.01F);
                 render(item, null);
                 GL11.glPopMatrix();
-
                 break;
             }
             case EQUIPPED, EQUIPPED_FIRST_PERSON: {
@@ -177,18 +175,7 @@ public class CosmicItemRenderer implements IItemRenderer {
 
     public void processLightLevel(ItemRenderType type, ItemStack item, Object... data) {
         switch (type) {
-            case ENTITY: {
-                EntityItem ent = (EntityItem) (data[1]);
-                if (ent != null) {
-                    CosmicRenderShenanigans.setLightFromLocation(
-                            ent.worldObj,
-                            MathHelper.floor_double(ent.posX),
-                            MathHelper.floor_double(ent.posY),
-                            MathHelper.floor_double(ent.posZ));
-                }
-                break;
-            }
-            case EQUIPPED, EQUIPPED_FIRST_PERSON: {
+            case ENTITY, EQUIPPED, EQUIPPED_FIRST_PERSON: {
                 EntityLivingBase ent = (EntityLivingBase) (data[1]);
                 if (ent != null) {
                     CosmicRenderShenanigans.setLightFromLocation(
