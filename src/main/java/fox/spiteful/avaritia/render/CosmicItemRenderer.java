@@ -5,7 +5,7 @@ import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -176,7 +176,7 @@ public class CosmicItemRenderer implements IItemRenderer {
     public void processLightLevel(ItemRenderType type, ItemStack item, Object... data) {
         switch (type) {
             case ENTITY, EQUIPPED, EQUIPPED_FIRST_PERSON: {
-                EntityLivingBase ent = (EntityLivingBase) (data[1]);
+                Entity ent = (Entity) (data[1]);
                 if (ent != null) {
                     CosmicRenderShenanigans.setLightFromLocation(
                             ent.worldObj,
@@ -185,10 +185,6 @@ public class CosmicItemRenderer implements IItemRenderer {
                             MathHelper.floor_double(ent.posZ));
                 }
                 break;
-            }
-            case INVENTORY: {
-                CosmicRenderShenanigans.setLightLevel(1.2f);
-                return;
             }
             default: {
                 CosmicRenderShenanigans.setLightLevel(1.0f);
