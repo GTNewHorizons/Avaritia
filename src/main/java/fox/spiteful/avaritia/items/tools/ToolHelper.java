@@ -130,7 +130,14 @@ public class ToolHelper {
                             ItemStack drop = blk
                                     .getPickBlock(raytraceFromEntity(world, player, true, 10), world, x, y, z, player);
                             if (drop == null) drop = new ItemStack(blk, 1, meta);
-                            dropItem(drop, world, x, y, z);
+
+                            List<ItemStack> drops = hammerdrops.get(player);
+
+                            if (drops != null) {
+                                drops.add(drop);
+                            } else {
+                                dropItem(drop, world, x, y, z);
+                            }
                         }
                         blk.harvestBlock(world, player, x, y, z, localMeta);
                     }
