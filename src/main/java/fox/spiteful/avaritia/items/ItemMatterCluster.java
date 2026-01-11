@@ -70,7 +70,7 @@ public class ItemMatterCluster extends Item implements ICosmicRenderItem {
 
         tooltip.add(
                 clustertag.getInteger(MAINCOUNTTAG) + "/"
-                        + MAX_CAPACITY
+                        + Math.max(MAX_CAPACITY, clustertag.getInteger(MAINCOUNTTAG))
                         + " "
                         + StatCollector.translateToLocal("tooltip.matter_cluster.counter"));
         tooltip.add("");
@@ -93,6 +93,7 @@ public class ItemMatterCluster extends Item implements ICosmicRenderItem {
             }
         } else {
             tooltip.add(EnumChatFormatting.DARK_GRAY + StatCollector.translateToLocal("tooltip.matter_cluster.desc"));
+            tooltip.add(EnumChatFormatting.DARK_GRAY + StatCollector.translateToLocal("tooltip.matter_cluster.desc3"));
             tooltip.add(
                     EnumChatFormatting.DARK_GRAY.toString() + EnumChatFormatting.ITALIC
                             + StatCollector.translateToLocal("tooltip.matter_cluster.desc2"));
@@ -126,7 +127,7 @@ public class ItemMatterCluster extends Item implements ICosmicRenderItem {
                 itemlist.remove(0);
             }
 
-            if (currentTotal == MAX_CAPACITY) {
+            if (currentTotal >= MAX_CAPACITY) {
                 ItemStack cluster = makeCluster(currentItems);
 
                 clusters.add(cluster);
@@ -152,6 +153,18 @@ public class ItemMatterCluster extends Item implements ICosmicRenderItem {
             total += num;
         }
         setClusterData(cluster, input, total);
+        return cluster;
+    }
+
+    public static ItemStack makeCluster(ItemStack input) {
+        HashMap<ItemStackWrapper, Integer> map = new HashMap<>();
+
+        ItemStack input2 = input.copy();
+        input2.stackSize = 1;
+        map.put(new ItemStackWrapper(input2), input.stackSize);
+
+        ItemStack cluster = new ItemStack(LudicrousItems.matter_cluster);
+        setClusterData(cluster, map, input.stackSize);
         return cluster;
     }
 
@@ -186,7 +199,7 @@ public class ItemMatterCluster extends Item implements ICosmicRenderItem {
     }
 
     public static boolean isClusterFull(ItemStack cluster) {
-        return getClusterSize(cluster) == MAX_CAPACITY;
+        return getClusterSize(cluster) >= MAX_CAPACITY;
     }
 
     public static void setClusterData(ItemStack stack, Map<ItemStackWrapper, Integer> data, int count) {
@@ -212,7 +225,7 @@ public class ItemMatterCluster extends Item implements ICosmicRenderItem {
         int donorcount = getClusterSize(donor);
         int recipientcount = getClusterSize(recipient);
 
-        if (donorcount == 0 || donorcount == MAX_CAPACITY || recipientcount == MAX_CAPACITY) {
+        if (donorcount == 0 || donorcount >= MAX_CAPACITY || recipientcount >= MAX_CAPACITY) {
             return;
         }
 
@@ -275,7 +288,7 @@ public class ItemMatterCluster extends Item implements ICosmicRenderItem {
     @Override
     public IIcon getMaskTexture(ItemStack stack, EntityPlayer player) {
         int count = getClusterSize(stack);
-        if (count == MAX_CAPACITY) {
+        if (count >= MAX_CAPACITY) {
             return cosmicIconFull;
         }
         return cosmicIcon;
@@ -284,13 +297,13 @@ public class ItemMatterCluster extends Item implements ICosmicRenderItem {
     @Override
     public float getMaskMultiplier(ItemStack stack, EntityPlayer player) {
         int count = getClusterSize(stack);
-        return count / (float) MAX_CAPACITY;
+        return Math.min(1f, count / (float) MAX_CAPACITY);
     }
 
     @Override
     public IIcon getIcon(ItemStack stack, int pass) {
         int count = getClusterSize(stack);
-        if (count == MAX_CAPACITY) {
+        if (count >= MAX_CAPACITY) {
             return iconFull;
         }
         return super.getIcon(stack, pass);
@@ -306,6 +319,9 @@ public class ItemMatterCluster extends Item implements ICosmicRenderItem {
         int count = getClusterSize(stack);
         if (count == MAX_CAPACITY) {
             return super.getUnlocalizedName(stack) + ".full";
+        }
+        if (count > MAX_CAPACITY) {
+            return super.getUnlocalizedName(stack) + ".veryfull";
         }
         return super.getUnlocalizedName(stack);
     }
