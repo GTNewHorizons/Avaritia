@@ -30,6 +30,8 @@ public class BlockMatterClusterOpener extends BlockContainer {
         super(Material.iron);
 
         setBlockName("cluster_opener");
+        setHardness(2f);
+        setResistance(2f);
     }
 
     public static void register() {
