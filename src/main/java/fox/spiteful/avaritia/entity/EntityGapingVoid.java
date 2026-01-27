@@ -3,7 +3,6 @@ package fox.spiteful.avaritia.entity;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,44 +17,6 @@ public class EntityGapingVoid extends Entity {
     public static final int maxLifetime = 186;
     public static double collapse = .95;
     public static double suckrange = 20.0;
-
-    public static final IEntitySelector sucklector = new IEntitySelector() {
-
-        @Override
-        public boolean isEntityApplicable(Entity ent) {
-            if (ent instanceof EntityPlayer) {
-                EntityPlayer p = (EntityPlayer) ent;
-                if (p.capabilities.isCreativeMode && p.capabilities.isFlying) {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-    };
-
-    public static final IEntitySelector nomlector = new IEntitySelector() {
-
-        @Override
-        public boolean isEntityApplicable(Entity ent) {
-            if (!(ent instanceof EntityLivingBase)) {
-                return false;
-            }
-
-            if (ent instanceof EntityPlayer) {
-                EntityPlayer p = (EntityPlayer) ent;
-                if (p.capabilities.isCreativeMode) {
-                    return false;
-                }
-            } else if (ent instanceof EntityImmortalItem) {
-                return false;
-            }
-
-            return true;
-        }
-
-    };
 
     public EntityGapingVoid(World world) {
         super(world);
@@ -120,7 +81,10 @@ public class EntityGapingVoid extends Entity {
                 this.posX + suckrange,
                 this.posY + suckrange,
                 this.posZ + suckrange);
-        List<Entity> sucked = this.worldObj.selectEntitiesWithinAABB(Entity.class, suckzone, sucklector);
+        List<Entity> sucked = this.worldObj.selectEntitiesWithinAABB(
+                Entity.class,
+                suckzone,
+                ent -> !(ent instanceof EntityPlayer p && p.capabilities.isCreativeMode && p.capabilities.isFlying));
 
         double radius = getVoidScale(age) * 0.5;
 
@@ -154,8 +118,18 @@ public class EntityGapingVoid extends Entity {
                 this.posX + nomrange,
                 this.posY + nomrange,
                 this.posZ + nomrange);
-        List<EntityLivingBase> nommed = this.worldObj
-                .selectEntitiesWithinAABB(EntityLivingBase.class, nomzone, nomlector);
+
+        List<EntityLivingBase> nommed = this.worldObj.selectEntitiesWithinAABB(EntityLivingBase.class, nomzone, ent -> {
+            if (!(ent instanceof EntityLivingBase)) {
+                return false;
+            }
+
+            if (ent instanceof EntityPlayer p) {
+                return !p.capabilities.isCreativeMode;
+            }
+
+            return true;
+        });
 
         for (EntityLivingBase nommee : nommed) {
             double dx = this.posX - nommee.posX;
@@ -254,8 +228,4 @@ public class EntityGapingVoid extends Entity {
         return 0.0F;
     }
 
-    @Override
-    public boolean canBeCollidedWith() {
-        return false;
-    }
 }
