@@ -1,7 +1,6 @@
 package fox.spiteful.avaritia.compat.botania;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 
 import net.minecraft.client.Minecraft;
@@ -68,8 +67,10 @@ public class PageLudicrousRecipe extends PageRecipe {
         if (shapelessRecipe) {
             ((GuiScreen) gui).drawTexturedModalRect(iconX, iconY, 240, 0, 16, 16);
 
-            if (mx >= iconX && my >= iconY && mx < iconX + 16 && my < iconY + 16) RenderHelper
-                    .renderTooltip(mx, my, Collections.singletonList(StatCollector.translateToLocal("botaniamisc.shapeless")));
+            if (mx >= iconX && my >= iconY && mx < iconX + 16 && my < iconY + 16) RenderHelper.renderTooltip(
+                    mx,
+                    my,
+                    Collections.singletonList(StatCollector.translateToLocal("botaniamisc.shapeless")));
 
             iconY += 20;
         }
@@ -80,8 +81,10 @@ public class PageLudicrousRecipe extends PageRecipe {
         if (oreDictRecipe) {
             ((GuiScreen) gui).drawTexturedModalRect(iconX, iconY, 240, 16, 16, 16);
 
-            if (mx >= iconX && my >= iconY && mx < iconX + 16 && my < iconY + 16) RenderHelper
-                    .renderTooltip(mx, my, Collections.singletonList(StatCollector.translateToLocal("botaniamisc.oredict")));
+            if (mx >= iconX && my >= iconY && mx < iconX + 16 && my < iconY + 16) RenderHelper.renderTooltip(
+                    mx,
+                    my,
+                    Collections.singletonList(StatCollector.translateToLocal("botaniamisc.oredict")));
         }
         GL11.glDisable(GL11.GL_BLEND);
     }

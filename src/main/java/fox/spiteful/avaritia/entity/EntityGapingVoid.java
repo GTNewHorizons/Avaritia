@@ -14,7 +14,6 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
 import fox.spiteful.avaritia.Config;
-import net.minecraftforge.event.ForgeEventFactory;
 
 public class EntityGapingVoid extends Entity {
 
@@ -241,7 +240,8 @@ public class EntityGapingVoid extends Entity {
     }
 
     @Override
-    public boolean func_145774_a(Explosion explosionIn, World worldIn, int x, int y, int z, Block blockIn, float unused) {
+    public boolean func_145774_a(Explosion explosionIn, World worldIn, int x, int y, int z, Block blockIn,
+            float unused) {
         // Can the final explosion break this block?
         return Config.endestGriefing && (Config.endestTileGriefing || worldIn.getTileEntity(x, y, z) == null);
     }
