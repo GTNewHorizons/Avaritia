@@ -111,6 +111,8 @@ public class EntityGapingVoid extends Entity {
             }
         }
 
+        if (this.worldObj.isRemote) return;
+
         // om nom nom
         double nomrange = radius * 0.95;
         AxisAlignedBB nomzone = AxisAlignedBB.getBoundingBox(
