@@ -3,7 +3,6 @@ package fox.spiteful.avaritia.entity;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,51 +10,16 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Vec3;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
+
+import fox.spiteful.avaritia.Config;
 
 public class EntityGapingVoid extends Entity {
 
     public static final int maxLifetime = 186;
     public static double collapse = .95;
     public static double suckrange = 20.0;
-
-    public static final IEntitySelector sucklector = new IEntitySelector() {
-
-        @Override
-        public boolean isEntityApplicable(Entity ent) {
-            if (ent instanceof EntityPlayer) {
-                EntityPlayer p = (EntityPlayer) ent;
-                if (p.capabilities.isCreativeMode && p.capabilities.isFlying) {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-    };
-
-    public static final IEntitySelector nomlector = new IEntitySelector() {
-
-        @Override
-        public boolean isEntityApplicable(Entity ent) {
-            if (!(ent instanceof EntityLivingBase)) {
-                return false;
-            }
-
-            if (ent instanceof EntityPlayer) {
-                EntityPlayer p = (EntityPlayer) ent;
-                if (p.capabilities.isCreativeMode) {
-                    return false;
-                }
-            } else if (ent instanceof EntityImmortalItem) {
-                return false;
-            }
-
-            return true;
-        }
-
-    };
 
     public EntityGapingVoid(World world) {
         super(world);
@@ -120,7 +84,10 @@ public class EntityGapingVoid extends Entity {
                 this.posX + suckrange,
                 this.posY + suckrange,
                 this.posZ + suckrange);
-        List<Entity> sucked = this.worldObj.selectEntitiesWithinAABB(Entity.class, suckzone, sucklector);
+        List<Entity> sucked = this.worldObj.selectEntitiesWithinAABB(
+                Entity.class,
+                suckzone,
+                ent -> !(ent instanceof EntityPlayer p && p.capabilities.isCreativeMode && p.capabilities.isFlying));
 
         double radius = getVoidScale(age) * 0.5;
 
@@ -145,6 +112,8 @@ public class EntityGapingVoid extends Entity {
             }
         }
 
+        if (this.worldObj.isRemote) return;
+
         // om nom nom
         double nomrange = radius * 0.95;
         AxisAlignedBB nomzone = AxisAlignedBB.getBoundingBox(
@@ -154,8 +123,18 @@ public class EntityGapingVoid extends Entity {
                 this.posX + nomrange,
                 this.posY + nomrange,
                 this.posZ + nomrange);
-        List<EntityLivingBase> nommed = this.worldObj
-                .selectEntitiesWithinAABB(EntityLivingBase.class, nomzone, nomlector);
+
+        List<EntityLivingBase> nommed = this.worldObj.selectEntitiesWithinAABB(EntityLivingBase.class, nomzone, ent -> {
+            if (!(ent instanceof EntityLivingBase)) {
+                return false;
+            }
+
+            if (ent instanceof EntityPlayer p) {
+                return !p.capabilities.isCreativeMode;
+            }
+
+            return true;
+        });
 
         for (EntityLivingBase nommee : nommed) {
             double dx = this.posX - nommee.posX;
@@ -171,7 +150,7 @@ public class EntityGapingVoid extends Entity {
         }
 
         // every half second, SMASH STUFF
-        if (age % 10 == 0) {
+        if (Config.endestGriefing && age % 10 == 0) {
             int bx = (int) Math.floor(this.posX);
             int by = (int) Math.floor(this.posY);
             int bz = (int) Math.floor(this.posZ);
@@ -194,6 +173,11 @@ public class EntityGapingVoid extends Entity {
                         if (dist <= nomrange && !this.worldObj.isAirBlock(lx, ly, lz)) {
                             Block b = this.worldObj.getBlock(lx, ly, lz);
                             int meta = this.worldObj.getBlockMetadata(lx, ly, lz);
+
+                            if (!Config.endestTileGriefing && this.worldObj.getTileEntity(lx, ly, lz) != null) {
+                                continue;
+                            }
+
                             float resist = b.getExplosionResistance(
                                     this,
                                     this.worldObj,
@@ -203,6 +187,7 @@ public class EntityGapingVoid extends Entity {
                                     this.posX,
                                     this.posY,
                                     this.posZ);
+
                             if (resist <= 10.0) {
                                 b.dropBlockAsItemWithChance(worldObj, lx, ly, lz, meta, 0.9f, 0);
                                 this.worldObj.setBlockToAir(lx, ly, lz);
@@ -255,7 +240,9 @@ public class EntityGapingVoid extends Entity {
     }
 
     @Override
-    public boolean canBeCollidedWith() {
-        return false;
+    public boolean func_145774_a(Explosion explosionIn, World worldIn, int x, int y, int z, Block blockIn,
+            float unused) {
+        // Can the final explosion break this block?
+        return Config.endestGriefing && (Config.endestTileGriefing || worldIn.getTileEntity(x, y, z) == null);
     }
 }
