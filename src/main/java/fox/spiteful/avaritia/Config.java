@@ -12,6 +12,8 @@ public class Config {
     public static boolean endStone = true;
     public static boolean bedrockBreaker = true;
     public static boolean boringFood = false;
+    public static boolean endestGriefing = true;
+    public static boolean endestTileGriefing = true;
     public static boolean fractured = false;
     public static boolean fast = true;
     public static boolean stepUp = true;
@@ -81,6 +83,18 @@ public class Config {
                             boringFood,
                             "Enable to keep the Ultimate Stew and Cosmic Meatballs from grabbing more ingredients")
                     .getBoolean(false);
+            endestGriefing = conf
+                    .get(
+                            "general",
+                            "Endest Pearl Griefing",
+                            endestGriefing,
+                            "When enabled, the endest pearl will destroy blocks around the location it hits.")
+                    .getBoolean();
+            endestTileGriefing = conf.get(
+                    "general",
+                    "Endest Pearl Tile-Entity Griefing",
+                    "When disabled, the Endest Pearl will never break any tile entities, no matter their blast resistance.")
+                    .getBoolean();
             fractured = conf
                     .get(
                             "general",
@@ -158,5 +172,4 @@ public class Config {
             conf.save();
         }
     }
-
 }

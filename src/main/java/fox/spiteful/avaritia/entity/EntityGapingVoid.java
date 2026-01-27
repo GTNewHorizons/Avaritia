@@ -12,6 +12,8 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
+import fox.spiteful.avaritia.Config;
+
 public class EntityGapingVoid extends Entity {
 
     public static final int maxLifetime = 186;
@@ -145,7 +147,7 @@ public class EntityGapingVoid extends Entity {
         }
 
         // every half second, SMASH STUFF
-        if (age % 10 == 0) {
+        if (Config.endestGriefing && age % 10 == 0) {
             int bx = (int) Math.floor(this.posX);
             int by = (int) Math.floor(this.posY);
             int bz = (int) Math.floor(this.posZ);
@@ -168,6 +170,13 @@ public class EntityGapingVoid extends Entity {
                         if (dist <= nomrange && !this.worldObj.isAirBlock(lx, ly, lz)) {
                             Block b = this.worldObj.getBlock(lx, ly, lz);
                             int meta = this.worldObj.getBlockMetadata(lx, ly, lz);
+
+                            if (!Config.endestTileGriefing) {
+                                if (this.worldObj.getTileEntity(lx, ly, lz) != null) {
+                                    continue;
+                                }
+                            }
+
                             float resist = b.getExplosionResistance(
                                     this,
                                     this.worldObj,
@@ -177,6 +186,7 @@ public class EntityGapingVoid extends Entity {
                                     this.posX,
                                     this.posY,
                                     this.posZ);
+
                             if (resist <= 10.0) {
                                 b.dropBlockAsItemWithChance(worldObj, lx, ly, lz, meta, 0.9f, 0);
                                 this.worldObj.setBlockToAir(lx, ly, lz);
