@@ -10,9 +10,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Vec3;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
 import fox.spiteful.avaritia.Config;
+import net.minecraftforge.event.ForgeEventFactory;
 
 public class EntityGapingVoid extends Entity {
 
@@ -173,10 +175,8 @@ public class EntityGapingVoid extends Entity {
                             Block b = this.worldObj.getBlock(lx, ly, lz);
                             int meta = this.worldObj.getBlockMetadata(lx, ly, lz);
 
-                            if (!Config.endestTileGriefing) {
-                                if (this.worldObj.getTileEntity(lx, ly, lz) != null) {
-                                    continue;
-                                }
+                            if (!Config.endestTileGriefing && this.worldObj.getTileEntity(lx, ly, lz) != null) {
+                                continue;
                             }
 
                             float resist = b.getExplosionResistance(
@@ -240,4 +240,9 @@ public class EntityGapingVoid extends Entity {
         return 0.0F;
     }
 
+    @Override
+    public boolean func_145774_a(Explosion explosionIn, World worldIn, int x, int y, int z, Block blockIn, float unused) {
+        // Can the final explosion break this block?
+        return Config.endestGriefing && (Config.endestTileGriefing || worldIn.getTileEntity(x, y, z) == null);
+    }
 }

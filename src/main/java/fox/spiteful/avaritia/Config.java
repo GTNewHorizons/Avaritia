@@ -93,6 +93,7 @@ public class Config {
             endestTileGriefing = conf.get(
                     "general",
                     "Endest Pearl Tile-Entity Griefing",
+                    endestTileGriefing,
                     "When disabled, the Endest Pearl will never break any tile entities, no matter their blast resistance.")
                     .getBoolean();
             fractured = conf
