@@ -1,7 +1,9 @@
 package fox.spiteful.avaritia;
 
 import java.io.File;
+import java.util.ArrayList;
 
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraftforge.common.config.Configuration;
 
 import org.apache.logging.log4j.Level;
@@ -12,8 +14,12 @@ public class Config {
     public static boolean endStone = true;
     public static boolean bedrockBreaker = true;
     public static boolean boringFood = false;
+    public static boolean endestGriefing = true;
+    public static boolean endestTileGriefing = true;
     public static boolean fractured = false;
     public static boolean fast = true;
+    public static String[] skeletonTypes = { "net.minecraft.entity.monster.EntitySkeleton" };
+    public static final ArrayList<Class<? extends EntityLivingBase>> skeletons = new ArrayList<>();
     public static boolean stepUp = true;
 
     public static boolean thaumic = true;
@@ -81,6 +87,19 @@ public class Config {
                             boringFood,
                             "Enable to keep the Ultimate Stew and Cosmic Meatballs from grabbing more ingredients")
                     .getBoolean(false);
+            endestGriefing = conf
+                    .get(
+                            "general",
+                            "Endest Pearl Griefing",
+                            endestGriefing,
+                            "When enabled, the endest pearl will destroy blocks around the location it hits.")
+                    .getBoolean();
+            endestTileGriefing = conf.get(
+                    "general",
+                    "Endest Pearl Tile-Entity Griefing",
+                    endestTileGriefing,
+                    "When disabled, the Endest Pearl will never break any tile entities, no matter their blast resistance.")
+                    .getBoolean();
             fractured = conf
                     .get(
                             "general",
@@ -93,6 +112,13 @@ public class Config {
                     "Gotta Go Fast",
                     fast,
                     "Disable if the Infinity Boots' speed boost is too ridiculous").getBoolean(true);
+            skeletonTypes = conf
+                    .get(
+                            "general",
+                            "Skeleton Types",
+                            skeletonTypes,
+                            "The list of class names of entities that count as skeletons for the Skullfire Sword.")
+                    .getStringList();
             stepUp = conf
                     .get("general", "Boots step up", stepUp, "Disable if the Infinity Boots' step assist is annoying")
                     .getBoolean(true);
@@ -159,4 +185,19 @@ public class Config {
         }
     }
 
+    public static void postLoadConfigs() {
+        skeletons.clear();
+
+        for (String className : skeletonTypes) {
+            try {
+                Class<?> clazz = Class.forName(className);
+
+                skeletons.add(clazz.asSubclass(EntityLivingBase.class));
+            } catch (ClassNotFoundException | ClassCastException e) {
+                Lumberjack.logger.warn(
+                        "The \"Skeleton Types\" config contains the class name \"{}\", which does not represent a killable entity.",
+                        className);
+            }
+        }
+    }
 }
