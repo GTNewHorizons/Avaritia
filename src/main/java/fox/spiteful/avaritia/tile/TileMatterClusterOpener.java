@@ -168,6 +168,8 @@ public class TileMatterClusterOpener extends TileEntity
 
         if (FLUID_DROPS.isLoaded() && fluidOutput.getFluidAmount() > 0) {
             ItemStack drops = ItemFluidDrop.newStack(fluidOutput.getFluid());
+            fluidOutput.setFluid(null);
+
             assert drops != null;
             ItemStack cluster = ItemMatterCluster.makeCluster(drops);
 
@@ -324,19 +326,7 @@ public class TileMatterClusterOpener extends TileEntity
         if (stored == null || stored.amount <= 0) return null;
         if (stored.getFluid() != resource.getFluid()) return null;
 
-        int removable = Math.min(stored.amount, resource.amount);
-
-        FluidStack out = new FluidStack(stored.getFluid(), removable);
-
-        if (doDrain) {
-            stored.amount -= removable;
-
-            if (stored.amount <= 0) {
-                fluidOutput.setFluid(null);
-            }
-        }
-
-        return out;
+        return drain(from, resource.amount, doDrain);
     }
 
     @Override

@@ -33,7 +33,14 @@ public class ItemMatterCluster extends Item implements ICosmicRenderItem {
     public static final String COUNTTAG = "count";
     public static final String MAINCOUNTTAG = "total";
 
-    public static final int MAX_CAPACITY = 64 * 256;
+    /// The max number of items a normal cluster will store. Avaritia tools cannot generate clusters bigger than this,
+    /// and this is the maximum that clusters will automatically combine into.
+    /// <p/>
+    /// It's possible to generate a super-critical (>max capacity) cluster via [#makeCluster(ItemStack)] for situations
+    /// where this limit is too low, but care should be taken to avoid allowing the player to automate those clusters
+    /// since they can easily be used for near-infinite item storage.
+    public static final int MAX_NORMAL_CAPACITY = 64 * 256;
+    public static final int MAX_SUPER_CRITICAL_CAPACITY = 64 * 256;
 
     public IIcon iconFull;
     public IIcon cosmicIcon;
@@ -70,7 +77,7 @@ public class ItemMatterCluster extends Item implements ICosmicRenderItem {
 
         tooltip.add(
                 clustertag.getInteger(MAINCOUNTTAG) + "/"
-                        + Math.max(MAX_CAPACITY, clustertag.getInteger(MAINCOUNTTAG))
+                        + (clustertag.getInteger(MAINCOUNTTAG) > MAX_SUPER_CRITICAL_CAPACITY ? MAX_SUPER_CRITICAL_CAPACITY : MAX_NORMAL_CAPACITY)
                         + " "
                         + StatCollector.translateToLocal("tooltip.matter_cluster.counter"));
         tooltip.add("");
@@ -113,7 +120,7 @@ public class ItemMatterCluster extends Item implements ICosmicRenderItem {
             ItemStackWrapper wrap = e.getKey();
             int wrapcount = e.getValue();
 
-            int count = Math.min(MAX_CAPACITY - currentTotal, wrapcount);
+            int count = Math.min(MAX_NORMAL_CAPACITY - currentTotal, wrapcount);
 
             if (!currentItems.containsKey(e.getKey())) {
                 currentItems.put(wrap, count);
@@ -127,7 +134,7 @@ public class ItemMatterCluster extends Item implements ICosmicRenderItem {
                 itemlist.remove(0);
             }
 
-            if (currentTotal >= MAX_CAPACITY) {
+            if (currentTotal == MAX_NORMAL_CAPACITY) {
                 ItemStack cluster = makeCluster(currentItems);
 
                 clusters.add(cluster);
@@ -199,7 +206,7 @@ public class ItemMatterCluster extends Item implements ICosmicRenderItem {
     }
 
     public static boolean isClusterFull(ItemStack cluster) {
-        return getClusterSize(cluster) >= MAX_CAPACITY;
+        return getClusterSize(cluster) >= MAX_NORMAL_CAPACITY;
     }
 
     public static void setClusterData(ItemStack stack, Map<ItemStackWrapper, Integer> data, int count) {
@@ -225,7 +232,7 @@ public class ItemMatterCluster extends Item implements ICosmicRenderItem {
         int donorcount = getClusterSize(donor);
         int recipientcount = getClusterSize(recipient);
 
-        if (donorcount == 0 || donorcount >= MAX_CAPACITY || recipientcount >= MAX_CAPACITY) {
+        if (donorcount == 0 || donorcount >= MAX_NORMAL_CAPACITY || recipientcount >= MAX_NORMAL_CAPACITY) {
             return;
         }
 
@@ -233,12 +240,12 @@ public class ItemMatterCluster extends Item implements ICosmicRenderItem {
         Map<ItemStackWrapper, Integer> recipientdata = getClusterData(recipient);
         List<Entry<ItemStackWrapper, Integer>> datalist = new ArrayList<>(donordata.entrySet());
 
-        while (recipientcount < MAX_CAPACITY && donorcount > 0) {
+        while (recipientcount < MAX_NORMAL_CAPACITY && donorcount > 0) {
             Entry<ItemStackWrapper, Integer> e = datalist.get(0);
             ItemStackWrapper wrap = e.getKey();
             int wrapcount = e.getValue();
 
-            int count = Math.min(MAX_CAPACITY - recipientcount, wrapcount);
+            int count = Math.min(MAX_NORMAL_CAPACITY - recipientcount, wrapcount);
 
             if (!recipientdata.containsKey(wrap)) {
                 recipientdata.put(wrap, count);
@@ -291,7 +298,7 @@ public class ItemMatterCluster extends Item implements ICosmicRenderItem {
     @Override
     public IIcon getMaskTexture(ItemStack stack, EntityPlayer player) {
         int count = getClusterSize(stack);
-        if (count >= MAX_CAPACITY) {
+        if (count >= MAX_NORMAL_CAPACITY) {
             return cosmicIconFull;
         }
         return cosmicIcon;
@@ -300,13 +307,13 @@ public class ItemMatterCluster extends Item implements ICosmicRenderItem {
     @Override
     public float getMaskMultiplier(ItemStack stack, EntityPlayer player) {
         int count = getClusterSize(stack);
-        return Math.min(1f, count / (float) MAX_CAPACITY);
+        return Math.min(1f, count / (float) MAX_NORMAL_CAPACITY);
     }
 
     @Override
     public IIcon getIcon(ItemStack stack, int pass) {
         int count = getClusterSize(stack);
-        if (count >= MAX_CAPACITY) {
+        if (count >= MAX_NORMAL_CAPACITY) {
             return iconFull;
         }
         return super.getIcon(stack, pass);
@@ -320,10 +327,10 @@ public class ItemMatterCluster extends Item implements ICosmicRenderItem {
     @Override
     public String getUnlocalizedName(ItemStack stack) {
         int count = getClusterSize(stack);
-        if (count == MAX_CAPACITY) {
+        if (count == MAX_NORMAL_CAPACITY) {
             return super.getUnlocalizedName(stack) + ".full";
         }
-        if (count > MAX_CAPACITY) {
+        if (count > MAX_NORMAL_CAPACITY) {
             return super.getUnlocalizedName(stack) + ".veryfull";
         }
         return super.getUnlocalizedName(stack);
