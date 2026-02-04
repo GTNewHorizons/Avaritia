@@ -278,7 +278,7 @@ public class ItemMatterCluster extends Item implements ICosmicRenderItem {
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
         // Do nothing for super critical clusters
-        if (getClusterSize(stack) > MAX_CAPACITY) return stack;
+        if (getClusterSize(stack) > MAX_NORMAL_CAPACITY) return stack;
 
         if (!world.isRemote) {
             List<ItemStack> drops = ToolHelper.collateMatterClusterContents(ItemMatterCluster.getClusterData(stack));
