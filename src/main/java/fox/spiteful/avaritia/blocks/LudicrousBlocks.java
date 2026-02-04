@@ -2,6 +2,7 @@ package fox.spiteful.avaritia.blocks;
 
 import net.minecraft.block.Block;
 
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import fox.spiteful.avaritia.Config;
 import fox.spiteful.avaritia.tile.TileEntityCompressor;
@@ -23,6 +24,8 @@ public class LudicrousBlocks {
 
     public static Block infinitato;
 
+    public static Block clusterOpener;
+
     public static void voxelize() {
         double_craft = GameRegistry.registerBlock(new BlockDoubleCraft(), "Double_Craft");
         triple_craft = GameRegistry.registerBlock(new BlockTripleCraft(), "Triple_Craft");
@@ -37,5 +40,9 @@ public class LudicrousBlocks {
         GameRegistry.registerTileEntity(TileEntityNeutron.class, "Avaritia_Neutron");
         compressor = GameRegistry.registerBlock(new BlockCompressor(), "Neutronium_Compressor");
         GameRegistry.registerTileEntity(TileEntityCompressor.class, "Avaritia_Compressor");
+
+        if (Loader.isModLoaded("gtnhlib") && Loader.isModLoaded("modularui2")) {
+            BlockMatterClusterOpener.register();
+        }
     }
 }
