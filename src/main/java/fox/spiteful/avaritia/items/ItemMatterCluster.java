@@ -40,7 +40,7 @@ public class ItemMatterCluster extends Item implements ICosmicRenderItem {
     /// where this limit is too low, but care should be taken to avoid allowing the player to automate those clusters
     /// since they can easily be used for near-infinite item storage.
     public static final int MAX_NORMAL_CAPACITY = 64 * 256;
-    public static final int MAX_SUPER_CRITICAL_CAPACITY = 64 * 256;
+    public static final int MAX_SUPER_CRITICAL_CAPACITY = Integer.MAX_VALUE;
 
     public IIcon iconFull;
     public IIcon cosmicIcon;
@@ -77,7 +77,9 @@ public class ItemMatterCluster extends Item implements ICosmicRenderItem {
 
         tooltip.add(
                 clustertag.getInteger(MAINCOUNTTAG) + "/"
-                        + (clustertag.getInteger(MAINCOUNTTAG) > MAX_SUPER_CRITICAL_CAPACITY ? MAX_SUPER_CRITICAL_CAPACITY : MAX_NORMAL_CAPACITY)
+                        + (clustertag.getInteger(MAINCOUNTTAG) > MAX_SUPER_CRITICAL_CAPACITY
+                                ? MAX_SUPER_CRITICAL_CAPACITY
+                                : MAX_NORMAL_CAPACITY)
                         + " "
                         + StatCollector.translateToLocal("tooltip.matter_cluster.counter"));
         tooltip.add("");
