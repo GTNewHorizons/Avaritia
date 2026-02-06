@@ -37,7 +37,6 @@ public class Avaritia {
     @SidedProxy(serverSide = "fox.spiteful.avaritia.CommonProxy", clientSide = "fox.spiteful.avaritia.ClientProxy")
     public static CommonProxy proxy;
 
-    public static final boolean isHodgepodgeLoaded = Loader.isModLoaded("hodgepodge");
     public static final boolean isDreamCraftLoaded = Loader.isModLoaded("dreamcraft");
 
     public static CreativeTabs tab = new CreativeTabs("avaritia") {
