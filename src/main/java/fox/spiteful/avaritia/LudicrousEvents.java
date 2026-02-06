@@ -10,7 +10,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -104,7 +103,7 @@ public class LudicrousEvents {
                     && ToolHelper.hammerdrops.containsKey(event.harvester)
                     && ToolHelper.hammerdrops.get(event.harvester) != null) {
 
-                ArrayList<ItemStack> garbage = new ArrayList<ItemStack>();
+                ArrayList<ItemStack> garbage = new ArrayList<>();
                 for (ItemStack drop : event.drops) {
                     if (isGarbage(drop)) garbage.add(drop);
                 }
@@ -127,8 +126,8 @@ public class LudicrousEvents {
 
     public static void extraLuck(HarvestDropsEvent event, int mult) {
         if (event.block.getMaterial() == Material.rock) {
-            List<ItemStack> adds = new ArrayList<ItemStack>();
-            List<ItemStack> removals = new ArrayList<ItemStack>();
+            List<ItemStack> adds = new ArrayList<>();
+            List<ItemStack> removals = new ArrayList<>();
             for (ItemStack drop : event.drops) {
                 if (drop.getItem() != Item.getItemFromBlock(event.block) && !(drop.getItem() instanceof ItemBlock)) {
                     drop.stackSize = Math.min(drop.stackSize * mult, drop.getMaxStackSize());
@@ -195,8 +194,7 @@ public class LudicrousEvents {
 
     @SubscribeEvent
     public void onGetHurt(LivingHurtEvent event) {
-        if (!(event.entityLiving instanceof EntityPlayer)) return;
-        EntityPlayer player = (EntityPlayer) event.entityLiving;
+        if (!(event.entityLiving instanceof EntityPlayer player)) return;
         if (player.getHeldItem() != null && player.getHeldItem().getItem() == LudicrousItems.infinity_sword
                 && player.isUsingItem())
             event.setCanceled(true);
@@ -205,9 +203,8 @@ public class LudicrousEvents {
 
     @SubscribeEvent
     public void onAttacked(LivingAttackEvent event) {
-        if (!(event.entityLiving instanceof EntityPlayer)) return;
+        if (!(event.entityLiving instanceof EntityPlayer player)) return;
         if (event.source.getEntity() != null && event.source.getEntity() instanceof EntityPlayer) return;
-        EntityPlayer player = (EntityPlayer) event.entityLiving;
         if (player.getHeldItem() != null && player.getHeldItem().getItem() == LudicrousItems.infinity_sword
                 && player.isUsingItem())
             event.setCanceled(true);
@@ -216,9 +213,7 @@ public class LudicrousEvents {
 
     @SubscribeEvent
     public void onLivingDrops(LivingDropsEvent event) {
-        if (event.recentlyHit && event.entityLiving instanceof EntitySkeleton
-                && event.source.getEntity() instanceof EntityPlayer) {
-            EntityPlayer player = (EntityPlayer) event.source.getEntity();
+        if (event.recentlyHit && event.source.getEntity() instanceof EntityPlayer player && isSkeleton(event)) {
             if (player.getHeldItem() != null && player.getHeldItem().getItem() == LudicrousItems.skull_sword) {
                 // ok, we need to drop a skull then.
                 if (event.drops.isEmpty()) {
@@ -229,6 +224,7 @@ public class LudicrousEvents {
                     for (int i = 0; i < event.drops.size(); i++) {
                         EntityItem drop = event.drops.get(i);
                         ItemStack stack = drop.getEntityItem();
+
                         if (stack.getItem() == Items.skull) {
                             if (stack.getItemDamage() == 1) {
                                 skulls++;
@@ -248,6 +244,10 @@ public class LudicrousEvents {
         }
     }
 
+    private static boolean isSkeleton(LivingDropsEvent event) {
+        return Config.skeletons.contains(event.entityLiving.getClass());
+    }
+
     @SubscribeEvent
     public void diggity(BreakSpeed event) {
         if (event.entityPlayer.getHeldItem() != null) {
@@ -259,7 +259,7 @@ public class LudicrousEvents {
                     event.newSpeed *= 5;
                 if (held.getTagCompound() != null) {
                     if (held.getTagCompound().getBoolean("hammer") || held.getTagCompound().getBoolean("destroyer")) {
-                        event.newSpeed *= 0.5;
+                        event.newSpeed *= 0.5f;
                     }
                 }
             }
@@ -289,8 +289,7 @@ public class LudicrousEvents {
 
     @SubscribeEvent
     public void onDeath(LivingDeathEvent event) {
-        if (event.entityLiving instanceof EntityPlayer) {
-            EntityPlayer player = (EntityPlayer) event.entityLiving;
+        if (event.entityLiving instanceof EntityPlayer player) {
             if (LudicrousItems.isInfinite(player) && !event.source.getDamageType().equals("infinity")) {
                 event.setCanceled(true);
                 player.setHealth(player.getMaxHealth());

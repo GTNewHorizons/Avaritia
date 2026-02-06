@@ -1,7 +1,7 @@
 package fox.spiteful.avaritia.compat.botania;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
@@ -67,8 +67,10 @@ public class PageLudicrousRecipe extends PageRecipe {
         if (shapelessRecipe) {
             ((GuiScreen) gui).drawTexturedModalRect(iconX, iconY, 240, 0, 16, 16);
 
-            if (mx >= iconX && my >= iconY && mx < iconX + 16 && my < iconY + 16) RenderHelper
-                    .renderTooltip(mx, my, Arrays.asList(StatCollector.translateToLocal("botaniamisc.shapeless")));
+            if (mx >= iconX && my >= iconY && mx < iconX + 16 && my < iconY + 16) RenderHelper.renderTooltip(
+                    mx,
+                    my,
+                    Collections.singletonList(StatCollector.translateToLocal("botaniamisc.shapeless")));
 
             iconY += 20;
         }
@@ -79,8 +81,10 @@ public class PageLudicrousRecipe extends PageRecipe {
         if (oreDictRecipe) {
             ((GuiScreen) gui).drawTexturedModalRect(iconX, iconY, 240, 16, 16, 16);
 
-            if (mx >= iconX && my >= iconY && mx < iconX + 16 && my < iconY + 16) RenderHelper
-                    .renderTooltip(mx, my, Arrays.asList(StatCollector.translateToLocal("botaniamisc.oredict")));
+            if (mx >= iconX && my >= iconY && mx < iconX + 16 && my < iconY + 16) RenderHelper.renderTooltip(
+                    mx,
+                    my,
+                    Collections.singletonList(StatCollector.translateToLocal("botaniamisc.oredict")));
         }
         GL11.glDisable(GL11.GL_BLEND);
     }
@@ -94,8 +98,7 @@ public class PageLudicrousRecipe extends PageRecipe {
     }
 
     public void renderCraftingRecipe(IGuiLexiconEntry gui, IRecipe recipe) {
-        if (recipe instanceof ExtremeShapedRecipe) {
-            ExtremeShapedRecipe shaped = (ExtremeShapedRecipe) recipe;
+        if (recipe instanceof ExtremeShapedRecipe shaped) {
 
             for (int y = 0; y < shaped.recipeHeight; y++) for (int x = 0; x < shaped.recipeWidth; x++)
                 renderItemAtLudicrousGridPos(gui, x, y, shaped.recipeItems[y * shaped.recipeWidth + x], true);
@@ -103,8 +106,7 @@ public class PageLudicrousRecipe extends PageRecipe {
             oreDictRecipe = true;
         } else if (recipe instanceof ExtremeShapelessRecipe) {
             shapelessRecipe = true;
-        } else if (recipe instanceof ShapelessOreRecipe) {
-            ShapelessOreRecipe shapeless = (ShapelessOreRecipe) recipe;
+        } else if (recipe instanceof ShapelessOreRecipe shapeless) {
 
             drawGrid: {
                 for (int y = 0; y < 3; y++) for (int x = 0; x < 3; x++) {

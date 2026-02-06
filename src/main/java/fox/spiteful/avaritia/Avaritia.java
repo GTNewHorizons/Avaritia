@@ -79,6 +79,7 @@ public class Avaritia {
     public void endGame(FMLPostInitializationEvent event) {
         Compat.compatify();
         Gregorizer.balance();
+        Config.postLoadConfigs();
         if (Config.craftingOnly) return;
         Mincer.countThoseCalories();
         Achievements.achieve();
