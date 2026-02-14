@@ -19,7 +19,6 @@ import fox.spiteful.avaritia.render.FracturedOreRenderer;
 import fox.spiteful.avaritia.render.LudicrousRenderEvents;
 import fox.spiteful.avaritia.render.RenderGapingVoid;
 import fox.spiteful.avaritia.render.RenderHeavenArrow;
-import fox.spiteful.avaritia.render.ShaderHelper;
 
 public class ClientProxy extends CommonProxy {
 
@@ -67,8 +66,6 @@ public class ClientProxy extends CommonProxy {
         LudicrousRenderEvents fancyevents = new LudicrousRenderEvents();
         MinecraftForge.EVENT_BUS.register(fancyevents);
         FMLCommonHandler.instance().bus().register(fancyevents);
-
-        ShaderHelper.initShaders();
     }
 
     @Override
