@@ -28,7 +28,7 @@ import fox.spiteful.avaritia.items.LudicrousItems;
         modid = "Avaritia",
         name = "Avaritia",
         version = Tags.VERSION,
-        dependencies = "after:Thaumcraft;after:AWWayofTime;after:Botania")
+        dependencies = "after:Thaumcraft;after:AWWayofTime;after:Botania;before:eternalsingularity@[1.4.0,)")
 public class Avaritia {
 
     @Instance
