@@ -17,6 +17,8 @@ import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.shaders.UniversiumShader;
+
 import fox.spiteful.avaritia.items.ItemFracturedOre;
 import fox.spiteful.avaritia.items.ItemFracturedOre.NameStack;
 
@@ -265,7 +267,7 @@ public class FracturedOreRenderer implements IItemRenderer {
 
         GL11.glDisable(GL11.GL_BLEND);
 
-        if (!CosmicRenderShenanigans.inventoryRender) {
+        if (!UniversiumShader.isRenderingInInventory()) {
             mc.entityRenderer.enableLightmap(0.0);
             GL11.glEnable(GL11.GL_LIGHTING);
         }

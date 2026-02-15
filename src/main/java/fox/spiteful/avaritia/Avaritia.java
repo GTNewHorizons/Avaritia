@@ -28,7 +28,7 @@ import fox.spiteful.avaritia.items.LudicrousItems;
         modid = "Avaritia",
         name = "Avaritia",
         version = Tags.VERSION,
-        dependencies = "after:Thaumcraft;after:AWWayofTime;after:Botania")
+        dependencies = "after:Thaumcraft;after:AWWayofTime;after:Botania;before:eternalsingularity@[1.4.0,)")
 public class Avaritia {
 
     @Instance
@@ -37,7 +37,6 @@ public class Avaritia {
     @SidedProxy(serverSide = "fox.spiteful.avaritia.CommonProxy", clientSide = "fox.spiteful.avaritia.ClientProxy")
     public static CommonProxy proxy;
 
-    public static final boolean isHodgepodgeLoaded = Loader.isModLoaded("hodgepodge");
     public static final boolean isDreamCraftLoaded = Loader.isModLoaded("dreamcraft");
 
     public static CreativeTabs tab = new CreativeTabs("avaritia") {
