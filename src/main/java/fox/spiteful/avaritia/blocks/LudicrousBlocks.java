@@ -2,12 +2,14 @@ package fox.spiteful.avaritia.blocks;
 
 import net.minecraft.block.Block;
 
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import fox.spiteful.avaritia.Config;
+import fox.spiteful.avaritia.Mods;
+import fox.spiteful.avaritia.items.ItemMatterClusterOpener;
 import fox.spiteful.avaritia.tile.TileEntityCompressor;
 import fox.spiteful.avaritia.tile.TileEntityDireCrafting;
 import fox.spiteful.avaritia.tile.TileEntityNeutron;
+import fox.spiteful.avaritia.tile.TileMatterClusterOpener;
 
 public class LudicrousBlocks {
 
@@ -21,10 +23,9 @@ public class LudicrousBlocks {
     public static Block dire_crafting;
     public static Block neutron_collector;
     public static Block compressor;
+    public static Block clusterOpener;
 
     public static Block infinitato;
-
-    public static Block clusterOpener;
 
     public static void voxelize() {
         double_craft = GameRegistry.registerBlock(new BlockDoubleCraft(), "Double_Craft");
@@ -41,8 +42,10 @@ public class LudicrousBlocks {
         compressor = GameRegistry.registerBlock(new BlockCompressor(), "Neutronium_Compressor");
         GameRegistry.registerTileEntity(TileEntityCompressor.class, "Avaritia_Compressor");
 
-        if (Loader.isModLoaded("gtnhlib") && Loader.isModLoaded("modularui2")) {
-            BlockMatterClusterOpener.register();
+        if (Mods.GTNHLib.isModLoaded() && Mods.ModularUI2.isModLoaded()) {
+            clusterOpener = GameRegistry
+                    .registerBlock(new BlockMatterClusterOpener(), ItemMatterClusterOpener.class, "cluster_opener");
+            GameRegistry.registerTileEntity(TileMatterClusterOpener.class, "cluster_opener");
         }
     }
 }
