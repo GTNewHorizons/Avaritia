@@ -1,5 +1,6 @@
 package fox.spiteful.avaritia.blocks;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -18,26 +19,23 @@ import com.cleanroommc.modularui.factory.GuiManager;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.factory.TileEntityGuiFactory;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import fox.spiteful.avaritia.items.ItemMatterClusterOpener;
+import fox.spiteful.avaritia.Avaritia;
 import fox.spiteful.avaritia.tile.TileMatterClusterOpener;
 
 public class BlockMatterClusterOpener extends BlockContainer {
 
+    @SideOnly(Side.CLIENT)
+    private IIcon top, side, front;
+
     public BlockMatterClusterOpener() {
         super(Material.iron);
-
+        setStepSound(Block.soundTypeMetal);
+        setHardness(20.0F);
         setBlockName("cluster_opener");
-        setHardness(2f);
-        setResistance(2f);
-    }
-
-    public static void register() {
-        LudicrousBlocks.clusterOpener = new BlockMatterClusterOpener();
-        GameRegistry.registerBlock(LudicrousBlocks.clusterOpener, ItemMatterClusterOpener.class, "cluster_opener");
-        GameRegistry.registerTileEntity(TileMatterClusterOpener.class, "cluster_opener");
+        setHarvestLevel("pickaxe", 3);
+        setCreativeTab(Avaritia.tab);
     }
 
     @Override
@@ -69,9 +67,6 @@ public class BlockMatterClusterOpener extends BlockContainer {
 
         ((TileMatterClusterOpener) worldIn.getTileEntity(x, y, z)).dropContents();
     }
-
-    @SideOnly(Side.CLIENT)
-    private IIcon top, side, front;
 
     @SideOnly(Side.CLIENT)
     @Override
