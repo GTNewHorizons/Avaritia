@@ -28,10 +28,11 @@ public class BlockMatterClusterOpener extends BlockContainer {
 
     public BlockMatterClusterOpener() {
         super(Material.iron);
-
+        setStepSound(Block.soundTypeMetal);
+        setHardness(20.0F);
         setBlockName("cluster_opener");
-        setHardness(2f);
-        setResistance(2f);
+        setHarvestLevel("pickaxe", 3);
+        setCreativeTab(Avaritia.tab);
     }
 
     public static void register() {
