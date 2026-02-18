@@ -57,15 +57,17 @@ public class BlockMatterClusterOpener extends BlockContainer {
     @Override
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
         int l = MathHelper.floor_double((double) (player.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-
         world.setBlockMetadataWithNotify(x, y, z, l, 2);
     }
 
     @Override
-    public void onBlockPreDestroy(World worldIn, int x, int y, int z, int meta) {
-        super.onBlockPreDestroy(worldIn, x, y, z, meta);
-
-        ((TileMatterClusterOpener) worldIn.getTileEntity(x, y, z)).dropContents();
+    public void breakBlock(World worldIn, int x, int y, int z, Block blockBroken, int meta) {
+        TileMatterClusterOpener tileEntity = (TileMatterClusterOpener) worldIn.getTileEntity(x, y, z);
+        if (tileEntity != null) {
+            tileEntity.dropContents();
+            worldIn.func_147453_f(x, y, z, blockBroken);
+        }
+        super.breakBlock(worldIn, x, y, z, blockBroken, meta);
     }
 
     @SideOnly(Side.CLIENT)
