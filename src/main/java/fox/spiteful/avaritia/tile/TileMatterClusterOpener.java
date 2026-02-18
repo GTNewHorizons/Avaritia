@@ -160,21 +160,20 @@ public class TileMatterClusterOpener extends TileEntity
 
         if (itemOutput != null) {
             ItemStack cluster = ItemMatterCluster.makeCluster(itemOutput);
-            itemOutput = null;
-
             EntityItem item = new EntityItem(worldObj, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, cluster);
             worldObj.spawnEntityInWorld(item);
+            itemOutput = null;
         }
 
         if (FLUID_DROPS.isLoaded() && fluidOutput.getFluidAmount() > 0) {
             ItemStack drops = ItemFluidDrop.newStack(fluidOutput.getFluid());
-            fluidOutput.setFluid(null);
 
             assert drops != null;
             ItemStack cluster = ItemMatterCluster.makeCluster(drops);
 
             EntityItem item = new EntityItem(worldObj, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, cluster);
             worldObj.spawnEntityInWorld(item);
+            fluidOutput.setFluid(null);
         }
     }
 
