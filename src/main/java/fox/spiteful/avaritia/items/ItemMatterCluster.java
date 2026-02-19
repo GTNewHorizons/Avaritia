@@ -68,20 +68,16 @@ public class ItemMatterCluster extends Item implements ICosmicRenderItem {
         return LudicrousItems.cosmic;
     }
 
+    // spotless:off
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean debug) {
         if (!stack.hasTagCompound() || !stack.getTagCompound().hasKey(MAINTAG)) {
             return;
         }
         NBTTagCompound clustertag = stack.getTagCompound().getCompoundTag(MAINTAG);
-
-        tooltip.add(
-                clustertag.getInteger(MAINCOUNTTAG) + "/"
-                        + (clustertag.getInteger(MAINCOUNTTAG) > MAX_SUPER_CRITICAL_CAPACITY
-                                ? MAX_SUPER_CRITICAL_CAPACITY
-                                : MAX_NORMAL_CAPACITY)
-                        + " "
-                        + StatCollector.translateToLocal("tooltip.matter_cluster.counter"));
+        int clusterSize = clustertag.getInteger(MAINCOUNTTAG);
+        int maxCapacity = clusterSize > MAX_NORMAL_CAPACITY ? MAX_SUPER_CRITICAL_CAPACITY : MAX_NORMAL_CAPACITY;
+        tooltip.add(clusterSize + "/" + maxCapacity + " " + StatCollector.translateToLocal("tooltip.matter_cluster.counter"));
         tooltip.add("");
 
         if (GuiScreen.isShiftKeyDown()) {
@@ -91,11 +87,7 @@ public class ItemMatterCluster extends Item implements ICosmicRenderItem {
                 ItemStack countstack = ItemStack.loadItemStackFromNBT(tag.getCompoundTag(ITEMTAG));
                 int count = tag.getInteger(COUNTTAG);
                 if (countstack != null) {
-                    tooltip.add(
-                            countstack.getItem().getRarity(countstack).rarityColor + countstack.getDisplayName()
-                                    + EnumChatFormatting.GRAY
-                                    + " x "
-                                    + count);
+                    tooltip.add(countstack.getItem().getRarity(countstack).rarityColor + countstack.getDisplayName() + EnumChatFormatting.GRAY + " x " + count);
                 } else {
                     tooltip.add(EnumChatFormatting.RED + "DELETED" + EnumChatFormatting.GRAY + " x " + count);
                 }
@@ -103,11 +95,10 @@ public class ItemMatterCluster extends Item implements ICosmicRenderItem {
         } else {
             tooltip.add(EnumChatFormatting.DARK_GRAY + StatCollector.translateToLocal("tooltip.matter_cluster.desc"));
             tooltip.add(EnumChatFormatting.DARK_GRAY + StatCollector.translateToLocal("tooltip.matter_cluster.desc3"));
-            tooltip.add(
-                    EnumChatFormatting.DARK_GRAY.toString() + EnumChatFormatting.ITALIC
-                            + StatCollector.translateToLocal("tooltip.matter_cluster.desc2"));
+            tooltip.add(EnumChatFormatting.DARK_GRAY.toString() + EnumChatFormatting.ITALIC + StatCollector.translateToLocal("tooltip.matter_cluster.desc2"));
         }
     }
+    //spotless:on
 
     public static List<ItemStack> makeClusters(List<ItemStack> input) {
         Map<ItemStackWrapper, Integer> items = ToolHelper.collateMatterCluster(input);
