@@ -62,8 +62,7 @@ public class BlockMatterClusterOpener extends BlockContainer {
 
     @Override
     public void breakBlock(World worldIn, int x, int y, int z, Block blockBroken, int meta) {
-        TileMatterClusterOpener tileEntity = (TileMatterClusterOpener) worldIn.getTileEntity(x, y, z);
-        if (tileEntity != null) {
+        if (worldIn.getTileEntity(x, y, z) instanceof TileMatterClusterOpener tileEntity) {
             tileEntity.dropContents();
             worldIn.func_147453_f(x, y, z, blockBroken);
         }
