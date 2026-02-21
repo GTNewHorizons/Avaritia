@@ -483,6 +483,31 @@ public class Grinder {
                 new ItemStack(Blocks.redstone_block, 1),
                 'O',
                 new ItemStack(LudicrousBlocks.resource_block, 1, 0));
+
+        if (LudicrousBlocks.clusterOpener != null) {
+            ExtremeCraftingManager.getInstance().addRecipe(
+                    new ItemStack(LudicrousBlocks.clusterOpener),
+                    "BBBIBIBBB",
+                    "I       I",
+                    "E   X   E",
+                    "IIIIXIIII",
+                    "E   X   E",
+                    "I       I",
+                    "E IXXXI E",
+                    "I I   I I",
+                    "BBBHHHBBB",
+                    'X',
+                    // Crystal matrix ingot
+                    new ItemStack(LudicrousItems.resource, 1, 1),
+                    'B',
+                    new ItemStack(Blocks.iron_block, 1),
+                    'I',
+                    new ItemStack(Items.iron_ingot, 1),
+                    'H',
+                    new ItemStack(Blocks.hopper, 1),
+                    'E',
+                    new ItemStack(Blocks.emerald_block, 1));
+        }
     }
 
 }
