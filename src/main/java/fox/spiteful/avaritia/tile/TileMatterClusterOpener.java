@@ -29,6 +29,7 @@ import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
 import com.cleanroommc.modularui.utils.item.InvWrapper;
+import com.cleanroommc.modularui.value.sync.FluidSlotSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
@@ -389,7 +390,7 @@ public class TileMatterClusterOpener extends TileEntity
                     .child(new FluidSlot()
                         .alignY(0.5f)
                         .leftRel(0.5f, 36, 0.5f)
-                        .syncHandler(fluidOutput)))
+                        .syncHandler(new FluidSlotSyncHandler(fluidOutput).canFillSlot(false))))
                 .child(new Row()
                     .widthRel(1)
                     .height(76)
