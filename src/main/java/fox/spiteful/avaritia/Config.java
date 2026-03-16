@@ -22,7 +22,7 @@ public class Config {
     public static final ArrayList<Class<? extends EntityLivingBase>> skeletons = new ArrayList<>();
     public static boolean stepUp = true;
     public static boolean flashyAnimations = true;
-    
+
     public static boolean thaumic = true;
     public static boolean sc2 = true;
     public static boolean ae2 = true;
@@ -49,7 +49,7 @@ public class Config {
     public static boolean extracells = true;
     public static boolean witch = true;
     public static boolean rotisserie = true;
-    
+
     public static boolean copper = true;
     public static boolean tin = true;
     public static boolean silver = true;
