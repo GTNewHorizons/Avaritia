@@ -10,6 +10,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
+import fox.spiteful.avaritia.Config;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -89,7 +90,8 @@ public class FancyHaloRenderer implements IItemRenderer {
                     RenderItem.getInstance().renderIcon(-spread, -spread, halo, 16 + spread * 2, 16 + spread * 2);
                 }
 
-                if (renderPulse) {
+                //renderPulse only runs if the config to enable it is toggled on, its on by default. Can be turned off if causing eye strain though.
+                if (renderPulse && Config.flashyAnimations) {
                     GL11.glPushMatrix();
                     double xs = (rand.nextGaussian() * 0.15) + 0.95;
                     double ox = (1 - xs) / 2.0;
