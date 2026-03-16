@@ -21,11 +21,8 @@ public class Config {
     public static String[] skeletonTypes = { "net.minecraft.entity.monster.EntitySkeleton" };
     public static final ArrayList<Class<? extends EntityLivingBase>> skeletons = new ArrayList<>();
     public static boolean stepUp = true;
-
-    // The config below toggles the fast flashy animations that can potentially cause eye strain in some people.
-    // (default is true), disable if its causing you eye strain. No actual gameplay changes, only visual.
     public static boolean flashyAnimations = true;
-
+    
     public static boolean thaumic = true;
     public static boolean sc2 = true;
     public static boolean ae2 = true;
@@ -52,7 +49,7 @@ public class Config {
     public static boolean extracells = true;
     public static boolean witch = true;
     public static boolean rotisserie = true;
-
+    
     public static boolean copper = true;
     public static boolean tin = true;
     public static boolean silver = true;
@@ -70,11 +67,6 @@ public class Config {
 
         try {
             conf.load();
-
-            // This section is used to load the configs that were written above, and to ensure that each config has
-            // an explenation of what it does in game. If youre adding a config, you need to add a section here
-            // addressing it.
-            // Copy the formatting of the others already written here for your new config, and just change the details.
 
             craftingOnly = conf.get(
                     "general",
@@ -151,9 +143,6 @@ public class Config {
                     "compatibility",
                     "Disable to stop compatibility with that particular mod. Will not use the mod in recipes or add new items for that mod.");
 
-            // Config section for editing which mods avaritia will have compatibility integration for:
-            // (sometimes adds items from these mods into recipies, can add new items for these mods, etc.)
-
             thaumic = conf.get("compatibility", "Thaumcraft", true).getBoolean(true);
 
             sc2 = conf.get("compatibility", "Steve's Carts 2", true).getBoolean(true);
@@ -204,8 +193,6 @@ public class Config {
 
             rotisserie = conf.get("compatibility", "Rotarycraft", true).getBoolean(true);
 
-            // Config section for editing materials that avaritia uses:
-
             conf.addCustomCategoryComment(
                     "materials",
                     "Disable to stop using that material in recipes. Useful if a mod adds unobtainable placeholder ores.");
@@ -228,8 +215,6 @@ public class Config {
 
             ultimateBalance = conf.get("materials", "Clay", true).getBoolean(true);
 
-            // Tweaking balance for things in avaritia to be cheaper or more expensive:
-
             modifier = conf
                     .get(
                             "balance!",
@@ -244,8 +229,6 @@ public class Config {
                     0,
                     "Added to the existing multiplier to make prices more expensive or cheaper. Can be negative.")
                     .getInt(0);
-
-            // Error handling:
 
         } catch (Exception e) {
             Lumberjack.log(Level.ERROR, e, "Avaritia couldn't find its config!");
