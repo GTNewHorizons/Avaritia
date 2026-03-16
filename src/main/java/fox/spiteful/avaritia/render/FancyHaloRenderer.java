@@ -14,6 +14,8 @@ import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import fox.spiteful.avaritia.Config;
+
 public class FancyHaloRenderer implements IItemRenderer {
 
     public Random rand = new Random();
@@ -89,7 +91,9 @@ public class FancyHaloRenderer implements IItemRenderer {
                     RenderItem.getInstance().renderIcon(-spread, -spread, halo, 16 + spread * 2, 16 + spread * 2);
                 }
 
-                if (renderPulse) {
+                // renderPulse only runs if the config to enable it is toggled on, its on by default. Can be turned off
+                // if causing eye strain though.
+                if (renderPulse && Config.flashyAnimations) {
                     GL11.glPushMatrix();
                     double xs = (rand.nextGaussian() * 0.15) + 0.95;
                     double ox = (1 - xs) / 2.0;
