@@ -21,6 +21,7 @@ public class Config {
     public static String[] skeletonTypes = { "net.minecraft.entity.monster.EntitySkeleton" };
     public static final ArrayList<Class<? extends EntityLivingBase>> skeletons = new ArrayList<>();
     public static boolean stepUp = true;
+    public static boolean flashyAnimations = true;
 
     public static boolean thaumic = true;
     public static boolean sc2 = true;
@@ -73,13 +74,16 @@ public class Config {
                     craftingOnly,
                     "Enable to completely disable most of the mod except for the Dire Crafting table. For if you just want the mod for Minetweaking purposes.")
                     .getBoolean(false);
+
             endStone = conf.get("general", "Use End Stone", endStone, "Disable to take end stone out of recipes")
                     .getBoolean(true);
+
             bedrockBreaker = conf.get(
                     "general",
                     "Break Bedrock",
                     bedrockBreaker,
                     "Disable if you don't want the World Breaker to break unbreakable blocks").getBoolean(true);
+
             boringFood = conf
                     .get(
                             "general",
@@ -87,6 +91,7 @@ public class Config {
                             boringFood,
                             "Enable to keep the Ultimate Stew and Cosmic Meatballs from grabbing more ingredients")
                     .getBoolean(false);
+
             endestGriefing = conf
                     .get(
                             "general",
@@ -94,12 +99,14 @@ public class Config {
                             endestGriefing,
                             "When enabled, the endest pearl will destroy blocks around the location it hits.")
                     .getBoolean();
+
             endestTileGriefing = conf.get(
                     "general",
                     "Endest Pearl Tile-Entity Griefing",
                     endestTileGriefing,
                     "When disabled, the Endest Pearl will never break any tile entities, no matter their blast resistance.")
                     .getBoolean();
+
             fractured = conf
                     .get(
                             "general",
@@ -107,11 +114,19 @@ public class Config {
                             fractured,
                             "Enable if you don't have Rotarycraft installed and want some buggy fractured ores")
                     .getBoolean(false);
+
             fast = conf.get(
                     "general",
                     "Gotta Go Fast",
                     fast,
                     "Disable if the Infinity Boots' speed boost is too ridiculous").getBoolean(true);
+
+            flashyAnimations = conf.get(
+                    "general",
+                    "Flashy Animations",
+                    flashyAnimations,
+                    "Enable the pulsing animation on Avaritia items.").getBoolean(true);
+
             skeletonTypes = conf
                     .get(
                             "general",
@@ -119,6 +134,7 @@ public class Config {
                             skeletonTypes,
                             "The list of class names of entities that count as skeletons for the Skullfire Sword.")
                     .getStringList();
+
             stepUp = conf
                     .get("general", "Boots step up", stepUp, "Disable if the Infinity Boots' step assist is annoying")
                     .getBoolean(true);
@@ -126,43 +142,77 @@ public class Config {
             conf.addCustomCategoryComment(
                     "compatibility",
                     "Disable to stop compatibility with that particular mod. Will not use the mod in recipes or add new items for that mod.");
+
             thaumic = conf.get("compatibility", "Thaumcraft", true).getBoolean(true);
+
             sc2 = conf.get("compatibility", "Steve's Carts 2", true).getBoolean(true);
+
             ae2 = conf.get("compatibility", "Applied Energistics 2", true).getBoolean(true);
+
             exu = conf.get("compatibility", "Extra Utilities", true).getBoolean(true);
+
             ic2 = conf.get("compatibility", "Industrialcraft 2 Experimental", true).getBoolean(true);
+
             gt = conf.get("compatibility", "Gregtech 5", true).getBoolean(true);
+
             botan = conf.get("compatibility", "Botania", true).getBoolean(true);
+
             blood = conf.get("compatibility", "Blood Magic", true).getBoolean(true);
+
             lolDargon = conf.get("compatibility", "Draconic Evolution", true).getBoolean(true);
+
             bigReactors = conf.get("compatibility", "Big Reactors", true).getBoolean(true);
+
             ticon = conf.get("compatibility", "Tinkers Construct", true).getBoolean(true);
+
             pe = conf.get("compatibility", "Project E", true).getBoolean(true);
+
             mfr = conf.get("compatibility", "MineFactory Reloaded", true).getBoolean(true);
+
             twilight = conf.get("compatibility", "Twilight Forest", true).getBoolean(true);
+
             magicrops = conf.get("compatibility", "Magical Crops", true).getBoolean(true);
+
             am2 = conf.get("compatibility", "Ars Magica 2", true).getBoolean(true);
+
             te = conf.get("compatibility", "Thermal Expansion", true).getBoolean(true);
+
             numanuma = conf.get("compatibility", "Pneumaticraft", true).getBoolean(true);
+
             metallurgy = conf.get("compatibility", "Metallurgy", true).getBoolean(true);
+
             forestry = conf.get("compatibility", "Forestry", true).getBoolean(true);
+
             bees = conf.get("compatibility", "Forestry Bees", false).getBoolean(false);
+
             ee3 = conf.get("compatibility", "Equivalent Exchange 3", true).getBoolean(true);
+
             extracells = conf.get("compatibility", "Extra Cells", true).getBoolean(true);
+
             witch = conf.get("compatibility", "Witchery", true).getBoolean(true);
+
             rotisserie = conf.get("compatibility", "Rotarycraft", true).getBoolean(true);
 
             conf.addCustomCategoryComment(
                     "materials",
                     "Disable to stop using that material in recipes. Useful if a mod adds unobtainable placeholder ores.");
+
             copper = conf.get("materials", "Copper", true).getBoolean(true);
+
             tin = conf.get("materials", "Tin", true).getBoolean(true);
+
             silver = conf.get("materials", "Silver", true).getBoolean(true);
+
             lead = conf.get("materials", "Lead", true).getBoolean(true);
+
             nickel = conf.get("materials", "Nickel/Ferrous", true).getBoolean(true);
+
             steel = conf.get("materials", "Steel", true).getBoolean(true);
+
             enderium = conf.get("materials", "Enderium", true).getBoolean(true);
+
             darksteel = conf.get("compatibility", "DarkSteel", true).getBoolean(true);
+
             ultimateBalance = conf.get("materials", "Clay", true).getBoolean(true);
 
             modifier = conf
@@ -172,12 +222,14 @@ public class Config {
                             0,
                             "Added to the existing modifier to make prices more expensive or cheaper. Can be negative.")
                     .getInt(0);
+
             multiplier = conf.get(
                     "balance!",
                     "Cost Multiplier",
                     0,
                     "Added to the existing multiplier to make prices more expensive or cheaper. Can be negative.")
                     .getInt(0);
+
         } catch (Exception e) {
             Lumberjack.log(Level.ERROR, e, "Avaritia couldn't find its config!");
         } finally {

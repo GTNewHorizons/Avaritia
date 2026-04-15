@@ -5,8 +5,7 @@ import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -20,7 +19,6 @@ public class CosmicItemRenderer implements IItemRenderer {
 
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-        // return type != ItemRenderType.INVENTORY;
         return true;
     }
 
@@ -33,7 +31,6 @@ public class CosmicItemRenderer implements IItemRenderer {
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
         Minecraft mc = Minecraft.getMinecraft();
         this.processLightLevel(type, item, data);
-        // ShaderHelper.useShader(ShaderHelper.testShader, this.shaderCallback);
         switch (type) {
             case ENTITY: {
                 GL11.glPushMatrix();
@@ -41,14 +38,9 @@ public class CosmicItemRenderer implements IItemRenderer {
                 if (item.isOnItemFrame()) GL11.glTranslatef(0F, -0.3F, 0.01F);
                 render(item, null);
                 GL11.glPopMatrix();
-
                 break;
             }
-            case EQUIPPED: {
-                render(item, data[1] instanceof EntityPlayer ? (EntityPlayer) data[1] : null);
-                break;
-            }
-            case EQUIPPED_FIRST_PERSON: {
+            case EQUIPPED, EQUIPPED_FIRST_PERSON: {
                 render(item, data[1] instanceof EntityPlayer ? (EntityPlayer) data[1] : null);
                 break;
             }
@@ -80,7 +72,7 @@ public class CosmicItemRenderer implements IItemRenderer {
 
                     IIcon cosmicicon = icri.getMaskTexture(item, null);
 
-                    GL11.glColor4d(1, 1, 1, 1);
+                    GL11.glColor4f(1, 1, 1, 1);
 
                     float minu = cosmicicon.getMinU();
                     float maxu = cosmicicon.getMaxU();
@@ -113,9 +105,6 @@ public class CosmicItemRenderer implements IItemRenderer {
             default:
                 break;
         }
-        // ShaderHelper.releaseShader();
-
-        // Lumberjack.log(Level.INFO, light+"");
     }
 
     public void render(ItemStack item, EntityPlayer player) {
@@ -128,21 +117,15 @@ public class CosmicItemRenderer implements IItemRenderer {
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColor4f(1F, 1F, 1F, 1F);
-        // ItemRenderer.renderItemIn2D(Tessellator.instance, f1, f2, f, f3, icon.getIconWidth(), icon.getIconHeight(),
-        // scale);
 
         float r, g, b;
         IIcon icon;
         float f, f1, f2, f3;
         float scale = 1F / 16F;
 
-        // Lumberjack.log(Level.INFO, "passes: "+passes);
-
         final Tessellator tess = Tessellator.instance;
         for (int i = 0; i < passes; i++) {
             icon = this.getStackIcon(item, i, player);
-
-            // Lumberjack.log(Level.INFO, "icon "+i+": "+icon);
 
             f = icon.getMinU();
             f1 = icon.getMaxU();
@@ -192,8 +175,8 @@ public class CosmicItemRenderer implements IItemRenderer {
 
     public void processLightLevel(ItemRenderType type, ItemStack item, Object... data) {
         switch (type) {
-            case ENTITY: {
-                EntityItem ent = (EntityItem) (data[1]);
+            case ENTITY, EQUIPPED, EQUIPPED_FIRST_PERSON: {
+                Entity ent = (Entity) (data[1]);
                 if (ent != null) {
                     CosmicRenderShenanigans.setLightFromLocation(
                             ent.worldObj,
@@ -202,36 +185,9 @@ public class CosmicItemRenderer implements IItemRenderer {
                             MathHelper.floor_double(ent.posZ));
                 }
                 break;
-            }
-            case EQUIPPED: {
-                EntityLivingBase ent = (EntityLivingBase) (data[1]);
-                if (ent != null) {
-                    CosmicRenderShenanigans.setLightFromLocation(
-                            ent.worldObj,
-                            MathHelper.floor_double(ent.posX),
-                            MathHelper.floor_double(ent.posY),
-                            MathHelper.floor_double(ent.posZ));
-                }
-                break;
-            }
-            case EQUIPPED_FIRST_PERSON: {
-                EntityLivingBase ent = (EntityLivingBase) (data[1]);
-                if (ent != null) {
-                    CosmicRenderShenanigans.setLightFromLocation(
-                            ent.worldObj,
-                            MathHelper.floor_double(ent.posX),
-                            MathHelper.floor_double(ent.posY),
-                            MathHelper.floor_double(ent.posZ));
-                }
-                break;
-            }
-            case INVENTORY: {
-                CosmicRenderShenanigans.setLightLevel(1.2f);
-                return;
             }
             default: {
                 CosmicRenderShenanigans.setLightLevel(1.0f);
-                return;
             }
         }
     }

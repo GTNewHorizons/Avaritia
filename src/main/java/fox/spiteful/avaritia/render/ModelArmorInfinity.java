@@ -20,6 +20,8 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
+import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.shaders.UniversiumShader;
+
 import fox.spiteful.avaritia.items.ItemArmorInfinity;
 import fox.spiteful.avaritia.items.LudicrousItems;
 
@@ -175,14 +177,14 @@ public class ModelArmorInfinity extends ModelBiped {
             super.render(entity, f, f1, f2, f3, f4, f5);
         }
 
-        if (!CosmicRenderShenanigans.inventoryRender) {
+        if (!UniversiumShader.isRenderingInInventory()) {
             mc.entityRenderer.enableLightmap(15.0);
         }
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glColor4d(1, 1, 1, 1);
 
         // WINGS
-        if (isFlying && !CosmicRenderShenanigans.inventoryRender) {
+        if (isFlying && !UniversiumShader.isRenderingInInventory()) {
             this.setWings();
             mc.renderEngine.bindTexture(wingTex);
             super.render(entity, f, f1, f2, f3, f4, f5);
@@ -209,7 +211,7 @@ public class ModelArmorInfinity extends ModelBiped {
             GL11.glDepthMask(true);
             GL11.glDisable(GL11.GL_BLEND);
             GL11.glEnable(GL11.GL_ALPHA_TEST);
-            if (!CosmicRenderShenanigans.inventoryRender) {
+            if (!UniversiumShader.isRenderingInInventory()) {
                 mc.entityRenderer.enableLightmap(0.0);
             }
             GL11.glEnable(GL11.GL_LIGHTING);
