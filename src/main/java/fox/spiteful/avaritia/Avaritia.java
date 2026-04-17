@@ -83,7 +83,6 @@ public class Avaritia {
         if (Config.craftingOnly) return;
         Mincer.countThoseCalories();
         Achievements.achieve();
-        PotionHelper.healthInspection();
         proxy.theAfterPretty();
     }
 }

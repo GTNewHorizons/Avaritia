@@ -92,7 +92,7 @@ public class LudicrousItems {
         infinity_axe = register(new ItemAxeInfinity(), "Infinity_Axe");
         // morv_in_a_box = register(new ItemMorvInABox(), "MorvInABox");
 
-        MinecraftForge.EVENT_BUS.register(new ItemArmorInfinity.abilityHandler());
+        MinecraftForge.EVENT_BUS.register(new ItemArmorInfinity.AbilityHandler());
     }
 
     public static boolean isInfinite(EntityPlayer player) {
