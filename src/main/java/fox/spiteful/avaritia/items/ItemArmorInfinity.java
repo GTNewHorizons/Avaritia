@@ -92,16 +92,17 @@ public class ItemArmorInfinity extends ItemArmor implements ICosmicRenderItem, I
             player.getFoodStats().addStats(20, 20F);
         } else if (armorType == 1) {
             Collection<PotionEffect> effects = player.getActivePotionEffects();
-            if (effects.size() == 0) return;
+            if (effects.isEmpty()) return;
 
-            IntArrayList bad = new IntArrayList();
+            IntArrayList bad = null;
             for (PotionEffect potion : effects) {
                 if (Potion.potionTypes[potion.getPotionID()].isBadEffect) {
+                    if (bad == null) bad = new IntArrayList();
                     bad.add(potion.getPotionID());
                 }
             }
 
-            if (bad.size() == 0) return;
+            if (bad == null || bad.isEmpty()) return;
             for (int potionID : bad) {
                 player.removePotionEffect(potionID);
             }
