@@ -1,6 +1,10 @@
 package fox.spiteful.avaritia.items;
 
-import java.util.ArrayList;
+import static net.minecraft.util.EnumChatFormatting.BLUE;
+import static net.minecraft.util.EnumChatFormatting.DARK_PURPLE;
+import static net.minecraft.util.EnumChatFormatting.ITALIC;
+import static net.minecraft.util.EnumChatFormatting.RESET;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -11,7 +15,6 @@ import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemArmor;
@@ -19,15 +22,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
-
-import com.google.common.collect.Multimap;
 
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -36,7 +36,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import fox.spiteful.avaritia.Avaritia;
 import fox.spiteful.avaritia.Config;
 import fox.spiteful.avaritia.LudicrousText;
-import fox.spiteful.avaritia.PotionHelper;
 import fox.spiteful.avaritia.compat.Compat;
 import fox.spiteful.avaritia.entity.EntityImmortalItem;
 import fox.spiteful.avaritia.mixins.early.minecraft.EntityLivingBaseAccessor;
@@ -44,6 +43,7 @@ import fox.spiteful.avaritia.render.ICosmicRenderItem;
 import fox.spiteful.avaritia.render.ModelArmorInfinity;
 import gregtech.api.hazards.Hazard;
 import gregtech.api.hazards.IHazardProtector;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
 import thaumcraft.api.IGoggles;
 import thaumcraft.api.IVisDiscountGear;
 import thaumcraft.api.aspects.Aspect;
@@ -91,19 +91,20 @@ public class ItemArmorInfinity extends ItemArmor implements ICosmicRenderItem, I
             player.setAir(300);
             player.getFoodStats().addStats(20, 20F);
         } else if (armorType == 1) {
-            // player.capabilities.allowFlying = true;
             Collection<PotionEffect> effects = player.getActivePotionEffects();
-            if (effects.size() > 0) {
-                ArrayList<Potion> bad = new ArrayList<Potion>();
-                for (PotionEffect potion : effects) {
-                    if (PotionHelper.badPotion(Potion.potionTypes[potion.getPotionID()]))
-                        bad.add(Potion.potionTypes[potion.getPotionID()]);
+            if (effects.isEmpty()) return;
+
+            IntArrayList bad = null;
+            for (PotionEffect potion : effects) {
+                if (Potion.potionTypes[potion.getPotionID()].isBadEffect) {
+                    if (bad == null) bad = new IntArrayList();
+                    bad.add(potion.getPotionID());
                 }
-                if (bad.size() > 0) {
-                    for (Potion potion : bad) {
-                        player.removePotionEffect(potion.id);
-                    }
-                }
+            }
+
+            if (bad == null || bad.isEmpty()) return;
+            for (int potionID : bad) {
+                player.removePotionEffect(potionID);
             }
         } else if (armorType == 2) {
             if (player.isBurning()) player.extinguish();
@@ -125,27 +126,16 @@ public class ItemArmorInfinity extends ItemArmor implements ICosmicRenderItem, I
         return model;
     }
 
-    @Override
-    public Multimap<String, AttributeModifier> getAttributeModifiers(ItemStack stack) {
-        Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(stack);
-        // if(armorType == 3)
-        // multimap.put(SharedMonsterAttributes.movementSpeed.getAttributeUnlocalizedName(), new
-        // AttributeModifier(field_111210_e, "Armor modifier", 0.7, 1));
-        return multimap;
-    }
-
     @Optional.Method(modid = "Thaumcraft")
     @Override
     public boolean showIngamePopups(ItemStack itemStack, EntityLivingBase entityLivingBase) {
-        if (armorType == 0) return true;
-        return false;
+        return armorType == 0;
     }
 
     @Optional.Method(modid = "Thaumcraft")
     @Override
     public boolean showNodes(ItemStack itemStack, EntityLivingBase entityLivingBase) {
-        if (armorType == 0) return true;
-        return false;
+        return armorType == 0;
     }
 
     @Optional.Method(modid = "Thaumcraft")
@@ -155,28 +145,23 @@ public class ItemArmorInfinity extends ItemArmor implements ICosmicRenderItem, I
     }
 
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean par4) {
-        if (Compat.thaumic) list.add(
-                EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocal("tc.visdiscount")
-                        + ": "
-                        + this.getVisDiscount(stack, player, (Aspect) null)
-                        + "%");
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean adv) {
+        if (Compat.thaumic) {
+            list.add(
+                    DARK_PURPLE + StatCollector.translateToLocal("tc.visdiscount")
+                            + ": "
+                            + this.getVisDiscount(stack, player, null)
+                            + "%");
+        }
         if (Compat.botan) {
             if (hasPhantomInk(stack))
-                list.add(StatCollector.translateToLocal("botaniamisc.hasPhantomInk").replaceAll("&", "\u00a7"));
+                list.add(StatCollector.translateToLocal("botaniamisc.hasPhantomInk").replace('&', '§'));
         }
         if (this.slot == 3 && Config.fast) {
             list.add("");
-            list.add(
-                    EnumChatFormatting.BLUE + "+"
-                            + EnumChatFormatting.ITALIC
-                            + LudicrousText.makeSANIC("SANIC")
-                            + EnumChatFormatting.RESET
-                            + ""
-                            + EnumChatFormatting.BLUE
-                            + "% Speed");
+            list.add(BLUE + "+" + ITALIC + LudicrousText.makeSANIC("SANIC") + RESET + BLUE + "% Speed");
         }
-        super.addInformation(stack, player, list, par4);
+        super.addInformation(stack, player, list, adv);
     }
 
     public boolean hasPhantomInk(ItemStack stack) {
@@ -185,7 +170,6 @@ public class ItemArmorInfinity extends ItemArmor implements ICosmicRenderItem, I
     }
 
     public void setPhantomInk(ItemStack stack, boolean ink) {
-
         NBTTagCompound tag = stack.getTagCompound();
         if (tag == null) {
             tag = new NBTTagCompound();
@@ -239,12 +223,10 @@ public class ItemArmorInfinity extends ItemArmor implements ICosmicRenderItem, I
         return false;
     }
 
-    public static class abilityHandler {
+    public static class AbilityHandler {
 
-        public static Set<String> playersWithHat = new HashSet<>();
-        public static Set<String> playersWithChest = new HashSet<>();
-        public static Set<String> playersWithLeg = new HashSet<>();
-        public static Set<String> playersWithFoot = new HashSet<>();
+        private static final Set<String> playersWithChest = new HashSet<>();
+        private static final Set<String> playersWithFoot = new HashSet<>();
 
         public static boolean playerHasHat(EntityPlayer player) {
             ItemStack armour = player.getCurrentArmor(3);
@@ -272,97 +254,63 @@ public class ItemArmorInfinity extends ItemArmor implements ICosmicRenderItem, I
 
         @SubscribeEvent
         public void updatePlayerAbilityStatus(LivingUpdateEvent event) {
-            if (event.entityLiving instanceof EntityPlayer player) {
-                String key = playerKey(player);
+            if (!(event.entityLiving instanceof EntityPlayer player)) return;
 
-                // hat
-                boolean hasHat = playerHasHat(player);
-                if (playersWithHat.contains(key)) {
-                    if (hasHat) {
+            String key = playerKey(player);
 
-                    } else {
-                        playersWithHat.remove(key);
-                    }
-                } else if (hasHat) {
-                    playersWithHat.add(key);
+            // chest
+            boolean hasChest = playerHasChest(player);
+            if (hasChest) {
+                player.capabilities.allowFlying = true;
+                playersWithChest.add(key);
+            } else if (playersWithChest.remove(key)) {
+                if (!player.capabilities.isCreativeMode) {
+                    player.capabilities.allowFlying = false;
+                    player.capabilities.isFlying = false;
                 }
+            }
 
-                // chest
-                boolean hasChest = playerHasChest(player);
-                if (playersWithChest.contains(key)) {
-                    if (hasChest) {
-                        player.capabilities.allowFlying = true;
-                    } else {
-                        if (!player.capabilities.isCreativeMode) {
-                            player.capabilities.allowFlying = false;
-                            player.capabilities.isFlying = false;
+            // shoes
+            boolean hasFoot = Config.fast && playerHasFoot(player);
+            if (hasFoot) {
+                boolean flying = player.capabilities.isFlying;
+                boolean swimming = player.isInsideOfMaterial(Material.water) || player.isInWater();
+                if (player.onGround || flying || swimming) {
+                    boolean sneaking = player.isSneaking();
+                    if (Config.stepUp) player.stepHeight = sneaking ? 0.501f : 1.001f;
+
+                    float speed = 0.15f * (flying ? 1.1f : 1.0f) * (sneaking ? 0.1f : 1.0f);
+
+                    if (player.moveForward > 0f) {
+                        player.moveFlying(0f, 1f, speed);
+                    } else if (player.moveForward < 0f) {
+                        player.moveFlying(0f, 1f, -speed * 0.3f);
+                    }
+
+                    if (player.moveStrafing != 0f) {
+                        player.moveFlying(1f, 0f, speed * 0.5f * Math.signum(player.moveStrafing));
+                    }
+
+                    // +50% speed up and down when flying
+                    if (flying) {
+                        boolean jumping = ((EntityLivingBaseAccessor) player).getIsJumping();
+                        if (jumping && player.motionY > 0 && player.motionY < 2) {
+                            player.motionY *= 1.5f;
+                        } else if (sneaking && player.motionY < 0 && player.motionY > -2) {
+                            player.motionY *= 1.5f;
                         }
-                        playersWithChest.remove(key);
                     }
-                } else if (hasChest) {
-                    playersWithChest.add(key);
                 }
-
-                // legs
-                boolean hasLeg = playerHasLeg(player);
-                if (playersWithLeg.contains(key)) {
-                    if (hasLeg) {
-
-                    } else {
-                        playersWithLeg.remove(key);
-                    }
-                } else if (hasLeg) {
-                    playersWithLeg.add(key);
-                }
-
-                // shoes
-                boolean hasFoot = playerHasFoot(player) && Config.fast;
-                if (playersWithFoot.contains(key)) {
-                    if (hasFoot) {
-                        boolean flying = player.capabilities.isFlying;
-                        boolean swimming = player.isInsideOfMaterial(Material.water) || player.isInWater();
-                        if (player.onGround || flying || swimming) {
-                            boolean sneaking = player.isSneaking();
-                            if (Config.stepUp) player.stepHeight = sneaking ? 0.501f : 1.001f;
-
-                            float speed = 0.15f * (flying ? 1.1f : 1.0f) * (sneaking ? 0.1f : 1.0f);
-
-                            if (player.moveForward > 0f) {
-                                player.moveFlying(0f, 1f, speed);
-                            } else if (player.moveForward < 0f) {
-                                player.moveFlying(0f, 1f, -speed * 0.3f);
-                            }
-
-                            if (player.moveStrafing != 0f) {
-                                player.moveFlying(1f, 0f, speed * 0.5f * Math.signum(player.moveStrafing));
-                            }
-
-                            // +50% speed up and down when flying
-                            if (flying) {
-                                boolean jumping = ((EntityLivingBaseAccessor) player).getIsJumping();
-                                if (jumping && player.motionY > 0 && player.motionY < 2) {
-                                    player.motionY *= 1.5f;
-                                } else if (sneaking && player.motionY < 0 && player.motionY > -2) {
-                                    player.motionY *= 1.5f;
-                                }
-                            }
-                        }
-                    } else {
-                        playersWithFoot.remove(key);
-                        if (Config.stepUp) player.stepHeight = 0.5f;
-                    }
-                } else if (hasFoot) {
-                    playersWithFoot.add(key);
-                }
+                playersWithFoot.add(key);
+            } else if (playersWithFoot.remove(key)) {
+                if (Config.stepUp) player.stepHeight = 0.5f;
             }
         }
 
         @SubscribeEvent
         public void jumpBoost(LivingJumpEvent event) {
             if (event.entityLiving instanceof EntityPlayer player) {
-                String key = playerKey(player);
-
-                if (playersWithFoot.contains(key)) {
+                if (playerHasFoot(player)) {
                     player.motionY += 0.4f;
                 }
             }
