@@ -225,12 +225,22 @@ public class ItemArmorInfinity extends ItemArmor implements ICosmicRenderItem, I
 
     public static class AbilityHandler {
 
-        public static Set<String> playersWithChest = new HashSet<>();
-        public static Set<String> playersWithFoot = new HashSet<>();
+        private static final Set<String> playersWithChest = new HashSet<>();
+        private static final Set<String> playersWithFoot = new HashSet<>();
+
+        public static boolean playerHasHat(EntityPlayer player) {
+            ItemStack armour = player.getCurrentArmor(3);
+            return armour != null && armour.getItem() == LudicrousItems.infinity_helm;
+        }
 
         public static boolean playerHasChest(EntityPlayer player) {
             ItemStack armour = player.getCurrentArmor(2);
             return armour != null && armour.getItem() == LudicrousItems.infinity_armor;
+        }
+
+        public static boolean playerHasLeg(EntityPlayer player) {
+            ItemStack armour = player.getCurrentArmor(1);
+            return armour != null && armour.getItem() == LudicrousItems.infinity_pants;
         }
 
         public static boolean playerHasFoot(EntityPlayer player) {
