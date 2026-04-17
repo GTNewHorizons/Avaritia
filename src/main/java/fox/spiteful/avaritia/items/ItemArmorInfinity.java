@@ -5,7 +5,6 @@ import static net.minecraft.util.EnumChatFormatting.DARK_PURPLE;
 import static net.minecraft.util.EnumChatFormatting.ITALIC;
 import static net.minecraft.util.EnumChatFormatting.RESET;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -44,6 +43,7 @@ import fox.spiteful.avaritia.render.ICosmicRenderItem;
 import fox.spiteful.avaritia.render.ModelArmorInfinity;
 import gregtech.api.hazards.Hazard;
 import gregtech.api.hazards.IHazardProtector;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
 import thaumcraft.api.IGoggles;
 import thaumcraft.api.IVisDiscountGear;
 import thaumcraft.api.aspects.Aspect;
@@ -94,16 +94,16 @@ public class ItemArmorInfinity extends ItemArmor implements ICosmicRenderItem, I
             Collection<PotionEffect> effects = player.getActivePotionEffects();
             if (effects.size() == 0) return;
 
-            ArrayList<PotionEffect> bad = new ArrayList<>();
+            IntArrayList bad = new IntArrayList();
             for (PotionEffect potion : effects) {
                 if (Potion.potionTypes[potion.getPotionID()].isBadEffect) {
-                    bad.add(potion);
+                    bad.add(potion.getPotionID());
                 }
             }
 
             if (bad.size() == 0) return;
-            for (PotionEffect potion : bad) {
-                player.removePotionEffect(potion.getPotionID());
+            for (int potionID : bad) {
+                player.removePotionEffect(potionID);
             }
         } else if (armorType == 2) {
             if (player.isBurning()) player.extinguish();
