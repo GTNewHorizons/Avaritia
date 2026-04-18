@@ -23,20 +23,13 @@ public class FancyHaloRenderer implements IItemRenderer {
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type) {
         Item itype = item.getItem();
-        if (itype instanceof IHaloRenderItem) {
-            IHaloRenderItem ihri = (IHaloRenderItem) itype;
-
+        if (itype instanceof IHaloRenderItem ihri) {
             if (!(ihri.drawHalo(item) || ihri.drawPulseEffect(item))) {
                 return false;
             }
         }
 
-        switch (type) {
-            case INVENTORY:
-                return true;
-            default:
-                return false;
-        }
+        return type == ItemRenderType.INVENTORY;
     }
 
     @Override

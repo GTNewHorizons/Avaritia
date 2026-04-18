@@ -296,9 +296,7 @@ public class ModelArmorInfinity extends ModelBiped {
         this.invulnOverlay.heldItemRight = 0;
         this.invulnOverlay.aimedBow = false;
 
-        if (entityLiving instanceof EntityPlayer) {
-            EntityPlayer player = (EntityPlayer) entityLiving;
-
+        if (entityLiving instanceof EntityPlayer player) {
             ItemStack held_item = player.getEquipmentInSlot(0);
 
             if (held_item != null) {
@@ -335,7 +333,7 @@ public class ModelArmorInfinity extends ModelBiped {
         this.invulnOverlay.setRotationAngles(f1, speed, ticks, headYaw, headPitch, f6, entity);
 
         if (RenderManager.instance.entityRenderMap.containsKey(entity.getClass())) {
-            Render r = (Render) RenderManager.instance.entityRenderMap.get(entity.getClass());
+            Render r = RenderManager.instance.entityRenderMap.get(entity.getClass());
 
             if (r instanceof RenderBiped) {
                 ModelBiped m = ((RenderBiped) r).modelBipedMain;
@@ -352,21 +350,21 @@ public class ModelArmorInfinity extends ModelBiped {
         this.bipedLeftArm.showModel = false;
         this.bipedRightLeg.showModel = false;
         this.bipedLeftLeg.showModel = false;
-        this.bipedHeadwear.showModel = this.showHat ? true : false;
+        this.bipedHeadwear.showModel = this.showHat;
     }
 
     public void setGems() {
         this.bipedHead.showModel = false;
         this.bipedHeadwear.showModel = false;
-        this.bipedBody.showModel = this.legs ? false : (this.showChest ? true : false);
-        this.bipedRightArm.showModel = this.legs ? false : (this.showChest ? true : false);
-        this.bipedLeftArm.showModel = this.legs ? false : (this.showChest ? true : false);
-        this.bipedRightLeg.showModel = this.legs ? (this.showLeg ? true : false) : false;
-        this.bipedLeftLeg.showModel = this.legs ? (this.showLeg ? true : false) : false;
+        this.bipedBody.showModel = !this.legs && this.showChest;
+        this.bipedRightArm.showModel = !this.legs && this.showChest;
+        this.bipedLeftArm.showModel = !this.legs && this.showChest;
+        this.bipedRightLeg.showModel = this.legs && this.showLeg;
+        this.bipedLeftLeg.showModel = this.legs && this.showLeg;
     }
 
     public void setWings() {
-        this.bipedBody.showModel = this.legs ? false : (this.showChest ? true : false);
+        this.bipedBody.showModel = !this.legs && this.showChest;
         this.bipedLeftWing.showModel = true;
         this.bipedRightWing.showModel = true;
         this.bipedHeadwear.showModel = false;
@@ -374,10 +372,9 @@ public class ModelArmorInfinity extends ModelBiped {
         this.bipedLeftArm.showModel = false;
         this.bipedRightLeg.showModel = false;
         this.bipedLeftLeg.showModel = false;
-        this.bipedHeadwear.showModel = false;
         this.bipedHead.showModel = false;
 
-        this.overlay.bipedBody.showModel = this.legs ? false : (this.showChest ? true : false);
+        this.overlay.bipedBody.showModel = !this.legs && this.showChest;
         this.overlay.bipedLeftWing.showModel = true;
         this.overlay.bipedRightWing.showModel = true;
         this.overlay.bipedHead.showModel = false;
@@ -408,7 +405,7 @@ public class ModelArmorInfinity extends ModelBiped {
         copyPartAngles(source.bipedRightLeg, dest.bipedRightLeg);
     }
 
-    public class Overlay extends ModelBiped {
+    public static class Overlay extends ModelBiped {
 
         public ModelArmorInfinity parent;
         public float expand;
@@ -500,7 +497,7 @@ public class ModelArmorInfinity extends ModelBiped {
             super.setRotationAngles(f1, f2, f3, f4, f5, f6, entity);
 
             if (RenderManager.instance.entityRenderMap.containsKey(entity.getClass())) {
-                Render r = (Render) RenderManager.instance.entityRenderMap.get(entity.getClass());
+                Render r = RenderManager.instance.entityRenderMap.get(entity.getClass());
 
                 if (r instanceof RenderBiped) {
                     ModelBiped m = ((RenderBiped) r).modelBipedMain;

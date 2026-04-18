@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
@@ -14,8 +12,6 @@ import net.minecraft.util.StatCollector;
 import codechicken.nei.NEIServerUtils;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import fox.spiteful.avaritia.crafting.CompressOreRecipe;
 import fox.spiteful.avaritia.crafting.CompressorManager;
 import fox.spiteful.avaritia.crafting.CompressorRecipe;
@@ -23,20 +19,11 @@ import fox.spiteful.avaritia.gui.GUICompressor;
 
 public class CompressionHandler extends TemplateRecipeHandler {
 
-    @SideOnly(Side.CLIENT)
-    private FontRenderer fontRender;
-
-    @SideOnly(Side.CLIENT)
-    public CompressionHandler() {
-        super();
-        fontRender = Minecraft.getMinecraft().fontRenderer;
-    }
-
     public class CachedCompression extends CachedRecipe {
 
-        private PositionedStack ingred;
-        private PositionedStack result;
-        private int cost;
+        private final PositionedStack ingred;
+        private final PositionedStack result;
+        private final int cost;
 
         public CachedCompression(CompressorRecipe recipe) {
             this(recipe.getOutput(), recipe.getCost(), recipe.getIngredient());
@@ -62,10 +49,6 @@ public class CompressionHandler extends TemplateRecipeHandler {
             for (ItemStack item : this.ingred.items) item.stackSize = this.cost;
             this.ingred.item.stackSize = this.cost;
             this.ingred.generatePermutations();
-        }
-
-        public int getCost() {
-            return cost;
         }
 
     }

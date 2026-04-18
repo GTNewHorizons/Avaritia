@@ -40,7 +40,7 @@ public class ContainerNeutron extends Container {
     @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int slotNumber) {
         ItemStack itemstack = null;
-        Slot slot = (Slot) this.inventorySlots.get(slotNumber);
+        Slot slot = this.inventorySlots.get(slotNumber);
 
         if (slot != null && slot.getHasStack()) {
             ItemStack itemstack1 = slot.getStack();
@@ -63,7 +63,7 @@ public class ContainerNeutron extends Container {
             }
 
             if (itemstack1.stackSize == 0) {
-                slot.putStack((ItemStack) null);
+                slot.putStack(null);
             } else {
                 slot.onSlotChanged();
             }

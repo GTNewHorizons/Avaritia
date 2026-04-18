@@ -46,7 +46,6 @@ public class Compressor {
 
         @Override
         public void apply() {
-
             CompressorManager.getRecipes().add(recipe);
         }
 
@@ -88,15 +87,11 @@ public class Compressor {
 
         @Override
         public void apply() {
-
-            for (Object obj : CompressorManager.getRecipes()) {
-                if (obj instanceof CompressorRecipe) {
-                    CompressorRecipe craft = (CompressorRecipe) obj;
-                    if (craft.getOutput().isItemEqual(remove)) {
-                        recipe = craft;
-                        CompressorManager.getRecipes().remove(obj);
-                        break;
-                    }
+            for (CompressorRecipe obj : CompressorManager.getRecipes()) {
+                if (obj.getOutput().isItemEqual(remove)) {
+                    recipe = obj;
+                    CompressorManager.getRecipes().remove(obj);
+                    break;
                 }
             }
         }
@@ -132,7 +127,7 @@ public class Compressor {
         if (item == null) return null;
         else {
             Object internal = item.getInternal();
-            if (internal == null || !(internal instanceof ItemStack)) {
+            if (!(internal instanceof ItemStack)) {
                 MineTweakerAPI.getLogger().logError("Not a valid item stack: " + item);
             }
             return (ItemStack) internal;
@@ -140,6 +135,6 @@ public class Compressor {
     }
 
     private static String toString(IOreDictEntry entry) {
-        return ((IOreDictEntry) entry).getName();
+        return entry.getName();
     }
 }

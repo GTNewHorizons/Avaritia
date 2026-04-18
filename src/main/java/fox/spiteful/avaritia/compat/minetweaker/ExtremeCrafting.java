@@ -100,14 +100,11 @@ public class ExtremeCrafting {
         @Override
         public void apply() {
 
-            for (Object obj : ExtremeCraftingManager.getInstance().getRecipeList()) {
-                if (obj instanceof IRecipe) {
-                    IRecipe craft = (IRecipe) obj;
-                    if (craft.getRecipeOutput().isItemEqual(remove)) {
-                        recipe = craft;
-                        ExtremeCraftingManager.getInstance().getRecipeList().remove(obj);
-                        break;
-                    }
+            for (IRecipe craft : ExtremeCraftingManager.getInstance().getRecipeList()) {
+                if (craft.getRecipeOutput().isItemEqual(remove)) {
+                    recipe = craft;
+                    ExtremeCraftingManager.getInstance().getRecipeList().remove(craft);
+                    break;
                 }
             }
         }
@@ -143,7 +140,7 @@ public class ExtremeCrafting {
         if (item == null) return null;
         else {
             Object internal = item.getInternal();
-            if (internal == null || !(internal instanceof ItemStack)) {
+            if (!(internal instanceof ItemStack)) {
                 MineTweakerAPI.getLogger().logError("Not a valid item stack: " + item);
             }
             return (ItemStack) internal;
@@ -182,7 +179,7 @@ public class ExtremeCrafting {
     }
 
     private static String toString(IOreDictEntry entry) {
-        return ((IOreDictEntry) entry).getName();
+        return entry.getName();
     }
 
 }

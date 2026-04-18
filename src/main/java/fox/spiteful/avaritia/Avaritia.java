@@ -60,9 +60,7 @@ public class Avaritia {
         LudicrousBlocks.voxelize();
         Compat.census();
         if (Config.craftingOnly) return;
-
         LudicrousEntities.letLooseTheDogsOfWar();
-        proxy.prepareForPretty();
     }
 
     @EventHandler

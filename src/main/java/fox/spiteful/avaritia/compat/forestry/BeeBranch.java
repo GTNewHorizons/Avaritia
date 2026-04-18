@@ -13,9 +13,9 @@ public enum BeeBranch implements IClassification {
     BALANCED("balanced", "Molestus"),
     INFINITE("infinite", "Infinitus");
 
-    private String name;
-    private String latin;
-    private ArrayList<IAlleleSpecies> species = new ArrayList<IAlleleSpecies>();
+    private final String name;
+    private final String latin;
+    private final ArrayList<IAlleleSpecies> species = new ArrayList<>();
     private IClassification parent;
     private final EnumClassLevel level = EnumClassLevel.GENUS;
 
@@ -63,7 +63,7 @@ public enum BeeBranch implements IClassification {
 
     @Override
     public IAlleleSpecies[] getMemberSpecies() {
-        return this.species.toArray(new IAlleleSpecies[this.species.size()]);
+        return this.species.toArray(new IAlleleSpecies[0]);
     }
 
     @Override

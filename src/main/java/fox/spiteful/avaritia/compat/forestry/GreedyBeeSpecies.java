@@ -243,7 +243,7 @@ public enum GreedyBeeSpecies implements IAlleleBeeSpecies, IIconProvider {
                 }
             }
         }
-        return own + (highest < 0 ? 0 : highest);
+        return own + highest;
     }
 
     @Override
@@ -291,7 +291,7 @@ public enum GreedyBeeSpecies implements IAlleleBeeSpecies, IIconProvider {
         if (world.rand.nextFloat() < ((10f / bountyLevel))) {
             Collection<? extends IMutation> resultantMutations = getRoot().getCombinations(this);
             if (resultantMutations.size() > 0) {
-                IMutation[] candidates = resultantMutations.toArray(new IMutation[resultantMutations.size()]);
+                IMutation[] candidates = resultantMutations.toArray(new IMutation[0]);
                 bounty.add(
                         AlleleManager.alleleRegistry
                                 .getMutationNoteStack(researcher, candidates[world.rand.nextInt(candidates.length)]));
@@ -312,7 +312,7 @@ public enum GreedyBeeSpecies implements IAlleleBeeSpecies, IIconProvider {
             }
         }
 
-        return bounty.toArray(new ItemStack[bounty.size()]);
+        return bounty.toArray(new ItemStack[0]);
     }
 
     @Override
