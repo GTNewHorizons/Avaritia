@@ -39,7 +39,7 @@ public class ItemOrbArmok extends Item implements IBloodOrb, IBindable {
     public void onUpdate(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected) {
         if (!world.isRemote && entity instanceof EntityPlayer) {
             NBTTagCompound itemTag = stack.stackTagCompound;
-            if (itemTag == null || itemTag.getString("ownerName").equals("")) return;
+            if (itemTag == null || itemTag.getString("ownerName").isEmpty()) return;
 
             SoulNetworkHandler
                     .addCurrentEssenceToMaximum(itemTag.getString("ownerName"), Integer.MAX_VALUE, getMaxEssence());

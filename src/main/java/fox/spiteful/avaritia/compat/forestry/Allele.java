@@ -49,17 +49,17 @@ public class Allele implements IAllele {
 
     public static IAlleleBeeSpecies getBaseSpecies(String name) {
         return (IAlleleBeeSpecies) AlleleManager.alleleRegistry
-                .getAllele((new StringBuilder()).append("forestry.species").append(name).toString());
+                .getAllele("forestry.species" + name);
     }
 
     public static IAlleleBeeSpecies getExtraSpecies(String name) {
         return (IAlleleBeeSpecies) AlleleManager.alleleRegistry
-                .getAllele((new StringBuilder()).append("extrabees.species.").append(name.toLowerCase()).toString());
+                .getAllele("extrabees.species." + name.toLowerCase());
     }
 
     public static IAlleleBeeSpecies getMagicSpecies(String name) {
         return (IAlleleBeeSpecies) AlleleManager.alleleRegistry
-                .getAllele((new StringBuilder()).append("magicbees.species").append(name).toString());
+                .getAllele("magicbees.species" + name);
     }
 
     public static IAllele getBaseAllele(String name) {

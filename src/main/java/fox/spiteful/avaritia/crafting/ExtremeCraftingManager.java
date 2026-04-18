@@ -133,11 +133,10 @@ public class ExtremeCraftingManager {
 
     public ExtremeShapelessRecipe addShapelessRecipe(ItemStack result, Object... ingredients) {
         List<ItemStack> arraylist = new ArrayList<>();
-        Object[] aobject = ingredients;
         int i = ingredients.length;
 
         for (int j = 0; j < i; ++j) {
-            Object object1 = aobject[j];
+            Object object1 = ingredients[j];
 
             if (object1 instanceof ItemStack stack) {
                 arraylist.add(stack.copy());

@@ -79,7 +79,7 @@ public class Achievements {
 
         page = new AchievementPage(
                 "Avaritia",
-                LudicrousAchievement.achievements.toArray(new Achievement[LudicrousAchievement.achievements.size()]));
+                LudicrousAchievement.achievements.toArray(new Achievement[0]));
         AchievementPage.registerAchievementPage(page);
 
         AchievementTrigger tigger = new AchievementTrigger();

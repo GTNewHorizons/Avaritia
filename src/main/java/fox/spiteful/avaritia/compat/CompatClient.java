@@ -14,10 +14,6 @@ import fox.spiteful.avaritia.render.FancyHaloRenderer;
 
 public class CompatClient {
 
-    public static void earlyComprettify() {
-
-    }
-
     public static void comprettify() {
         if (Compat.botan) {
             RenderingRegistry.registerBlockHandler(new RenderInfinitato(RenderingRegistry.getNextAvailableRenderId()));

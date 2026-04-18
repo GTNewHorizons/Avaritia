@@ -116,11 +116,6 @@ public class ItemBowInfinity extends Item implements ICosmicRenderItem {
     }
 
     @Override
-    public ItemStack onEaten(ItemStack stack, World world, EntityPlayer player) {
-        return stack;
-    }
-
-    @Override
     public int getMaxItemUseDuration(ItemStack stack) {
         return 13;
     }

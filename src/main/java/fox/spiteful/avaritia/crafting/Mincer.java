@@ -124,16 +124,12 @@ public class Mincer {
         // Lumberjack.info("pre-sort: "+cropSortingList);
 
         // sort into size/alphabetic order first to standardise them
-        Collections.sort(cropSortingList, new Comparator<FoodInfo>() {
-
-            @Override
-            public int compare(FoodInfo a, FoodInfo b) {
-                if (a.count != b.count) {
-                    return b.count > a.count ? 1 : -1;
-                }
-
-                return a.orename.compareTo(b.orename);
+        cropSortingList.sort((a, b) -> {
+            if (a.count != b.count) {
+                return b.count > a.count ? 1 : -1;
             }
+
+            return a.orename.compareTo(b.orename);
         });
 
         // Lumberjack.info("first sort: "+cropSortingList);
@@ -141,16 +137,12 @@ public class Mincer {
         // sort into size/random order, should be deterministic because previous sort
         Collections.shuffle(cropSortingList, randy);
 
-        Collections.sort(cropSortingList, new Comparator<FoodInfo>() {
-
-            @Override
-            public int compare(FoodInfo a, FoodInfo b) {
-                if (a.count != b.count) {
-                    return b.count > a.count ? 1 : -1;
-                }
-
-                return 0;
+        cropSortingList.sort((a, b) -> {
+            if (a.count != b.count) {
+                return b.count > a.count ? 1 : -1;
             }
+
+            return 0;
         });
 
         // Lumberjack.info("second sort: "+cropSortingList);
@@ -221,14 +213,14 @@ public class Mincer {
                 Item meef = Compat.getItem("TwilightForest", "item.meefRaw");
                 knownMeats.add(new ItemStack(venison));
                 knownMeats.add(new ItemStack(meef));
-            } catch (Exception e) {}
+            } catch (Exception ignored) {}
         }
 
         if (Loader.isModLoaded("Natura")) {
             try {
                 Item imp = Compat.getItem("Natura", "impmeat");
                 knownMeats.add(new ItemStack(imp));
-            } catch (Exception e) {}
+            } catch (Exception ignored) {}
         }
 
         if (Compat.am2) {
@@ -244,37 +236,23 @@ public class Mincer {
         Lumberjack.info("rawMeats: " + rawMeats);
         Lumberjack.info("knownMeats: " + knownMeats);
 
-        // Lumberjack.info("pre-sort: "+meatSortingList);
-
         // sort into size/alphabetic order first to standardise them
-        Collections.sort(meatSortingList, new Comparator<FoodInfo>() {
-
-            @Override
-            public int compare(FoodInfo a, FoodInfo b) {
-                if (a.count != b.count) {
-                    return b.count > a.count ? 1 : -1;
-                }
-
-                return a.orename.compareTo(b.orename);
+        meatSortingList.sort((a, b) -> {
+            if (a.count != b.count) {
+                return b.count > a.count ? 1 : -1;
             }
-        });
 
-        // Lumberjack.info("first sort: "+meatSortingList);
+            return a.orename.compareTo(b.orename);
+        });
 
         // sort into size/random order, should be deterministic because previous sort
-        Collections.sort(meatSortingList, new Comparator<FoodInfo>() {
-
-            @Override
-            public int compare(FoodInfo a, FoodInfo b) {
-                if (a.count != b.count) {
-                    return b.count > a.count ? 1 : -1;
-                }
-
-                return randy.nextBoolean() ? 1 : -1;
+        meatSortingList.sort((a, b) -> {
+            if (a.count != b.count) {
+                return b.count > a.count ? 1 : -1;
             }
-        });
 
-        // Lumberjack.info("second sort: "+meatSortingList);
+            return randy.nextBoolean() ? 1 : -1;
+        });
 
         // CULL!
 

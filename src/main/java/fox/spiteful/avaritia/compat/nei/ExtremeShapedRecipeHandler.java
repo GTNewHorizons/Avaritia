@@ -87,7 +87,7 @@ public class ExtremeShapedRecipeHandler extends ShapedRecipeHandler {
     @Override
     public void loadCraftingRecipes(String outputId, Object... results) {
         if (outputId.equals("extreme") && getClass() == ExtremeShapedRecipeHandler.class) {
-            for (IRecipe irecipe : (List<IRecipe>) ExtremeCraftingManager.getInstance().getRecipeList()) {
+            for (IRecipe irecipe : ExtremeCraftingManager.getInstance().getRecipeList()) {
                 CachedExtremeRecipe recipe = null;
                 if (irecipe instanceof ExtremeShapedRecipe)
                     recipe = new CachedExtremeRecipe((ExtremeShapedRecipe) irecipe);
@@ -106,7 +106,7 @@ public class ExtremeShapedRecipeHandler extends ShapedRecipeHandler {
 
     @Override
     public void loadCraftingRecipes(ItemStack result) {
-        for (IRecipe irecipe : (List<IRecipe>) ExtremeCraftingManager.getInstance().getRecipeList()) {
+        for (IRecipe irecipe : ExtremeCraftingManager.getInstance().getRecipeList()) {
             if (NEIServerUtils.areStacksSameTypeCraftingWithNBT(irecipe.getRecipeOutput(), result)) {
                 CachedExtremeRecipe recipe = null;
                 if (irecipe instanceof ExtremeShapedRecipe)
@@ -124,7 +124,7 @@ public class ExtremeShapedRecipeHandler extends ShapedRecipeHandler {
 
     @Override
     public void loadUsageRecipes(ItemStack ingredient) {
-        for (IRecipe irecipe : (List<IRecipe>) ExtremeCraftingManager.getInstance().getRecipeList()) {
+        for (IRecipe irecipe : ExtremeCraftingManager.getInstance().getRecipeList()) {
             CachedExtremeRecipe recipe = null;
             if (irecipe instanceof ExtremeShapedRecipe) recipe = new CachedExtremeRecipe((ExtremeShapedRecipe) irecipe);
             else if (irecipe instanceof ExtremeShapedOreRecipe)
