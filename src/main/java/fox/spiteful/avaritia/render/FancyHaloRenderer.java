@@ -1,6 +1,5 @@
 package fox.spiteful.avaritia.render;
 
-import java.util.Objects;
 import java.util.Random;
 
 import net.minecraft.client.Minecraft;

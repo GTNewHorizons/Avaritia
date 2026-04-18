@@ -158,8 +158,8 @@ public class Lucrum {
                 5,
                 new ItemStack(LudicrousItems.bigPearl)))
                         .setPages(
-                            new ResearchPage("avaritia.research_page.BIG_PEARL.1"),
-                            new ResearchPage(pearl_recipe))
+                                new ResearchPage("avaritia.research_page.BIG_PEARL.1"),
+                                new ResearchPage(pearl_recipe))
                         .setParents("PRIMPEARL").setConcealed().setSecondary().registerResearchItem();
 
         InfusionRecipe akashic_recipe = ThaumcraftApi.addInfusionCraftingRecipe(
@@ -180,8 +180,8 @@ public class Lucrum {
                 5,
                 new ItemStack(LudicrousItems.akashic_record)))
                         .setPages(
-                            new ResearchPage("avaritia.research_page.AKASHIC.1"),
-                            new ResearchPage(akashic_recipe))
+                                new ResearchPage("avaritia.research_page.AKASHIC.1"),
+                                new ResearchPage(akashic_recipe))
                         .setParents("BIG_PEARL").setConcealed().setSecondary().registerResearchItem();
 
     }
