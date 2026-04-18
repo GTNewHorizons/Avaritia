@@ -12,9 +12,7 @@ public class ItemStackWrapper {
 
     @Override
     public boolean equals(Object otherobj) {
-        if (otherobj instanceof ItemStackWrapper) {
-            ItemStackWrapper other = (ItemStackWrapper) otherobj;
-
+        if (otherobj instanceof ItemStackWrapper other) {
             if (this.stack.getItem().equals(other.stack.getItem())
                     && this.stack.getItemDamage() == other.stack.getItemDamage()) {
 

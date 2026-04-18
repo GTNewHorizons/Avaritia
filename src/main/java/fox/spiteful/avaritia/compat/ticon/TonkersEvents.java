@@ -47,8 +47,7 @@ public class TonkersEvents {
         if (event.harvester == null) return;
         if (event.harvester.getHeldItem() == null) return;
         ItemStack held = event.harvester.getHeldItem();
-        if (held != null && held.hasTagCompound() && held.getItem() instanceof ToolCore) {
-            ToolCore tool = (ToolCore) held.getItem();
+        if (held != null && held.hasTagCompound() && held.getItem() instanceof ToolCore tool) {
             NBTTagCompound toolTag = held.getTagCompound().getCompoundTag("InfiTool");
 
             if (toolTag.getInteger("Head") == Tonkers.infinityMetalId) {
@@ -80,13 +79,9 @@ public class TonkersEvents {
     public void onHurt(LivingHurtEvent event) {
         Entity damaged = event.entity;
         Entity damager = event.source.getSourceOfDamage();
-        if (damager != null && damager instanceof EntityLivingBase && damaged instanceof EntityLivingBase) {
-            EntityLivingBase attacker = (EntityLivingBase) damager;
-            EntityLivingBase attacked = (EntityLivingBase) damaged;
-
+        if (damager instanceof EntityLivingBase attacker && damaged instanceof EntityLivingBase attacked) {
             ItemStack held = attacker.getHeldItem();
-            if (held != null && held.hasTagCompound() && held.getItem() instanceof ToolCore) {
-                ToolCore tool = (ToolCore) held.getItem();
+            if (held != null && held.hasTagCompound() && held.getItem() instanceof ToolCore tool) {
                 NBTTagCompound toolTag = held.getTagCompound().getCompoundTag("InfiTool");
 
                 float puntpower = 0.0f;
@@ -130,11 +125,10 @@ public class TonkersEvents {
         ItemStack held = event.entityPlayer.getHeldItem();
         if (block.getBlockHardness(event.entityPlayer.worldObj, event.x, event.y, event.z) <= -1
                 && held.hasTagCompound()
-                && held.getItem() instanceof ToolCore
+                && held.getItem() instanceof ToolCore tool
                 && (block.getMaterial() == Material.rock || block.getMaterial() == Material.iron)) {
 
             NBTTagCompound toolTag = held.getTagCompound().getCompoundTag("InfiTool");
-            ToolCore tool = (ToolCore) held.getItem();
 
             if (toolTag != null && toolTag.getInteger("Head") == Tonkers.infinityMetalId
                     && tool.canHarvestBlock(Blocks.stone, held)) {

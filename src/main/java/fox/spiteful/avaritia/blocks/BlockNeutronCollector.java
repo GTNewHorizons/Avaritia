@@ -77,8 +77,7 @@ public class BlockNeutronCollector extends BlockContainer {
     @Override
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack item) {
         TileEntity tile = world.getTileEntity(x, y, z);
-        if (tile instanceof TileEntityNeutron) {
-            TileEntityNeutron machine = (TileEntityNeutron) tile;
+        if (tile instanceof TileEntityNeutron machine) {
             int l = MathHelper.floor_double((double) (player.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
 
             if (l == 0) machine.setFacing(2);

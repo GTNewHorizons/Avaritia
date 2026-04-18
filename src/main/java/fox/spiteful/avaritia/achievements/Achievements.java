@@ -77,9 +77,7 @@ public class Achievements {
 
         if (Compat.blood) armok = new LudicrousAchievement("armok", 2, -5, LudicrousItems.armok_orb, infinity);
 
-        page = new AchievementPage(
-                "Avaritia",
-                LudicrousAchievement.achievements.toArray(new Achievement[LudicrousAchievement.achievements.size()]));
+        page = new AchievementPage("Avaritia", LudicrousAchievement.achievements.toArray(new Achievement[0]));
         AchievementPage.registerAchievementPage(page);
 
         AchievementTrigger tigger = new AchievementTrigger();

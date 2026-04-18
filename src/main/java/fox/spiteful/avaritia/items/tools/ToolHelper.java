@@ -41,8 +41,8 @@ public class ToolHelper {
     public static Material[] materialsAxe = new Material[] { Material.coral, Material.leaves, Material.plants,
             Material.wood, Material.vine };
 
-    public static Set<EntityPlayer> hammering = new HashSet<>();
-    public static Map<EntityPlayer, List<ItemStack>> hammerdrops = new WeakHashMap<>();
+    public static final Set<EntityPlayer> hammering = new HashSet<>();
+    public static final Map<EntityPlayer, List<ItemStack>> hammerdrops = new WeakHashMap<>();
 
     public static void removeBlocksInIteration(EntityPlayer player, ItemStack stack, World world, int x, int y, int z,
             int xs, int ys, int zs, int xe, int ye, int ze, Block block, Material[] materialsListing, boolean silk,
@@ -195,7 +195,7 @@ public class ToolHelper {
             ItemStackWrapper wrap = e.getKey();
 
             int size = wrap.stack.getMaxStackSize();
-            int fullstacks = (int) Math.floor(count / size);
+            int fullstacks = count / size;
 
             for (int i = 0; i < fullstacks; i++) {
                 count -= size;

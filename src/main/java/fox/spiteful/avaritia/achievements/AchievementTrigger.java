@@ -18,18 +18,18 @@ public class AchievementTrigger {
 
             if (event.crafting.getItem() == LudicrousItems.resource) {
                 switch (event.crafting.getItemDamage()) {
-                    case 1:
+                    case 1 -> {
                         event.player.addStat(Achievements.crystal_matrix, 1);
-                        return;
-                    case 4:
+                    }
+                    case 4 -> {
                         event.player.addStat(Achievements.neutronium, 1);
-                        return;
-                    case 5:
+                    }
+                    case 5 -> {
                         event.player.addStat(Achievements.catalyst, 1);
-                        return;
-                    case 6:
+                    }
+                    case 6 -> {
                         event.player.addStat(Achievements.infinity, 1);
-                        return;
+                    }
                 }
             } else if (event.crafting.getItem() == Item.getItemFromBlock(LudicrousBlocks.dire_crafting)) {
                 event.player.addStat(Achievements.dire_crafting, 1);

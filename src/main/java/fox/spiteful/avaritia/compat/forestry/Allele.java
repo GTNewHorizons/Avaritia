@@ -48,18 +48,15 @@ public class Allele implements IAllele {
     }
 
     public static IAlleleBeeSpecies getBaseSpecies(String name) {
-        return (IAlleleBeeSpecies) AlleleManager.alleleRegistry
-                .getAllele((new StringBuilder()).append("forestry.species").append(name).toString());
+        return (IAlleleBeeSpecies) AlleleManager.alleleRegistry.getAllele("forestry.species" + name);
     }
 
     public static IAlleleBeeSpecies getExtraSpecies(String name) {
-        return (IAlleleBeeSpecies) AlleleManager.alleleRegistry
-                .getAllele((new StringBuilder()).append("extrabees.species.").append(name.toLowerCase()).toString());
+        return (IAlleleBeeSpecies) AlleleManager.alleleRegistry.getAllele("extrabees.species." + name.toLowerCase());
     }
 
     public static IAlleleBeeSpecies getMagicSpecies(String name) {
-        return (IAlleleBeeSpecies) AlleleManager.alleleRegistry
-                .getAllele((new StringBuilder()).append("magicbees.species").append(name).toString());
+        return (IAlleleBeeSpecies) AlleleManager.alleleRegistry.getAllele("magicbees.species" + name);
     }
 
     public static IAllele getBaseAllele(String name) {

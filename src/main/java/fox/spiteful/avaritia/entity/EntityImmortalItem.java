@@ -41,10 +41,7 @@ public class EntityImmortalItem extends EntityItem {
 
     @Override
     public boolean attackEntityFrom(DamageSource source, float damage) {
-        if (source.getDamageType().equals("outOfWorld")) {
-            return true;
-        }
-        return false;
+        return source.getDamageType().equals("outOfWorld");
     }
 
     @Override

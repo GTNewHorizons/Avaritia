@@ -1,7 +1,7 @@
 package fox.spiteful.avaritia.compat.forestry;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 import forestry.api.apiculture.BeeManager;
 import forestry.api.apiculture.IAlleleBeeSpecies;
@@ -15,11 +15,10 @@ import forestry.api.genetics.IAlleleSpecies;
 
 public class ExpensiveMutation implements IBeeMutation {
 
-    private IAlleleBeeSpecies mom;
-    private IAlleleBeeSpecies dad;
-    private IAllele[] template;
-    private boolean secret = false;
-    private float baseChance;
+    private final IAlleleBeeSpecies mom;
+    private final IAlleleBeeSpecies dad;
+    private final IAllele[] template;
+    private final float baseChance;
 
     public ExpensiveMutation(IAlleleBeeSpecies first, IAlleleBeeSpecies second, IAllele[] result, float chance) {
         mom = first;
@@ -88,7 +87,7 @@ public class ExpensiveMutation implements IBeeMutation {
 
     @Override
     public boolean isSecret() {
-        return secret;
+        return false;
     }
 
     @Override
@@ -104,7 +103,7 @@ public class ExpensiveMutation implements IBeeMutation {
 
     @Override
     public Collection<String> getSpecialConditions() {
-        return new ArrayList<String>();
+        return Collections.emptyList();
     }
 
     @Override

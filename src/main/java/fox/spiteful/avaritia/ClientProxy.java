@@ -25,11 +25,6 @@ public class ClientProxy extends CommonProxy {
     public static final double toDeg = (1.0 / (Math.PI * 2)) * 360.0;
 
     @Override
-    public void prepareForPretty() {
-        CompatClient.earlyComprettify();
-    }
-
-    @Override
     public void makeThingsPretty() {
         FancyHaloRenderer shiny = new FancyHaloRenderer();
 
