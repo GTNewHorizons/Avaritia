@@ -77,6 +77,15 @@ public class Tonkers {
                 new ItemStack(TinkerTools.toolRod, 1, neutroniumId),
                 neutroniumId);
 
+        // register infinity ingot
+        pb.registerFullMaterial(
+                new ItemStack(LudicrousItems.resource, 1, 6),
+                2,
+                infinityMetalName,
+                new ItemStack(TinkerTools.toolShard, 1, infinityMetalId),
+                new ItemStack(TinkerTools.toolRod, 1, infinityMetalId),
+                infinityMetalId);
+
         TonkersEvents events = new TonkersEvents();
         MinecraftForge.EVENT_BUS.register(events);
         FMLCommonHandler.instance().bus().register(events);
