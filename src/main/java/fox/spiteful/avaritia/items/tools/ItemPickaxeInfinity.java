@@ -24,13 +24,22 @@ import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.brandon3055.draconicevolution.common.utils.IConfigurableItem;
+import com.brandon3055.draconicevolution.common.utils.ItemConfigField;
+
+import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import fox.spiteful.avaritia.Avaritia;
+import fox.spiteful.avaritia.compat.draconicevolution.InfinityToolConfigFactory;
+import fox.spiteful.avaritia.compat.draconicevolution.InfinityToolRuntimeHelpers;
 import fox.spiteful.avaritia.entity.EntityImmortalItem;
 import fox.spiteful.avaritia.items.LudicrousItems;
 
-public class ItemPickaxeInfinity extends ItemPickaxe {
+@Optional.Interface(
+        iface = "com.brandon3055.draconicevolution.common.utils.IConfigurableItem",
+        modid = "DraconicEvolution")
+public class ItemPickaxeInfinity extends ItemPickaxe implements IConfigurableItem {
 
     private static final ToolMaterial opPickaxe = EnumHelper
             .addToolMaterial("INFINITY_PICKAXE", 32, 9999, 9999F, 6.0F, 200);
@@ -99,7 +108,7 @@ public class ItemPickaxeInfinity extends ItemPickaxe {
 
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-        if (player.isSneaking()) {
+        if (player.isSneaking() && InfinityToolRuntimeHelpers.isPickaxeHammerEnabled(stack)) {
             NBTTagCompound tags = stack.getTagCompound();
             if (tags == null) {
                 tags = new NBTTagCompound();
@@ -133,7 +142,8 @@ public class ItemPickaxeInfinity extends ItemPickaxe {
 
     @Override
     public boolean onBlockStartBreak(ItemStack stack, int x, int y, int z, EntityPlayer player) {
-        if (stack.getTagCompound() != null && stack.getTagCompound().getBoolean("hammer")) {
+        if (InfinityToolRuntimeHelpers.isPickaxeHammerEnabled(stack) && stack.getTagCompound() != null
+                && stack.getTagCompound().getBoolean("hammer")) {
             MovingObjectPosition raycast = ToolHelper.raytraceFromEntity(player.worldObj, player, true, 10);
             if (raycast != null) {
                 breakOtherBlock(player, stack, x, y, z, x, y, z, raycast.sideHit);
@@ -156,7 +166,7 @@ public class ItemPickaxeInfinity extends ItemPickaxe {
         boolean silk = EnchantmentHelper.getSilkTouchModifier(player);
         boolean doY = direction.offsetY == 0;
 
-        int range = 8;
+        int range = InfinityToolRuntimeHelpers.getPickaxeHammerRange(stack);
 
         ToolHelper.removeBlocksInIteration(
                 player,
@@ -192,6 +202,18 @@ public class ItemPickaxeInfinity extends ItemPickaxe {
     @Override
     public boolean hasEffect(ItemStack par1ItemStack, int pass) {
         return false;
+    }
+
+    @Optional.Method(modid = "DraconicEvolution")
+    @Override
+    public List<ItemConfigField> getFields(ItemStack stack, int slot) {
+        return InfinityToolConfigFactory.createPickaxeFields(stack, slot);
+    }
+
+    @Optional.Method(modid = "DraconicEvolution")
+    @Override
+    public boolean hasProfiles() {
+        return true;
     }
 
 }

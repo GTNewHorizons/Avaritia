@@ -5,12 +5,8 @@ import static net.minecraft.util.EnumChatFormatting.DARK_PURPLE;
 import static net.minecraft.util.EnumChatFormatting.ITALIC;
 import static net.minecraft.util.EnumChatFormatting.RESET;
 
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-import net.minecraft.block.material.Material;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
@@ -20,30 +16,30 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.EnumHelper;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+
+import com.brandon3055.draconicevolution.common.items.armor.ICustomArmor;
+import com.brandon3055.draconicevolution.common.utils.IConfigurableItem;
+import com.brandon3055.draconicevolution.common.utils.ItemConfigField;
 
 import cpw.mods.fml.common.Optional;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import fox.spiteful.avaritia.Avaritia;
 import fox.spiteful.avaritia.Config;
 import fox.spiteful.avaritia.LudicrousText;
 import fox.spiteful.avaritia.compat.Compat;
+import fox.spiteful.avaritia.compat.draconicevolution.InfinityArmorAbilityResolver;
+import fox.spiteful.avaritia.compat.draconicevolution.InfinityArmorConfigFactory;
+import fox.spiteful.avaritia.compat.draconicevolution.InfinityArmorEffectHandler;
 import fox.spiteful.avaritia.entity.EntityImmortalItem;
-import fox.spiteful.avaritia.mixins.early.minecraft.EntityLivingBaseAccessor;
 import fox.spiteful.avaritia.render.ICosmicRenderItem;
 import fox.spiteful.avaritia.render.ModelArmorInfinity;
 import gregtech.api.hazards.Hazard;
 import gregtech.api.hazards.IHazardProtector;
-import it.unimi.dsi.fastutil.ints.IntArrayList;
 import thaumcraft.api.IGoggles;
 import thaumcraft.api.IVisDiscountGear;
 import thaumcraft.api.aspects.Aspect;
@@ -58,9 +54,15 @@ import vazkii.botania.api.mana.IManaDiscountArmor;
         @Optional.Interface(iface = "vazkii.botania.api.item.IPhantomInkable", modid = "Botania"),
         @Optional.Interface(iface = "vazkii.botania.api.mana.IManaDiscountArmor", modid = "Botania"),
         @Optional.Interface(iface = "vazkii.botania.api.item.IManaProficiencyArmor", modid = "Botania"),
+        @Optional.Interface(
+                iface = "com.brandon3055.draconicevolution.common.utils.IConfigurableItem",
+                modid = "DraconicEvolution"),
+        @Optional.Interface(
+                iface = "com.brandon3055.draconicevolution.common.items.armor.ICustomArmor",
+                modid = "DraconicEvolution"),
         @Optional.Interface(iface = "gregtech.api.hazards.IHazardProtector", modid = "gregtech_nh") })
 public class ItemArmorInfinity extends ItemArmor implements ICosmicRenderItem, IGoggles, IRevealer, IVisDiscountGear,
-        IPhantomInkable, IManaDiscountArmor, IManaProficiencyArmor, IHazardProtector {
+        IPhantomInkable, IManaDiscountArmor, IManaProficiencyArmor, IHazardProtector, IConfigurableItem, ICustomArmor {
 
     public static final ArmorMaterial infinite_armor = EnumHelper
             .addArmorMaterial("infinity", 9999, new int[] { 6, 16, 12, 6 }, 1000);
@@ -87,28 +89,19 @@ public class ItemArmorInfinity extends ItemArmor implements ICosmicRenderItem, I
 
     @Override
     public void onArmorTick(World world, EntityPlayer player, ItemStack itemStack) {
-        if (armorType == 0) {
-            player.setAir(300);
-            player.getFoodStats().addStats(20, 20F);
-        } else if (armorType == 1) {
-            Collection<PotionEffect> effects = player.getActivePotionEffects();
-            if (effects.isEmpty()) return;
+        InfinityArmorEffectHandler.handleArmorTick(player, itemStack, armorType);
+    }
 
-            IntArrayList bad = null;
-            for (PotionEffect potion : effects) {
-                if (Potion.potionTypes[potion.getPotionID()].isBadEffect) {
-                    if (bad == null) bad = new IntArrayList();
-                    bad.add(potion.getPotionID());
-                }
-            }
+    @Optional.Method(modid = "DraconicEvolution")
+    @Override
+    public List<ItemConfigField> getFields(ItemStack stack, int slot) {
+        return InfinityArmorConfigFactory.createFields(stack, slot, armorType);
+    }
 
-            if (bad == null || bad.isEmpty()) return;
-            for (int potionID : bad) {
-                player.removePotionEffect(potionID);
-            }
-        } else if (armorType == 2) {
-            if (player.isBurning()) player.extinguish();
-        }
+    @Optional.Method(modid = "DraconicEvolution")
+    @Override
+    public boolean hasProfiles() {
+        return true;
     }
 
     @Override
@@ -223,98 +216,89 @@ public class ItemArmorInfinity extends ItemArmor implements ICosmicRenderItem, I
         return false;
     }
 
-    public static class AbilityHandler {
+    @Optional.Method(modid = "DraconicEvolution")
+    @Override
+    public float getProtectionPoints(ItemStack stack) {
+        return 0F;
+    }
 
-        private static final Set<String> playersWithChest = new HashSet<>();
-        private static final Set<String> playersWithFoot = new HashSet<>();
+    @Optional.Method(modid = "DraconicEvolution")
+    @Override
+    public int getRecoveryPoints(ItemStack stack) {
+        return 0;
+    }
 
-        public static boolean playerHasHat(EntityPlayer player) {
-            ItemStack armour = player.getCurrentArmor(3);
-            return armour != null && armour.getItem() == LudicrousItems.infinity_helm;
-        }
+    @Optional.Method(modid = "DraconicEvolution")
+    @Override
+    public float getSpeedModifier(ItemStack stack, EntityPlayer player) {
+        return InfinityArmorAbilityResolver.getSpeedModifier(stack, player);
+    }
 
-        public static boolean playerHasChest(EntityPlayer player) {
-            ItemStack armour = player.getCurrentArmor(2);
-            return armour != null && armour.getItem() == LudicrousItems.infinity_armor;
-        }
+    @Optional.Method(modid = "DraconicEvolution")
+    @Override
+    public float getJumpModifier(ItemStack stack, EntityPlayer player) {
+        return InfinityArmorAbilityResolver.getJumpModifier(stack, player);
+    }
 
-        public static boolean playerHasLeg(EntityPlayer player) {
-            ItemStack armour = player.getCurrentArmor(1);
-            return armour != null && armour.getItem() == LudicrousItems.infinity_pants;
-        }
+    @Optional.Method(modid = "DraconicEvolution")
+    @Override
+    public boolean hasHillStep(ItemStack stack, EntityPlayer player) {
+        return InfinityArmorAbilityResolver.hasHillStep(stack, player);
+    }
 
-        public static boolean playerHasFoot(EntityPlayer player) {
-            ItemStack armour = player.getCurrentArmor(0);
-            return armour != null && armour.getItem() == LudicrousItems.infinity_shoes;
-        }
+    @Optional.Method(modid = "DraconicEvolution")
+    @Override
+    public float getFireResistance(ItemStack stack) {
+        return 1F;
+    }
 
-        public static String playerKey(EntityPlayer player) {
-            return player.getGameProfile().getName() + ":" + player.worldObj.isRemote;
-        }
+    @Optional.Method(modid = "DraconicEvolution")
+    @Override
+    public boolean[] hasFlight(ItemStack stack) {
+        return armorType == 1 ? InfinityArmorAbilityResolver.getFlightState(stack)
+                : new boolean[] { false, false, false };
+    }
 
-        @SubscribeEvent
-        public void updatePlayerAbilityStatus(LivingUpdateEvent event) {
-            if (!(event.entityLiving instanceof EntityPlayer player)) return;
+    @Optional.Method(modid = "DraconicEvolution")
+    @Override
+    public float getFlightSpeedModifier(ItemStack stack, EntityPlayer player) {
+        return armorType == 1 ? InfinityArmorAbilityResolver.getFlightSpeedModifier(stack, player) : 0F;
+    }
 
-            String key = playerKey(player);
+    @Optional.Method(modid = "DraconicEvolution")
+    @Override
+    public float getFlightVModifier(ItemStack stack, EntityPlayer player) {
+        return armorType == 1 ? InfinityArmorAbilityResolver.getFlightVerticalModifier(stack, player) : 0F;
+    }
 
-            // chest
-            boolean hasChest = playerHasChest(player);
-            if (hasChest) {
-                player.capabilities.allowFlying = true;
-                playersWithChest.add(key);
-            } else if (playersWithChest.remove(key)) {
-                if (!player.capabilities.isCreativeMode) {
-                    player.capabilities.allowFlying = false;
-                    player.capabilities.isFlying = false;
-                }
-            }
+    @Optional.Method(modid = "DraconicEvolution")
+    @Override
+    public int getEnergyPerProtectionPoint() {
+        return 0;
+    }
 
-            // shoes
-            boolean hasFoot = Config.fast && playerHasFoot(player);
-            if (hasFoot) {
-                boolean flying = player.capabilities.isFlying;
-                boolean swimming = player.isInsideOfMaterial(Material.water) || player.isInWater();
-                if (player.onGround || flying || swimming) {
-                    boolean sneaking = player.isSneaking();
-                    if (Config.stepUp) player.stepHeight = sneaking ? 0.501f : 1.001f;
+    @Optional.Method(modid = "DraconicEvolution")
+    @Override
+    public int receiveEnergy(ItemStack container, int maxReceive, boolean simulate) {
+        return 0;
+    }
 
-                    float speed = 0.15f * (flying ? 1.1f : 1.0f) * (sneaking ? 0.1f : 1.0f);
+    @Optional.Method(modid = "DraconicEvolution")
+    @Override
+    public int extractEnergy(ItemStack container, int maxExtract, boolean simulate) {
+        return 0;
+    }
 
-                    if (player.moveForward > 0f) {
-                        player.moveFlying(0f, 1f, speed);
-                    } else if (player.moveForward < 0f) {
-                        player.moveFlying(0f, 1f, -speed * 0.3f);
-                    }
+    @Optional.Method(modid = "DraconicEvolution")
+    @Override
+    public int getEnergyStored(ItemStack container) {
+        return 0;
+    }
 
-                    if (player.moveStrafing != 0f) {
-                        player.moveFlying(1f, 0f, speed * 0.5f * Math.signum(player.moveStrafing));
-                    }
-
-                    // +50% speed up and down when flying
-                    if (flying) {
-                        boolean jumping = ((EntityLivingBaseAccessor) player).getIsJumping();
-                        if (jumping && player.motionY > 0 && player.motionY < 2) {
-                            player.motionY *= 1.5f;
-                        } else if (sneaking && player.motionY < 0 && player.motionY > -2) {
-                            player.motionY *= 1.5f;
-                        }
-                    }
-                }
-                playersWithFoot.add(key);
-            } else if (playersWithFoot.remove(key)) {
-                if (Config.stepUp) player.stepHeight = 0.5f;
-            }
-        }
-
-        @SubscribeEvent
-        public void jumpBoost(LivingJumpEvent event) {
-            if (event.entityLiving instanceof EntityPlayer player) {
-                if (playerHasFoot(player)) {
-                    player.motionY += 0.4f;
-                }
-            }
-        }
+    @Optional.Method(modid = "DraconicEvolution")
+    @Override
+    public int getMaxEnergyStored(ItemStack container) {
+        return 0;
     }
 
     /// GT5 Hazmat protection

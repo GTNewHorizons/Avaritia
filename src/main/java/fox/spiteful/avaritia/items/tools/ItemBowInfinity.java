@@ -1,5 +1,7 @@
 package fox.spiteful.avaritia.items.tools;
 
+import java.util.List;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -14,14 +16,27 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ArrowNockEvent;
 
+import com.brandon3055.draconicevolution.common.utils.IConfigurableItem;
+import com.brandon3055.draconicevolution.common.utils.ItemConfigField;
+
+import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import fox.spiteful.avaritia.Avaritia;
+import fox.spiteful.avaritia.compat.draconicevolution.InfinityToolConfigFactory;
+import fox.spiteful.avaritia.compat.draconicevolution.InfinityToolRuntimeHelpers;
 import fox.spiteful.avaritia.entity.EntityHeavenArrow;
 import fox.spiteful.avaritia.render.CosmicBowRenderer;
 import fox.spiteful.avaritia.render.ICosmicRenderItem;
 
-public class ItemBowInfinity extends Item implements ICosmicRenderItem {
+@Optional.Interface(
+        iface = "com.brandon3055.draconicevolution.common.utils.IConfigurableItem",
+        modid = "DraconicEvolution")
+public class ItemBowInfinity extends Item implements ICosmicRenderItem, IConfigurableItem {
+
+    private static final int RAPID_FIRE_USE_DURATION = 13;
+    private static final int STANDARD_BOW_USE_DURATION = 72000;
+    private static final int BOW_FRAME_COUNT = 3;
 
     private IIcon[] iconArray;
     private IIcon[] maskArray;
@@ -42,20 +57,22 @@ public class ItemBowInfinity extends Item implements ICosmicRenderItem {
 
     @Override
     public void onPlayerStoppedUsing(ItemStack stack, World world, EntityPlayer player, int useCount) {
-        // this.fire(stack, world, player, useCount);
+        if (!InfinityToolRuntimeHelpers.isBowRapidFireEnabled(stack)) {
+            this.fire(stack, world, player, useCount);
+        }
     }
 
     @Override
     public void onUsingTick(ItemStack stack, EntityPlayer player, int count) {
-        if (count == 1) {
-            this.fire(stack, player.worldObj, player, 0);
+        if (InfinityToolRuntimeHelpers.isBowRapidFireEnabled(stack) && count == 1) {
+            this.fire(stack, player.worldObj, player, count);
+            player.setItemInUse(stack, RAPID_FIRE_USE_DURATION);
         }
     }
 
     public void fire(ItemStack stack, World world, EntityPlayer player, int useCount) {
-        int max = this.getMaxItemUseDuration(stack);
-        float maxf = (float) max;
-        int j = max - useCount;
+        float maxf = (float) RAPID_FIRE_USE_DURATION;
+        int j = getDrawProgress(stack, useCount);
 
         /*
          * ArrowLooseEvent event = new ArrowLooseEvent(player, stack, j); MinecraftForge.EVENT_BUS.post(event); if
@@ -78,6 +95,9 @@ public class ItemBowInfinity extends Item implements ICosmicRenderItem {
             }
 
             EntityArrow entityarrow = new EntityHeavenArrow(world, player, f * 2.0F);
+            if (entityarrow instanceof EntityHeavenArrow heavenArrow) {
+                heavenArrow.setSwordRainEnabled(InfinityToolRuntimeHelpers.isBowSwordRainEnabled(stack));
+            }
             entityarrow.setDamage(60.0);
 
             if (f == 1.0F) {
@@ -117,7 +137,8 @@ public class ItemBowInfinity extends Item implements ICosmicRenderItem {
 
     @Override
     public int getMaxItemUseDuration(ItemStack stack) {
-        return 13;
+        return InfinityToolRuntimeHelpers.isBowRapidFireEnabled(stack) ? RAPID_FIRE_USE_DURATION
+                : STANDARD_BOW_USE_DURATION;
     }
 
     @Override
@@ -134,7 +155,6 @@ public class ItemBowInfinity extends Item implements ICosmicRenderItem {
         }
 
         player.setItemInUse(stack, this.getMaxItemUseDuration(stack));
-
         return stack;
     }
 
@@ -161,13 +181,12 @@ public class ItemBowInfinity extends Item implements ICosmicRenderItem {
     @Override
     public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
         if (usingItem != null) {
-            int max = stack.getMaxItemUseDuration();
-            int pull = max - useRemaining;
-            if (pull >= (max * 2) / 3.0) {
+            int pull = getDrawProgress(stack, useRemaining);
+            if (pull >= (RAPID_FIRE_USE_DURATION * 2) / 3.0) {
                 return this.iconArray[2];
             }
 
-            if (pull > max / 3.0) {
+            if (pull > RAPID_FIRE_USE_DURATION / 3.0) {
                 return this.iconArray[1];
             }
 
@@ -207,5 +226,33 @@ public class ItemBowInfinity extends Item implements ICosmicRenderItem {
     @Override
     public float getMaskMultiplier(ItemStack stack, EntityPlayer player) {
         return 1.0f;
+    }
+
+    @Optional.Method(modid = "DraconicEvolution")
+    @Override
+    public List<ItemConfigField> getFields(ItemStack stack, int slot) {
+        return InfinityToolConfigFactory.createBowFields(stack, slot);
+    }
+
+    @Optional.Method(modid = "DraconicEvolution")
+    @Override
+    public boolean hasProfiles() {
+        return true;
+    }
+
+    public static int getDrawProgress(ItemStack stack, int useRemaining) {
+        int maxUseDuration = InfinityToolRuntimeHelpers.isBowRapidFireEnabled(stack) ? RAPID_FIRE_USE_DURATION
+                : STANDARD_BOW_USE_DURATION;
+        int elapsedTicks = maxUseDuration - useRemaining;
+        return Math.max(0, Math.min(RAPID_FIRE_USE_DURATION, elapsedTicks));
+    }
+
+    public static int getDrawFrame(ItemStack stack, int useRemaining) {
+        int progress = getDrawProgress(stack, useRemaining);
+        if (progress <= 0) {
+            return 0;
+        }
+        double ratio = progress / (double) RAPID_FIRE_USE_DURATION;
+        return Math.max(0, Math.min(BOW_FRAME_COUNT - 1, (int) Math.ceil(ratio * BOW_FRAME_COUNT) - 1));
     }
 }
