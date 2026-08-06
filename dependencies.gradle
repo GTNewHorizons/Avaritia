@@ -4,6 +4,7 @@ dependencies {
     api("com.github.GTNewHorizons:GTNHLib:0.9.39:dev")
     devOnlyNonPublishable("com.github.GTNewHorizons:NotEnoughItems:2.8.75-GTNH:dev")
 
+    compileOnly("com.github.GTNewHorizons:Draconic-Evolution:1.5.26-GTNH:dev") {transitive = false}
     compileOnly("com.github.GTNewHorizons:ForestryMC:4.11.8:api") {transitive = false}
     compileOnly("com.github.GTNewHorizons:Botania:1.13.16-GTNH:dev") {transitive = false}
     compileOnly("com.github.GTNewHorizons:Mantle:0.5.1:dev") {transitive = false}

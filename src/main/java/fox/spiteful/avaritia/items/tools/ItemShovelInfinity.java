@@ -1,5 +1,7 @@
 package fox.spiteful.avaritia.items.tools;
 
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -17,13 +19,22 @@ import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.brandon3055.draconicevolution.common.utils.IConfigurableItem;
+import com.brandon3055.draconicevolution.common.utils.ItemConfigField;
+
+import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import fox.spiteful.avaritia.Avaritia;
+import fox.spiteful.avaritia.compat.draconicevolution.InfinityToolConfigFactory;
+import fox.spiteful.avaritia.compat.draconicevolution.InfinityToolRuntimeHelpers;
 import fox.spiteful.avaritia.entity.EntityImmortalItem;
 import fox.spiteful.avaritia.items.LudicrousItems;
 
-public class ItemShovelInfinity extends ItemSpade {
+@Optional.Interface(
+        iface = "com.brandon3055.draconicevolution.common.utils.IConfigurableItem",
+        modid = "DraconicEvolution")
+public class ItemShovelInfinity extends ItemSpade implements IConfigurableItem {
 
     public static final ToolMaterial opShovel = EnumHelper
             .addToolMaterial("INFINITY_SHOVEL", 32, 9999, 9999F, 7.0F, 200);
@@ -81,7 +92,7 @@ public class ItemShovelInfinity extends ItemSpade {
 
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-        if (player.isSneaking()) {
+        if (player.isSneaking() && InfinityToolRuntimeHelpers.isShovelDestroyerEnabled(stack)) {
             NBTTagCompound tags = stack.getTagCompound();
             if (tags == null) {
                 tags = new NBTTagCompound();
@@ -95,7 +106,8 @@ public class ItemShovelInfinity extends ItemSpade {
 
     @Override
     public boolean onBlockStartBreak(ItemStack stack, int x, int y, int z, EntityPlayer player) {
-        if (stack.getTagCompound() != null && stack.getTagCompound().getBoolean("destroyer")) {
+        if (InfinityToolRuntimeHelpers.isShovelDestroyerEnabled(stack) && stack.getTagCompound() != null
+                && stack.getTagCompound().getBoolean("destroyer")) {
             MovingObjectPosition raycast = ToolHelper.raytraceFromEntity(player.worldObj, player, true, 10);
             if (raycast != null) {
                 breakOtherBlock(player, stack, x, y, z, x, y, z, raycast.sideHit);
@@ -118,7 +130,7 @@ public class ItemShovelInfinity extends ItemSpade {
         boolean silk = EnchantmentHelper.getSilkTouchModifier(player);
         boolean doY = direction.offsetY == 0;
 
-        int range = 8;
+        int range = InfinityToolRuntimeHelpers.getShovelDestroyerRange(stack);
 
         ToolHelper.removeBlocksInIteration(
                 player,
@@ -154,6 +166,18 @@ public class ItemShovelInfinity extends ItemSpade {
     @Override
     public boolean hasEffect(ItemStack par1ItemStack, int pass) {
         return false;
+    }
+
+    @Optional.Method(modid = "DraconicEvolution")
+    @Override
+    public List<ItemConfigField> getFields(ItemStack stack, int slot) {
+        return InfinityToolConfigFactory.createShovelFields(stack, slot);
+    }
+
+    @Optional.Method(modid = "DraconicEvolution")
+    @Override
+    public boolean hasProfiles() {
+        return true;
     }
 
 }
