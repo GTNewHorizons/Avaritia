@@ -44,6 +44,7 @@ public class Compat {
     public static boolean am2 = false;
     public static boolean forestry = false;
     public static boolean te = false;
+    public static boolean draconicEvolution = false;
 
     public static void census() {
         nei = Loader.isModLoaded("NotEnoughItems");
@@ -63,6 +64,7 @@ public class Compat {
         am2 = Loader.isModLoaded("arsmagica2") && Config.am2;
         forestry = Loader.isModLoaded("Forestry") && Config.forestry;
         te = Loader.isModLoaded("ThermalExpansion") && Config.te;
+        draconicEvolution = Loader.isModLoaded("DraconicEvolution");
 
         if (thaumic) {
             Lucrum.initTermination();
