@@ -27,6 +27,21 @@ public class InfinityArmorConfigHelpers {
         return player.isSprinting() || player.isSneaking();
     }
 
+    public static boolean isEffectiveOnSprint(ItemStack stack) {
+        if (!InfinityArmorConfigHelpers.getBoolean(stack, InfinityArmorConfigKeys.ARMOR_EFFECTIVE_ON_SPRINT, false)) {
+            return true;
+        }
+        return Compat.draconicEvolution && InfinityConfigProfileBridge.isCtrlDown();
+    }
+
+    public static boolean isSpaceDown() {
+        return Compat.draconicEvolution && InfinityConfigProfileBridge.isSpaceDown();
+    }
+
+    public static boolean isShiftDown() {
+        return Compat.draconicEvolution && InfinityConfigProfileBridge.isShiftDown();
+    }
+
     public static float getConditionalMultiplier(ItemStack stack, EntityPlayer player, String key, float defaultValue) {
         float configuredValue = getFloat(stack, key, defaultValue);
         if (!getBoolean(stack, InfinityArmorConfigKeys.ARMOR_SPRINT_ONLY, false)) {
@@ -38,9 +53,6 @@ public class InfinityArmorConfigHelpers {
     public static float getConditionalFlightMultiplier(ItemStack stack, EntityPlayer player, String key,
             float defaultValue) {
         float configuredValue = getFloat(stack, key, defaultValue);
-        if (!getBoolean(stack, InfinityArmorConfigKeys.ARMOR_EFFECTIVE_ON_SPRINT, false)) {
-            return configuredValue;
-        }
-        return isSprintConditionActive(stack, player) ? configuredValue : 0F;
+        return isEffectiveOnSprint(stack) ? configuredValue : 0F;
     }
 }

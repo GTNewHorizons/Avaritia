@@ -7,9 +7,9 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
 import fox.spiteful.avaritia.Config;
 import fox.spiteful.avaritia.compat.Compat;
 import fox.spiteful.avaritia.items.LudicrousItems;
@@ -27,11 +27,12 @@ public class InfinityArmorRuntimeHandler {
     private final Set<String> playersWithFoot = new HashSet<>();
 
     @SubscribeEvent
-    public void updatePlayerAbilityStatus(LivingUpdateEvent event) {
-        if (!(event.entityLiving instanceof EntityPlayer player)) {
+    public void updatePlayerAbilityStatus(TickEvent.PlayerTickEvent event) {
+        if (event.phase != TickEvent.Phase.START) {
             return;
         }
 
+        EntityPlayer player = event.player;
         String key = playerKey(player);
         updateFlight(player, key);
         updateFootAbilities(player, key);
@@ -126,13 +127,27 @@ public class InfinityArmorRuntimeHandler {
             return;
         }
 
-        boolean jumping = ((EntityLivingBaseAccessor) player).getIsJumping();
         float verticalMultiplier = InfinityArmorAbilityResolver.getFlightVerticalModifier(chest, player);
-        float accelerationScale = resolveVerticalAccelerationScale(verticalMultiplier);
-        if (jumping && player.motionY > 0 && player.motionY < 2) {
-            player.motionY *= accelerationScale;
-        } else if (player.isSneaking() && player.motionY < 0 && player.motionY > -2) {
-            player.motionY *= accelerationScale;
+        if (player.onGround || player.motionY == 0 || (Compat.draconicEvolution && verticalMultiplier <= 0F)) {
+            return;
+        }
+
+        boolean spaceDown = InfinityArmorConfigHelpers.isSpaceDown();
+        boolean shiftDown = InfinityArmorConfigHelpers.isShiftDown();
+        if (spaceDown && !shiftDown) {
+            player.motionY = 0.225D * verticalMultiplier;
+        } else if (shiftDown && !spaceDown) {
+            player.motionY = -0.225D * verticalMultiplier;
+        }
+
+        if (!Compat.draconicEvolution) {
+            boolean jumping = ((EntityLivingBaseAccessor) player).getIsJumping();
+            float accelerationScale = resolveVerticalAccelerationScale();
+            if (jumping && player.motionY > 0 && player.motionY < 2) {
+                player.motionY *= accelerationScale;
+            } else if (player.isSneaking() && player.motionY < 0 && player.motionY > -2) {
+                player.motionY *= accelerationScale;
+            }
         }
     }
 
@@ -185,10 +200,8 @@ public class InfinityArmorRuntimeHandler {
         return speed;
     }
 
-    private float resolveVerticalAccelerationScale(float configuredValue) {
-        if (Compat.draconicEvolution) {
-            return configuredValue <= 0F ? 1.0F : 1.5F + (configuredValue * 0.1F);
-        }
+    private float resolveVerticalAccelerationScale() {
         return 1.5F + (LEGACY_VERTICAL_ACCELERATION * 0.1F);
     }
+
 }
