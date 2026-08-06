@@ -10,6 +10,7 @@ import net.minecraft.world.World;
 public class EntityHeavenArrow extends EntityArrow {
 
     public boolean impacted = false;
+    public boolean swordRainEnabled = true;
     public Random randy = new Random();
 
     public EntityHeavenArrow(World world, double x, double y, double z) {
@@ -41,7 +42,7 @@ public class EntityHeavenArrow extends EntityArrow {
             }
 
             if (this.impacted) {
-                if (!this.worldObj.isRemote) {
+                if (!this.worldObj.isRemote && this.swordRainEnabled) {
                     this.barrage();
                 }
             }
@@ -56,6 +57,7 @@ public class EntityHeavenArrow extends EntityArrow {
     public void writeEntityToNBT(NBTTagCompound tag) {
         super.writeEntityToNBT(tag);
         tag.setBoolean("impacted", this.impacted);
+        tag.setBoolean("swordRainEnabled", this.swordRainEnabled);
     }
 
     /**
@@ -65,6 +67,11 @@ public class EntityHeavenArrow extends EntityArrow {
     public void readEntityFromNBT(NBTTagCompound tag) {
         super.readEntityFromNBT(tag);
         this.impacted = tag.getBoolean("impacted");
+        this.swordRainEnabled = !tag.hasKey("swordRainEnabled") || tag.getBoolean("swordRainEnabled");
+    }
+
+    public void setSwordRainEnabled(boolean swordRainEnabled) {
+        this.swordRainEnabled = swordRainEnabled;
     }
 
     public void barrage() {

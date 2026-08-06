@@ -12,6 +12,7 @@ import net.minecraftforge.common.util.EnumHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import fox.spiteful.avaritia.Avaritia;
 import fox.spiteful.avaritia.Config;
+import fox.spiteful.avaritia.compat.draconicevolution.InfinityArmorRuntimeHandler;
 import fox.spiteful.avaritia.items.tools.ItemAxeInfinity;
 import fox.spiteful.avaritia.items.tools.ItemBowInfinity;
 import fox.spiteful.avaritia.items.tools.ItemPickaxeInfinity;
@@ -92,7 +93,7 @@ public class LudicrousItems {
         infinity_axe = register(new ItemAxeInfinity(), "Infinity_Axe");
         // morv_in_a_box = register(new ItemMorvInABox(), "MorvInABox");
 
-        MinecraftForge.EVENT_BUS.register(new ItemArmorInfinity.AbilityHandler());
+        MinecraftForge.EVENT_BUS.register(new InfinityArmorRuntimeHandler());
     }
 
     public static boolean isInfinite(EntityPlayer player) {

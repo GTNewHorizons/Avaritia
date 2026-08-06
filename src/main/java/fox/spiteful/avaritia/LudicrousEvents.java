@@ -28,7 +28,9 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.oredict.OreDictionary;
 
+import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import fox.spiteful.avaritia.compat.draconicevolution.InfinityArmorSetConfigHelpers;
 import fox.spiteful.avaritia.items.ItemFracturedOre;
 import fox.spiteful.avaritia.items.ItemMatterCluster;
 import fox.spiteful.avaritia.items.LudicrousItems;
@@ -192,23 +194,31 @@ public class LudicrousEvents {
         }
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onGetHurt(LivingHurtEvent event) {
         if (!(event.entityLiving instanceof EntityPlayer player)) return;
         if (player.getHeldItem() != null && player.getHeldItem().getItem() == LudicrousItems.infinity_sword
                 && player.isUsingItem())
             event.setCanceled(true);
-        if (LudicrousItems.isInfinite(player) && !event.source.damageType.equals("infinity")) event.setCanceled(true);
+        if (InfinityArmorSetConfigHelpers.isInfinitySetEquipped(player)
+                && InfinityArmorSetConfigHelpers.isDamageImmune(player)
+                && !event.source.damageType.equals("infinity")) {
+            event.setCanceled(true);
+        }
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onAttacked(LivingAttackEvent event) {
         if (!(event.entityLiving instanceof EntityPlayer player)) return;
         if (event.source.getEntity() != null && event.source.getEntity() instanceof EntityPlayer) return;
         if (player.getHeldItem() != null && player.getHeldItem().getItem() == LudicrousItems.infinity_sword
                 && player.isUsingItem())
             event.setCanceled(true);
-        if (LudicrousItems.isInfinite(player) && !event.source.damageType.equals("infinity")) event.setCanceled(true);
+        if (InfinityArmorSetConfigHelpers.isInfinitySetEquipped(player)
+                && InfinityArmorSetConfigHelpers.isDamageImmune(player)
+                && !event.source.damageType.equals("infinity")) {
+            event.setCanceled(true);
+        }
     }
 
     @SubscribeEvent
@@ -287,10 +297,12 @@ public class LudicrousEvents {
         return false;
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onDeath(LivingDeathEvent event) {
         if (event.entityLiving instanceof EntityPlayer player) {
-            if (LudicrousItems.isInfinite(player) && !event.source.getDamageType().equals("infinity")) {
+            if (InfinityArmorSetConfigHelpers.isInfinitySetEquipped(player)
+                    && InfinityArmorSetConfigHelpers.isDeathImmune(player)
+                    && !event.source.getDamageType().equals("infinity")) {
                 event.setCanceled(true);
                 player.setHealth(player.getMaxHealth());
             }

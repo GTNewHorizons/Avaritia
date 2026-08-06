@@ -8,6 +8,8 @@ import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
 
+import fox.spiteful.avaritia.items.tools.ItemBowInfinity;
+
 public class CosmicBowRenderer extends CosmicItemRenderer implements IItemRenderer {
 
     @Override
@@ -25,6 +27,9 @@ public class CosmicBowRenderer extends CosmicItemRenderer implements IItemRender
     public static int getBowFrame(EntityPlayer player) {
         ItemStack inuse = player.getItemInUse();
 
+        if (inuse != null && inuse.getItem() instanceof ItemBowInfinity) {
+            return ItemBowInfinity.getDrawFrame(inuse, player.getItemInUseCount());
+        }
         if (inuse != null) {
             int max = inuse.getMaxItemUseDuration();
             double pull = (max - player.getItemInUseCount()) / (double) max;

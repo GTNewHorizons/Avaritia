@@ -1,5 +1,7 @@
 package fox.spiteful.avaritia.items.tools;
 
+import java.util.List;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -12,17 +14,26 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.EnumHelper;
 
+import com.brandon3055.draconicevolution.common.utils.IConfigurableItem;
+import com.brandon3055.draconicevolution.common.utils.ItemConfigField;
+
+import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import fox.spiteful.avaritia.Avaritia;
 import fox.spiteful.avaritia.DamageSourceInfinitySword;
 import fox.spiteful.avaritia.achievements.Achievements;
 import fox.spiteful.avaritia.compat.Belmont;
+import fox.spiteful.avaritia.compat.draconicevolution.InfinityToolConfigFactory;
+import fox.spiteful.avaritia.compat.draconicevolution.InfinityToolRuntimeHelpers;
 import fox.spiteful.avaritia.entity.EntityImmortalItem;
 import fox.spiteful.avaritia.items.LudicrousItems;
 import fox.spiteful.avaritia.render.ICosmicRenderItem;
 
-public class ItemSwordInfinity extends ItemSword implements ICosmicRenderItem {
+@Optional.Interface(
+        iface = "com.brandon3055.draconicevolution.common.utils.IConfigurableItem",
+        modid = "DraconicEvolution")
+public class ItemSwordInfinity extends ItemSword implements ICosmicRenderItem, IConfigurableItem {
 
     private static final ToolMaterial opSword = EnumHelper
             .addToolMaterial("INFINITY_SWORD", 32, 9999, 9999F, -3.0F, 200);
@@ -39,6 +50,8 @@ public class ItemSwordInfinity extends ItemSword implements ICosmicRenderItem {
     @Override
     public boolean hitEntity(ItemStack stack, EntityLivingBase victim, EntityLivingBase player) {
         if (player.worldObj.isRemote) return true;
+        float attackDamage = InfinityToolRuntimeHelpers.getSwordDamage(stack);
+        boolean executionEnabled = InfinityToolRuntimeHelpers.isSwordExecutionEnabled(stack);
         if (victim instanceof EntityPlayer pvp) {
             if (LudicrousItems.isInfinite(pvp)) {
                 if (Belmont.isVampire(pvp)) victim.attackEntityFrom(
@@ -55,9 +68,13 @@ public class ItemSwordInfinity extends ItemSword implements ICosmicRenderItem {
         victim.recentlyHit = 60;
         victim.func_110142_aN() // getCombatTracker
                 .func_94547_a(new DamageSourceInfinitySword(player), victim.getHealth(), victim.getHealth());
-        victim.setHealth(0);
-        if (Belmont.isVampire(victim)) victim.onDeath(new EntityDamageSource("infinity", player).setFireDamage());
-        else victim.onDeath(new EntityDamageSource("infinity", player));
+        if (executionEnabled && attackDamage >= victim.getHealth()) {
+            victim.setHealth(0);
+            if (Belmont.isVampire(victim)) victim.onDeath(new EntityDamageSource("infinity", player).setFireDamage());
+            else victim.onDeath(new EntityDamageSource("infinity", player));
+            return true;
+        }
+        victim.attackEntityFrom(new DamageSourceInfinitySword(player).setDamageBypassesArmor(), attackDamage);
         return true;
     }
 
@@ -66,6 +83,7 @@ public class ItemSwordInfinity extends ItemSword implements ICosmicRenderItem {
         if (!entity.worldObj.isRemote && entity instanceof EntityPlayer victim) {
             if (victim.capabilities.isCreativeMode && !victim.isDead
                     && victim.getHealth() > 0
+                    && InfinityToolRuntimeHelpers.isSwordCreativeBypassEnabled(stack)
                     && !LudicrousItems.isInfinite(victim)) {
                 victim.func_110142_aN() // getCombatTracker
                         .func_94547_a(new DamageSourceInfinitySword(player), victim.getHealth(), victim.getHealth());
@@ -134,5 +152,17 @@ public class ItemSwordInfinity extends ItemSword implements ICosmicRenderItem {
     @Override
     public boolean hasEffect(ItemStack par1ItemStack, int pass) {
         return false;
+    }
+
+    @Optional.Method(modid = "DraconicEvolution")
+    @Override
+    public List<ItemConfigField> getFields(ItemStack stack, int slot) {
+        return InfinityToolConfigFactory.createSwordFields(stack, slot);
+    }
+
+    @Optional.Method(modid = "DraconicEvolution")
+    @Override
+    public boolean hasProfiles() {
+        return true;
     }
 }

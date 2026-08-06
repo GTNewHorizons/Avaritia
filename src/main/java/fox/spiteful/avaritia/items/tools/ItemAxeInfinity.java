@@ -27,14 +27,23 @@ import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.brandon3055.draconicevolution.common.utils.IConfigurableItem;
+import com.brandon3055.draconicevolution.common.utils.ItemConfigField;
+
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import fox.spiteful.avaritia.Avaritia;
+import fox.spiteful.avaritia.compat.draconicevolution.InfinityToolConfigFactory;
+import fox.spiteful.avaritia.compat.draconicevolution.InfinityToolRuntimeHelpers;
 import fox.spiteful.avaritia.entity.EntityImmortalItem;
 import fox.spiteful.avaritia.items.LudicrousItems;
 
-public class ItemAxeInfinity extends ItemAxe {
+@Optional.Interface(
+        iface = "com.brandon3055.draconicevolution.common.utils.IConfigurableItem",
+        modid = "DraconicEvolution")
+public class ItemAxeInfinity extends ItemAxe implements IConfigurableItem {
 
     private static final ToolMaterial opAxe = EnumHelper
             .addToolMaterial("INFINITY_PICKAXE", 32, 9999, 9999F, 20.0F, 200);
@@ -68,12 +77,12 @@ public class ItemAxeInfinity extends ItemAxe {
 
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-        if (player.isSneaking()) {
+        if (player.isSneaking() && InfinityToolRuntimeHelpers.isAxeVeinEnabled(stack)) {
             player.swingItem();
             int fortune = EnchantmentHelper.getFortuneModifier(player);
             boolean silk = EnchantmentHelper.getSilkTouchModifier(player);
 
-            int range = 13;
+            int range = InfinityToolRuntimeHelpers.getAxeCleaveRange(stack);
 
             ToolHelper.removeBlocksInIteration(
                     player,
@@ -99,6 +108,9 @@ public class ItemAxeInfinity extends ItemAxe {
 
     @Override
     public boolean onBlockStartBreak(ItemStack stack, int x, int y, int z, EntityPlayer player) {
+        if (!InfinityToolRuntimeHelpers.isAxeVeinEnabled(stack)) {
+            return false;
+        }
         MovingObjectPosition raycast = ToolHelper.raytraceFromEntity(player.worldObj, player, true, 10);
         if (raycast != null) {
             breakOtherBlock(player, stack, x, y, z, x, y, z, raycast.sideHit);
@@ -110,7 +122,16 @@ public class ItemAxeInfinity extends ItemAxe {
             int originZ, int side) {
         if (player.isSneaking()) return;
         ChunkCoordinates coords = new ChunkCoordinates(x, y, z);
-        addBlockSwapper(player.worldObj, player, stack, coords, coords, 32, false, true, new ArrayList<>());
+        addBlockSwapper(
+                player.worldObj,
+                player,
+                stack,
+                coords,
+                coords,
+                InfinityToolRuntimeHelpers.getAxeCleaveRange(stack) * 2 + 6,
+                false,
+                true,
+                new ArrayList<>());
     }
 
     @Override
@@ -126,6 +147,18 @@ public class ItemAxeInfinity extends ItemAxe {
     @Override
     public boolean hasEffect(ItemStack par1ItemStack, int pass) {
         return false;
+    }
+
+    @Optional.Method(modid = "DraconicEvolution")
+    @Override
+    public List<ItemConfigField> getFields(ItemStack stack, int slot) {
+        return InfinityToolConfigFactory.createAxeFields(stack, slot);
+    }
+
+    @Optional.Method(modid = "DraconicEvolution")
+    @Override
+    public boolean hasProfiles() {
+        return true;
     }
 
     private static BlockSwapper addBlockSwapper(World world, EntityPlayer player, ItemStack stack,
