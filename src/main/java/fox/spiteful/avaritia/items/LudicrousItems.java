@@ -9,6 +9,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.EnumHelper;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import fox.spiteful.avaritia.Avaritia;
 import fox.spiteful.avaritia.Config;
@@ -93,7 +94,9 @@ public class LudicrousItems {
         infinity_axe = register(new ItemAxeInfinity(), "Infinity_Axe");
         // morv_in_a_box = register(new ItemMorvInABox(), "MorvInABox");
 
-        MinecraftForge.EVENT_BUS.register(new InfinityArmorRuntimeHandler());
+        InfinityArmorRuntimeHandler handler = new InfinityArmorRuntimeHandler();
+        MinecraftForge.EVENT_BUS.register(handler);
+        FMLCommonHandler.instance().bus().register(handler);
     }
 
     public static boolean isInfinite(EntityPlayer player) {
