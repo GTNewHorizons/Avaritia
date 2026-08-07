@@ -14,6 +14,7 @@ import fox.spiteful.avaritia.Config;
 import fox.spiteful.avaritia.compat.Compat;
 import fox.spiteful.avaritia.items.LudicrousItems;
 import fox.spiteful.avaritia.mixins.early.minecraft.EntityLivingBaseAccessor;
+import fox.spiteful.avaritia.mixins.early.minecraft.PlayerCapabilitiesAccessor;
 
 public class InfinityArmorRuntimeHandler {
 
@@ -62,7 +63,7 @@ public class InfinityArmorRuntimeHandler {
                 player.capabilities.isFlying = true;
             }
             float flightSpeedModifier = InfinityArmorAbilityResolver.getFlightSpeedModifier(chest, player);
-            player.capabilities.setFlySpeed(resolveFlySpeed(flightSpeedModifier));
+            ((PlayerCapabilitiesAccessor) player.capabilities).setPlayerFlySpeed(resolveFlySpeed(flightSpeedModifier));
             playersWithChest.add(key);
             return;
         }
@@ -71,7 +72,7 @@ public class InfinityArmorRuntimeHandler {
             player.capabilities.allowFlying = false;
             player.capabilities.isFlying = false;
         }
-        player.capabilities.setFlySpeed(0.05F);
+        ((PlayerCapabilitiesAccessor) player.capabilities).setPlayerFlySpeed(0.05F);
     }
 
     private void updateFootAbilities(EntityPlayer player, String key) {
