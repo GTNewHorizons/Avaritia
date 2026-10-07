@@ -50,8 +50,8 @@ public class ItemSwordInfinity extends ItemSword implements ICosmicRenderItem, I
     @Override
     public boolean hitEntity(ItemStack stack, EntityLivingBase victim, EntityLivingBase player) {
         if (player.worldObj.isRemote) return true;
-        float attackDamage = InfinityToolRuntimeHelpers.getSwordDamage(stack);
         boolean executionEnabled = InfinityToolRuntimeHelpers.isSwordExecutionEnabled(stack);
+        float attackDamage = executionEnabled ? Float.MAX_VALUE : InfinityToolRuntimeHelpers.getSwordDamage(stack);
         if (victim instanceof EntityPlayer pvp) {
             if (LudicrousItems.isInfinite(pvp)) {
                 if (Belmont.isVampire(pvp)) victim.attackEntityFrom(

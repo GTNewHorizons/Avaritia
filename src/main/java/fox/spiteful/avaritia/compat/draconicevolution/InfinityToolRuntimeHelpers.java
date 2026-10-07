@@ -14,7 +14,7 @@ public class InfinityToolRuntimeHelpers {
         if (!Compat.draconicEvolution) {
             return LEGACY_SWORD_DAMAGE;
         }
-        return InfinityToolConfigHelpers.getFloat(stack, InfinityToolConfigKeys.SWORD_ATTACK_DAMAGE, 2000F);
+        return InfinityToolConfigHelpers.getFloat(stack, InfinityToolConfigKeys.SWORD_ATTACK_DAMAGE, 1000F);
     }
 
     public static boolean isSwordExecutionEnabled(ItemStack stack) {
