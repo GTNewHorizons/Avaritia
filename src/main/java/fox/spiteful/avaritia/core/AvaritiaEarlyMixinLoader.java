@@ -1,13 +1,14 @@
 package fox.spiteful.avaritia.core;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import com.gtnewhorizon.gtnhmixins.IEarlyMixinLoader;
+import com.gtnewhorizon.gtnhmixins.builders.IMixins;
 
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
+import fox.spiteful.avaritia.mixins.Mixins;
 
 @IFMLLoadingPlugin.MCVersion("1.7.10")
 public class AvaritiaEarlyMixinLoader implements IFMLLoadingPlugin, IEarlyMixinLoader {
@@ -42,6 +43,6 @@ public class AvaritiaEarlyMixinLoader implements IFMLLoadingPlugin, IEarlyMixinL
 
     @Override
     public List<String> getMixins(Set<String> loadedCoreMods) {
-        return Collections.singletonList("minecraft.EntityLivingBaseAccessor");
+        return IMixins.getEarlyMixins(Mixins.class, loadedCoreMods);
     }
 }
