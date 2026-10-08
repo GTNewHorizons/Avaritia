@@ -42,7 +42,7 @@ public class EntityEndestPearl extends EntityThrowable {
         if (!this.worldObj.isRemote) {
             // this.worldObj.createExplosion(this, pos.hitVec.xCoord, pos.hitVec.yCoord, pos.hitVec.zCoord, 4.0f, true);
 
-            Entity ent = new EntityGapingVoid(this.worldObj);
+            Entity ent = new EntityGapingVoid(this.worldObj, this.getThrower());
             // Entity ent = new EntityChicken(this.worldObj);
             ForgeDirection dir = ForgeDirection.getOrientation(pos.sideHit);
             ent.setLocationAndAngles(
