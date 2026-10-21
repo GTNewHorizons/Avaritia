@@ -7,12 +7,15 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DirectColorModel;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import java.util.zip.CRC32;
+import java.util.zip.Deflater;
 
 import javax.imageio.ImageIO;
 
@@ -25,11 +28,14 @@ import net.minecraft.client.resources.ResourcePackRepository;
 import net.minecraft.client.resources.data.IMetadataSection;
 import net.minecraft.client.resources.data.IMetadataSerializer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.common.MinecraftForge;
 
 import com.google.common.base.Throwables;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import fox.spiteful.avaritia.Lumberjack;
 
 /**
@@ -67,6 +73,7 @@ public abstract class TConTextureResourcePackBase implements IResourcePack, IRes
         List<IResourcePack> packs = getiResourcePacks();
         packs.add(this);
         ((IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager()).registerReloadListener(this);
+        MinecraftForge.EVENT_BUS.register(this);
         Lumberjack.info("Registered TCon Resource Pack (" + name + ") - " + this.getClass().getSimpleName());
     }
 
@@ -142,10 +149,8 @@ public abstract class TConTextureResourcePackBase implements IResourcePack, IRes
                 return delegate.getInputStream(location);
             }
 
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            ImageIO.write(image, "PNG", stream);
-            bytes = stream.toByteArray();
-            cachedImages.put(location, bytes);
+            bytes = writePng(image);
+            cachedImages.put(p_110590_1_, bytes);
         }
 
         return new ByteArrayInputStream(bytes);
@@ -194,6 +199,71 @@ public abstract class TConTextureResourcePackBase implements IResourcePack, IRes
     public void onResourceManagerReload(IResourceManager p_110549_1_) {
         cachedImages.clear();
         resourcePackz = null;
+    }
+
+    // The reload listener runs after the atlas is stitched, so clear here too or a resource pack change would reuse the
+    // old images.
+    @SubscribeEvent
+    public void onTextureStitch(TextureStitchEvent.Pre event) {
+        cachedImages.clear();
+    }
+
+    // Minecraft only decodes these again, so a plain RGBA PNG with fast compression is enough. ImageIO is a lot slower.
+    protected static byte[] writePng(BufferedImage image) throws IOException {
+        int width = image.getWidth();
+        int height = image.getHeight();
+        int[] argb = image.getRGB(0, 0, width, height, null, 0, width);
+        byte[] raw = new byte[height * (width * 4 + 1)];
+        int pos = 0;
+        for (int y = 0; y < height; y++) {
+            raw[pos++] = 0;
+            for (int x = 0; x < width; x++) {
+                int pixel = argb[y * width + x];
+                raw[pos++] = (byte) (pixel >>> 16);
+                raw[pos++] = (byte) (pixel >>> 8);
+                raw[pos++] = (byte) pixel;
+                raw[pos++] = (byte) (pixel >>> 24);
+            }
+        }
+
+        Deflater deflater = new Deflater(Deflater.BEST_SPEED);
+        ByteArrayOutputStream compressed = new ByteArrayOutputStream(raw.length / 2 + 64);
+        try {
+            deflater.setInput(raw);
+            deflater.finish();
+            byte[] buffer = new byte[8192];
+            while (!deflater.finished()) {
+                compressed.write(buffer, 0, deflater.deflate(buffer));
+            }
+        } finally {
+            deflater.end();
+        }
+
+        ByteArrayOutputStream header = new ByteArrayOutputStream(13);
+        DataOutputStream headerData = new DataOutputStream(header);
+        headerData.writeInt(width);
+        headerData.writeInt(height);
+        // 8 bits per channel, RGBA, no interlace
+        headerData.write(new byte[] { 8, 6, 0, 0, 0 });
+
+        ByteArrayOutputStream stream = new ByteArrayOutputStream(compressed.size() + 64);
+        DataOutputStream out = new DataOutputStream(stream);
+        out.write(new byte[] { (byte) 0x89, 'P', 'N', 'G', '\r', '\n', 0x1A, '\n' });
+        writeChunk(out, "IHDR", header.toByteArray());
+        writeChunk(out, "IDAT", compressed.toByteArray());
+        writeChunk(out, "IEND", new byte[0]);
+        return stream.toByteArray();
+    }
+
+    private static void writeChunk(DataOutputStream out, String type, byte[] content) throws IOException {
+        byte[] typeBytes = type.getBytes("US-ASCII");
+        out.writeInt(content.length);
+        out.write(typeBytes);
+        out.write(content);
+        CRC32 crc = new CRC32();
+        crc.update(typeBytes);
+        crc.update(content);
+        out.writeInt((int) crc.getValue());
     }
 
     private int[] colourarray = new int[4];
