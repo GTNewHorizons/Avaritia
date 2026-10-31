@@ -51,7 +51,6 @@ public class CosmicItemRenderer implements IItemRenderer {
                 RenderHelper.enableGUIStandardItemLighting();
 
                 GL11.glDisable(GL11.GL_ALPHA_TEST);
-                GL11.glDisable(GL11.GL_DEPTH_TEST);
 
                 RenderItem r = RenderItem.getInstance();
                 r.renderItemIntoGUI(mc.fontRenderer, mc.getTextureManager(), item, 0, 0, true);
@@ -62,7 +61,6 @@ public class CosmicItemRenderer implements IItemRenderer {
                     RenderHelper.enableGUIStandardItemLighting();
 
                     GL11.glDisable(GL11.GL_ALPHA_TEST);
-                    GL11.glDisable(GL11.GL_DEPTH_TEST);
 
                     ICosmicRenderItem icri = (ICosmicRenderItem) (item.getItem());
 
@@ -81,12 +79,20 @@ public class CosmicItemRenderer implements IItemRenderer {
 
                     Tessellator t = Tessellator.instance;
 
+                    // Draw at the item's zLevel so the overlay passes the depth test over the item
+                    // without disabling it, which would let in-world renderers (drawers) show it through blocks.
+                    // Polygon offset pulls it slightly forward to avoid z-fighting with the item icon.
+                    double z = r.zLevel;
+                    GL11.glEnable(GL11.GL_POLYGON_OFFSET_FILL);
+                    GL11.glPolygonOffset(-1F, -1F);
                     t.startDrawingQuads();
-                    t.addVertexWithUV(0, 0, 0, minu, minv);
-                    t.addVertexWithUV(0, 16, 0, minu, maxv);
-                    t.addVertexWithUV(16, 16, 0, maxu, maxv);
-                    t.addVertexWithUV(16, 0, 0, maxu, minv);
+                    t.addVertexWithUV(0, 0, z, minu, minv);
+                    t.addVertexWithUV(0, 16, z, minu, maxv);
+                    t.addVertexWithUV(16, 16, z, maxu, maxv);
+                    t.addVertexWithUV(16, 0, z, maxu, minv);
                     t.draw();
+                    GL11.glPolygonOffset(0F, 0F);
+                    GL11.glDisable(GL11.GL_POLYGON_OFFSET_FILL);
 
                     CosmicRenderShenanigans.releaseShader();
                     CosmicRenderShenanigans.inventoryRender = false;
