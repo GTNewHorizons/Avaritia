@@ -100,7 +100,6 @@ public class CosmicItemRenderer implements IItemRenderer {
 
                 GL11.glEnable(GL11.GL_ALPHA_TEST);
                 GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-                GL11.glEnable(GL11.GL_DEPTH_TEST);
 
                 r.renderWithColor = true;
 
