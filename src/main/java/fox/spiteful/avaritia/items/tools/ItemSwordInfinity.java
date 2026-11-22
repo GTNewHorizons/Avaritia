@@ -69,7 +69,7 @@ public class ItemSwordInfinity extends ItemSword implements ICosmicRenderItem, I
         victim.func_110142_aN() // getCombatTracker
                 .func_94547_a(new DamageSourceInfinitySword(player), victim.getHealth(), victim.getHealth());
         if (executionEnabled) {
-            if (!victim.isDead && victim.getHealth() > 0) {
+            if (victim.getHealth() > 0) {
                 victim.setHealth(0);
                 if (Belmont.isVampire(victim))
                     victim.onDeath(new EntityDamageSource("infinity", player).setFireDamage());
